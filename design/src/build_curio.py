@@ -77,12 +77,12 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
         font-weight:700;font-size:70px;line-height:1.10;color:{GREEN};}}
 .rule{{left:62px;top:674px;width:440px;height:7px;background:{GREEN};border-radius:4px;}}
 
-.shadow{{left:70px;top:1508px;width:930px;height:96px;
+.shadow{{left:60px;top:1526px;width:960px;height:98px;
         background:radial-gradient(ellipse at 50% 50%, rgba(38,38,44,.34) 0%,
                                     rgba(38,38,44,.16) 42%, rgba(38,38,44,0) 72%);}}
-.truck{{left:25px;top:700px;width:1030px;}}
+.truck{{left:20px;top:700px;width:1060px;}}
 
-.fact{{left:60px;top:1640px;width:990px;
+.fact{{left:60px;top:1660px;width:990px;
       font-weight:700;font-size:53px;line-height:1.18;color:{GREEN};}}
 </style>
 
