@@ -47,6 +47,9 @@ Se você ainda digita nota fiscal numa planilha, para tudo.
 Esse bloco usa um vídeo local em vez do banco de imagens.
 ```
 
+Os roteiros já produzidos ficam em `roteiros-semana1/`. O `--todos` só varre
+`roteiros/`, então arquivar a semana anterior evita reproduzir tudo de novo.
+
 - Cada parágrafo é **um bloco**: uma frase narrada e um fundo próprio
 - `[busca: ...]` é o termo procurado no Pexels — **escreva em inglês**, o acervo
   responde muito melhor
