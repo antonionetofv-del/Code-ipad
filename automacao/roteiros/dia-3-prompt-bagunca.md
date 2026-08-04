@@ -10,29 +10,29 @@ descricao: "A maioria das pessoas escreve pedidos vagos para a inteligência art
 cta: "Salva esse vídeo pra não perder o formato do pedido."
 ---
 
-[busca: messy desk papers chaos]
+[busca: messy cluttered desk with papers office]
 Você joga um monte de coisa bagunçada pra inteligência artificial e ela devolve uma resposta genérica. O problema não é ela. É como você pede.
 
-[busca: person writing notes notebook]
+[busca: woman writing notes in notebook at desk]
 Todo pedido bom tem quatro partes. E quando falta uma, a resposta piora na hora. Presta atenção nessas quatro.
 
-[busca: hands organizing colorful sticky notes]
+[busca: hands organizing sticky notes on wall]
 Primeira parte: o papel. Comece dizendo quem ela deve ser. Por exemplo: você é um organizador profissional.
 
-[busca: person pointing at screen explaining]
+[busca: man pointing at computer screen explaining]
 Segunda: o material. Cole a bagunça inteira, do jeito que estiver. Não perca tempo arrumando antes, é justamente isso que você quer que ela faça.
 
-[busca: checklist tasks organized list]
+[busca: checklist on tablet in office]
 Terceira: a tarefa exata. Agrupe por categoria, ordene por urgência, remova o que estiver repetido.
 
-[busca: clean organized workspace desk]
+[busca: clean minimal organized office desk]
 Quarta: o formato de saída. Me devolva em lista, com no máximo dez itens, sem explicação nenhuma. Essa última parte é a que quase todo mundo esquece.
 
-[busca: person satisfied looking at phone]
+[busca: woman satisfied looking at her phone]
 Papel, material, tarefa e formato. Com essas quatro partes, a resposta vem pronta pra usar, e você não precisa reescrever nada depois.
 
-[busca: shopping list groceries planning]
+[busca: hands writing shopping list at kitchen table]
 E isso funciona pra tudo. Lista de compras da semana, tarefas do trabalho, orçamento de material, ideia de post. Muda o material, o resto do pedido continua igual.
 
-[busca: smartphone save bookmark]
+[busca: person saving content on smartphone]
 Salva esse vídeo pra não perder essas quatro partes. E me conta aqui embaixo: qual bagunça você vai organizar primeiro?

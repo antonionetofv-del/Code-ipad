@@ -65,24 +65,40 @@ def detectar_clima(texto):
     return "neutro"
 
 
-def buscar_no_pexels(termo, orientacao):
-    """Devolve a URL do melhor arquivo de vídeo para o termo, ou None."""
-    consulta = urllib.parse.urlencode({
-        "query": termo, "orientation": orientacao, "per_page": 5, "size": "medium",
-    })
-    requisicao = urllib.request.Request(f"{BUSCA}?{consulta}", headers={"Authorization": CHAVE})
+def _consultar(termo, orientacao):
+    parametros = {"query": termo, "per_page": 12, "size": "medium"}
+    if orientacao:
+        parametros["orientation"] = orientacao
+    requisicao = urllib.request.Request(f"{BUSCA}?{urllib.parse.urlencode(parametros)}",
+                                        headers={"Authorization": CHAVE})
     try:
         with urllib.request.urlopen(requisicao, timeout=30) as resposta:
-            dados = json.load(resposta)
+            return json.load(resposta).get("videos", [])
     except Exception as erro:
-        print(f"    Pexels falhou ({erro}); usando degradê")
-        return None
+        print(f"    Pexels falhou ({erro})")
+        return []
 
-    for video in dados.get("videos", []):
+
+def buscar_no_pexels(termo, orientacao, usados):
+    """Melhor arquivo de vídeo para o termo, sem repetir o que já foi usado.
+
+    O acervo vertical do Pexels é bem menor que o horizontal, então quando a
+    busca em retrato não rende, repetimos sem restrição de orientação — o
+    recorte para o canvas acontece de qualquer forma na montagem.
+    """
+    videos = _consultar(termo, orientacao)
+    if len(videos) < 3:
+        videos += _consultar(termo, None)
+
+    for video in videos:
+        # Clipe curto demais fica repetindo em loop e denuncia o truque.
+        if (video.get("duration") or 0) < 5:
+            continue
         # Prefere o menor arquivo que ainda tenha resolução suficiente.
         arquivos = sorted((a for a in video["video_files"] if (a.get("width") or 0) >= 1080),
                           key=lambda a: a["width"])
-        if arquivos:
+        if arquivos and arquivos[0]["link"] not in usados:
+            usados.add(arquivos[0]["link"])
             return arquivos[0]["link"]
     return None
 
@@ -127,8 +143,13 @@ def principal(caminho_roteiro):
     fundos = destino / "fundos"
     fundos.mkdir(exist_ok=True)
 
+    usados = set()
     if not CHAVE:
-        print("PEXELS_API_KEY não definida — usando degradês gerados localmente.")
+        print("  " + "!" * 66)
+        print("  PEXELS_API_KEY não definida. Os vídeos vão sair só com degradê,")
+        print("  sem nenhuma filmagem de pessoa. Crie a chave gratuita em")
+        print("  pexels.com/api e salve como secret do repositório.")
+        print("  " + "!" * 66)
 
     for indice, bloco in enumerate(blocos):
         clima = bloco.get("clima") or detectar_clima(bloco["texto"])
@@ -147,7 +168,8 @@ def principal(caminho_roteiro):
                 continue
             print(f"    arquivo {bloco['arquivo']} não encontrado; caindo para o degradê")
 
-        url = buscar_no_pexels(bloco["busca"], orientacao) if (CHAVE and bloco.get("busca")) else None
+        url = (buscar_no_pexels(bloco["busca"], orientacao, usados)
+               if (CHAVE and bloco.get("busca")) else None)
         if url:
             nome = hashlib.sha1(url.encode()).hexdigest()[:16] + ".mp4"
             bloco["fundo"] = str(baixar(url, CACHE / nome).resolve())

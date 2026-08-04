@@ -10,29 +10,29 @@ descricao: "Motorista de aplicativo trabalha muito e controla pouco. Nesse víde
 cta: "Roda de app? Comenta sua cidade que eu faço um vídeo com o caso de vocês."
 ---
 
-[busca: rideshare driver car city]
+[busca: rideshare driver driving through city]
 Se você roda de aplicativo, esses três usos mudam a sua semana. E o terceiro é o que mais gente ignora.
 
-[busca: fuel pump gas station]
+[busca: man refueling his car at gas station]
 Primeiro: a conta real do dia. Você faz trezentos reais e acha que ganhou trezentos reais. Não ganhou.
 
-[busca: person calculating expenses receipt]
+[busca: person calculating expenses with receipts]
 Mande assim: rodei tanto, gastei tanto de combustível, meu carro faz tantos quilômetros por litro, e a manutenção me custa tanto por mês. Calcule quanto eu ganhei de verdade por hora.
 
-[busca: person surprised looking at phone]
+[busca: driver surprised looking at his phone]
 O número que volta costuma assustar. Mas é esse número que permite decidir se vale a pena ou não sair naquele horário.
 
-[busca: city map traffic navigation]
+[busca: city traffic and navigation map at night]
 Segundo: a estratégia da semana. Anote por uma semana onde e quando você faz mais corrida. Depois peça pra ela achar o padrão e sugerir os melhores horários.
 
-[busca: customer service support chat]
+[busca: person on a customer service phone call]
 Terceiro, o mais ignorado: resposta pro suporte. Corrida cancelada errada, cobrança indevida, avaliação injusta.
 
-[busca: person writing formal message phone]
+[busca: hands writing a message on smartphone]
 Descreva o que aconteceu e peça uma reclamação formal, objetiva, com os fatos em ordem e pedido claro. Duas horas de raiva viram uma mensagem de cinco linhas que costuma ser resolvida.
 
-[busca: driver confident smiling car]
+[busca: confident driver smiling inside car]
 Trabalhar muito é fácil. Difícil é saber quanto sobra. E isso aqui te dá o número.
 
-[busca: social media comments engagement]
+[busca: person reading comments on smartphone]
 Roda de aplicativo? Comenta a sua cidade que eu faço um vídeo com o caso de vocês.

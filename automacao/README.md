@@ -40,7 +40,7 @@ hashtags: "#ia #produtividade #mei"
 descricao: "Texto que vai na descrição da publicação."
 ---
 
-[busca: person typing on keyboard paperwork]
+[busca: small business owner stressed with paperwork at desk]
 Se você ainda digita nota fiscal numa planilha, para tudo.
 
 [arquivo: minha-captura-de-tela.mp4]
@@ -51,7 +51,7 @@ Esse bloco usa um vídeo local em vez do banco de imagens.
 - `[busca: ...]` é o termo procurado no Pexels — **escreva em inglês**, o acervo
   responde muito melhor
 - `[arquivo: ...]` usa um vídeo seu (captura de tela, por exemplo)
-- Sem chave do Pexels, o pipeline gera um fundo em degradê e continua rodando
+- Sem chave do Pexels não há filmagem: o pipeline cai para degradê e continua rodando
 
 ### Campos do cabeçalho
 
@@ -79,8 +79,7 @@ São 15 vozes neurais. `AntonioNeural` (masculina) e `FranciscaNeural`
 |---|---|
 | `produzir.py` | Roda tudo. É o único que você precisa chamar. |
 | `narrar.py` | Roteiro → narração `.mp3` + legenda `.ass` animada |
-| `assets.py` | Baixa os fundos no Pexels (ou gera degradê no clima do bloco) |
-| `personagem.py` | Desenha o apresentador e sincroniza a boca com a fala |
+| `assets.py` | Busca a filmagem no Pexels (ou gera degradê no clima do bloco) |
 | `sons.py` | Sintetiza os efeitos e monta a trilha de transições |
 | `montar.py` | Junta tudo em `video.mp4` |
 | `cortar.py` | Recorta um vídeo longo em verticais com fundo desfocado |
@@ -88,29 +87,37 @@ São 15 vozes neurais. `AntonioNeural` (masculina) e `FranciscaNeural`
 
 ## As quatro camadas do vídeo
 
-**1. Personagem com lip-sync.** O apresentador é desenhado por código (Pillow),
-não baixado de serviço nenhum: roda igual em toda execução, não depende de
-conta, não custa por vídeo e não some se um serviço externo mudar de política.
-A boca sincroniza com a fala usando as marcações de palavra do Edge TTS, com
-piscada automática a cada ~3,4s. Para mudar a aparência, edite `desenhar()`
-em `personagem.py`.
+**1. Filmagem real de pessoas.** Cada bloco puxa um clipe do Pexels a partir do
+seu `[busca:]`. **A chave do Pexels é obrigatória para esse formato** — sem ela
+não existe pessoa nenhuma, só degradê.
 
-**2. Legenda viva.** O grupo de 3 palavras fica na tela e só a palavra sendo
-falada acende em amarelo. Sai de graça porque o tempo de cada palavra já é
-conhecido.
+Como não há lip-sync, os termos de busca são escritos de propósito para plano
+médio, mãos e over-the-shoulder, nunca para close de rosto falando: rosto em
+close com a boca fora de sincronia é a coisa que mais denuncia um vídeo montado.
+O mesmo clipe nunca se repete dentro de um vídeo, e clipes com menos de 5
+segundos são descartados porque ficariam em loop visível.
 
-**3. Fundo no clima do bloco.** Sem chave do Pexels, o degradê muda de família
-de cor conforme o que o texto diz: vermelho em alerta, verde em resultado
-positivo, roxo em instrução, azul em explicação. A detecção é por palavra
-inteira — `assets.py` tem a tabela de pistas e aceita `[clima: alerta]` no
-roteiro para forçar um valor.
+O acervo vertical do Pexels é bem menor que o horizontal, então quando a busca
+em retrato rende pouco, a busca é refeita sem restrição de orientação — o
+recorte para o canvas acontece de qualquer forma na montagem.
 
-**4. Movimento e som.** Cada bloco tem deriva lenta de câmera (direção alternada
-para o vídeo não parecer deslizar sempre para o mesmo lado), o personagem
-respira, e cada corte leva um whoosh sintetizado pelo próprio ffmpeg — sem
-arquivo baixado, sem dúvida de licença. O áudio final é normalizado em
-**-14 LUFS**, que é o alvo do TikTok e do YouTube: sem isso cada vídeo sobe num
-nível diferente e o canal soa irregular.
+**2. Legenda viva e legível.** O grupo de 3 palavras fica na tela e só a palavra
+sendo falada acende em amarelo. Atrás dela vai uma faixa escura em degradê: sem
+isso, legenda branca some sobre parede clara, céu ou monitor aceso.
+
+**3. Coerência visual.** Todo clipe passa pela mesma correção de cor. Filmagem
+de banco vem de câmeras e tratamentos diferentes; sem uma passada comum, um
+vídeo com oito clipes parece oito vídeos colados. Quando não há filmagem, o
+degradê de reserva muda de família de cor conforme o que o texto diz: vermelho
+em alerta, verde em resultado positivo, roxo em instrução, azul em explicação —
+`assets.py` tem a tabela de pistas e aceita `[clima: alerta]` para forçar.
+
+**4. Movimento e som.** Cada bloco tem deriva lenta de câmera, com a direção
+alternada para o vídeo não parecer deslizar sempre para o mesmo lado, e cada
+corte leva um whoosh sintetizado pelo próprio ffmpeg — sem arquivo baixado, sem
+dúvida de licença. O áudio final é normalizado em **-14 LUFS**, que é o alvo do
+TikTok e do YouTube: sem isso cada vídeo sobe num nível diferente e o canal soa
+irregular.
 
 ### Recortar um vídeo longo
 
@@ -121,9 +128,9 @@ python scripts/cortar.py saida/meu-video/video.mp4 --cortes "0:15-1:25,3:40-4:55
 Cada trecho vira um 1080x1920 com o vídeo original centralizado e fundo
 desfocado. É assim que 1 vídeo longo vira 3 curtos.
 
-## Chave do Pexels (opcional, mas recomendada)
+## Chave do Pexels (obrigatória)
 
-Sem ela o vídeo sai com fundo em degradê — funciona, mas fica pobre.
+**Sem ela não existe filmagem de pessoa nenhuma** — o vídeo sai só com degradê.
 
 1. Crie uma conta gratuita em `pexels.com/api` e copie a chave
 2. No GitHub: **Settings → Secrets and variables → Actions → New repository secret**

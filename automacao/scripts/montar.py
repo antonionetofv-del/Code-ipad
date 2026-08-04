@@ -6,20 +6,49 @@
 import argparse
 from pathlib import Path
 
-from comum import (FORMATOS, carregar_json, carregar_roteiro, duracao,
+from PIL import Image
+
+from comum import (CACHE, FORMATOS, carregar_json, carregar_roteiro, duracao,
                    ffmpeg, pasta_saida, rodar)
 
 VOLUME_TRILHA = 0.07
 
-# O personagem fica no alto e à esquerda: longe da legenda (que vive embaixo)
-# e longe da coluna de botões do TikTok (que fica à direita).
-PERSONAGEM_LADO = 0.44      # fração da largura do canvas
-PERSONAGEM_X = 0.035
-PERSONAGEM_Y = 0.07
-BALANCO = 9                 # amplitude da "respiração", em pixels
-
 # Quanto o fundo é ampliado antes do corte, para sobrar margem de movimento.
 AMPLIACAO = 1.14
+
+# Correção de cor aplicada a todo clipe. Filmagem de banco vem de câmeras e
+# tratamentos diferentes; sem uma passada comum, um vídeo com oito clipes
+# parece oito vídeos colados.
+GRADE = "eq=contrast=1.07:saturation=1.06:gamma=0.98"
+
+# A faixa escura atrás da legenda começa nesta fração da altura.
+SCRIM_INICIO = 0.62
+SCRIM_OPACIDADE = 200       # 0 a 255, no ponto mais escuro (rodapé)
+
+
+def scrim(largura, altura):
+    """Faixa escura em degradê, do meio para o rodapé.
+
+    Legenda branca sobre filmagem real é ilegível quando a cena tem céu,
+    parede clara ou monitor aceso. O degradê resolve sem tapar a imagem: no
+    topo é totalmente transparente e só escurece onde o texto vive.
+    """
+    CACHE.mkdir(parents=True, exist_ok=True)
+    caminho = CACHE / f"scrim_{largura}x{altura}.png"
+    if caminho.exists():
+        return caminho
+
+    img = Image.new("RGBA", (largura, altura), (0, 0, 0, 0))
+    inicio = int(altura * SCRIM_INICIO)
+    pixels = img.load()
+    for y in range(inicio, altura):
+        # Curva quadrática: escurece devagar no começo e fecha no rodapé.
+        proporcao = (y - inicio) / (altura - inicio)
+        alfa = int(SCRIM_OPACIDADE * proporcao ** 1.6)
+        for x in range(largura):
+            pixels[x, y] = (0, 0, 0, alfa)
+    img.save(caminho)
+    return caminho
 
 
 def movimento(indice, largura, altura):
@@ -48,7 +77,7 @@ def normalizar(origem, indice, largura, altura, segundos, destino):
         "-stream_loop", "-1", "-i", str(origem),
         "-t", f"{segundos:.3f}",
         "-vf", (f"scale={alvo_l}:{alvo_a}:force_original_aspect_ratio=increase,"
-                f"crop={largura}:{altura}:x='{x}':y='{y}',fps=30,setsar=1"),
+                f"crop={largura}:{altura}:x='{x}':y='{y}',{GRADE},fps=30,setsar=1"),
         "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
         "-pix_fmt", "yuv420p", str(destino),
     ])
@@ -78,26 +107,18 @@ def principal(caminho_roteiro, trilha=None):
 
     legendas = destino / "legendas.ass"
     final = destino / "video.mp4"
-    personagem = destino / "personagem.mov"
     efeitos = destino / "efeitos.wav"
 
     entradas = [ffmpeg(), "-y", "-i", str(destino / "video_mudo.mp4")]
     filtros = []
-    fluxo = "[0:v]"
     proxima = 1
 
-    if personagem.exists():
-        lado = int(largura * PERSONAGEM_LADO)
-        entradas += ["-i", str(personagem)]
-        filtros.append(f"[{proxima}:v]scale={lado}:{lado},format=rgba[ch]")
-        filtros.append(
-            f"{fluxo}[ch]overlay=x={int(largura * PERSONAGEM_X)}"
-            f":y='{int(altura * PERSONAGEM_Y)}+sin(t*2.1)*{BALANCO}'"
-            f":eof_action=pass[comp]"
-        )
-        fluxo = "[comp]"
-        proxima += 1
-        print("  personagem sobreposto")
+    # Faixa escura atrás da legenda, para o texto continuar legível sobre
+    # qualquer cena.
+    entradas += ["-i", str(scrim(largura, altura))]
+    filtros.append(f"[0:v][{proxima}:v]overlay=0:0[comp]")
+    fluxo = "[comp]"
+    proxima += 1
 
     entradas += ["-i", str(destino / "narracao.mp3")]
     indice_narracao = proxima

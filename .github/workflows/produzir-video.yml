@@ -42,7 +42,7 @@ jobs:
       # depois de minutos de produção.
       - name: Conferir importações
         working-directory: automacao/scripts
-        run: python -c "import produzir, narrar, assets, personagem, sons, montar, cortar"
+        run: python -c "import produzir, narrar, assets, sons, montar, cortar"
 
       - name: Produzir
         working-directory: automacao

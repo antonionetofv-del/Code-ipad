@@ -10,26 +10,26 @@ descricao: "Testei as três inteligências artificiais gratuitas mais usadas com
 cta: "Qual você usa? Comenta que eu testo ela contra as outras no próximo."
 ---
 
-[busca: three smartphones comparison test]
+[busca: three smartphones on a desk comparison]
 Testei as três inteligências artificiais gratuitas mais usadas com o mesmo pedido em português. E o resultado me surpreendeu.
 
-[busca: person writing informal note]
+[busca: person quickly typing note on phone]
 O pedido foi de propósito do jeito que a gente escreve de verdade: sem acento, com gíria e com erro de digitação. Porque é assim que a pessoa real escreve.
 
-[busca: laptop screen text generation]
+[busca: laptop screen with text scrolling]
 A primeira entendeu tudo, inclusive a gíria, e devolveu num português natural. Só que travou quando o texto ficou muito longo.
 
-[busca: person frustrated with computer]
+[busca: frustrated man at computer in office]
 A segunda entendeu o pedido, mas respondeu com aquele português traduzido, cheio de "além disso" e "em suma". Dá pra usar, mas precisa reescrever depois.
 
-[busca: smartphone app loading screen]
+[busca: hand holding smartphone loading screen]
 A terceira foi a mais rápida de todas e a que menos entendeu contexto. Ela respondeu ao pé da letra e ignorou a intenção por trás do pedido.
 
-[busca: person thinking making decision]
+[busca: woman making a decision at her desk]
 A conclusão honesta: pra escrever em português, a primeira. Pra resposta rápida e curta, a terceira. A segunda ficou no meio do caminho.
 
-[busca: person testing on multiple devices]
+[busca: person testing apps on multiple devices]
 Mas o mais importante desse teste é outro: teste você mesmo, com a sua tarefa real. A melhor pra mim pode não ser a melhor pra você.
 
-[busca: social media engagement comments]
+[busca: person engaging with comments on phone]
 Qual delas você usa hoje? Comenta que eu testo ela contra as outras no próximo vídeo.
