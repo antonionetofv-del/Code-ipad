@@ -8,7 +8,8 @@ embutidos em base64, importável no Canva) e o **PNG** é o export para publica�
 
 | Arquivo | Formato | Uso |
 | --- | --- | --- |
-| `viares-oferta-mini-ensaio-stories-1080x1920.png` | **Stories** | **Oferta de entrada — 10 fotos, vagas limitadas. Versão atual** |
+| `viares-diadospais-stories-1080x1920.png` | **Stories** | **Ensaio de Dia dos Pais — 09/08/2026. Campanha ativa** |
+| `viares-oferta-mini-ensaio-stories-1080x1920.png` | Stories | Oferta de entrada — 10 fotos, vagas limitadas |
 | `viares-lancamento-design-1080x1350.png` | Feed 4:5 | Anuncia a linha de design gráfico. Post-chave da semana 2 do calendário |
 | `viares-stories-enquete-1080x1920.png` | Stories | Enquete de qualificação. Quem responde "celular" vira lead |
 | `viares-oferta-mini-ensaio-1080x1350.png` | Feed 4:5 | Versão anterior da oferta (5 fotos, feed). Mantida como histórico |
@@ -45,7 +46,39 @@ figurinha de enquete do Instagram, com as opções *"Profissional"* e *"Foto de
 celular"*. Depois, responda no direct todo mundo que votar na segunda — é o
 script B4 do plano.
 
+### A peça de Dia dos Pais
+
+**Dia dos Pais 2026 cai em domingo, 09/08.** A peça é construída em torno desse
+prazo, não em torno do serviço — numa campanha sazonal a data é o argumento.
+
+Os três quadros são **encaixes de foto**, não decoração: têm marcas de corte nos
+cantos e cruz de registro no centro, a linguagem da folha de contato. Isso faz a
+peça se sustentar visualmente antes das imagens entrarem — e no Canva basta
+arrastar a foto sobre cada quadro para preencher. As legendas (`PAI & FILHOS`,
+`RETRATO`, `FAMÍLIA`) indicam o que vai em cada um e ao mesmo tempo comunicam o
+que o ensaio entrega.
+
+A linha de números virou tabela de três colunas — `30 MIN` · `15 FOTOS` ·
+`R$ 250` — com filetes verticais separando. Na versão anterior o preço aparecia
+sob o rótulo "PARA ENTREGA", herdado da coluna de prazo; cada número agora tem
+o rótulo certo.
+
+> Detalhe técnico: a Italiana não traz o glifo do cifrão — `R$` renderiza como
+> `RS`. Por isso as unidades (`MIN`, `R$`) saem na monoespaçada, dentro da
+> classe `.u`.
+
 ## Editar antes de publicar
+
+**Dia dos Pais** — topo de `src/build_diadospais.py`:
+
+```python
+DATA_PAIS = '09 DE AGOSTO'          # prazo da agenda
+VAGAS, MINUTOS, FOTOS, PRECO = '05', '30', '15', '250'
+PALAVRA   = 'PAI'                   # palavra-chave pedida no direct
+LEGENDAS  = ['PAI & FILHOS', 'RETRATO', 'FAMÍLIA']
+```
+
+`LEGENDAS` controla quantos encaixes existem — três nomes, três quadros.
 
 **Peça de oferta (Stories)** — topo de `src/build_oferta_stories.py`:
 
@@ -96,7 +129,10 @@ Tipografia — **Italiana** + **IBM Plex Mono** na peça de oferta; **Anton** +
 ```bash
 pip install pillow numpy playwright
 
-python3 src/build_oferta_stories.py   # oferta em Stories
+python3 src/build_diadospais.py       # Dia dos Pais
+python3 src/shoot_diadospais.py
+
+python3 src/build_oferta_stories.py    # oferta em Stories
 python3 src/shoot_oferta.py
 
 python3 src/build_viares.py           # demais peças
