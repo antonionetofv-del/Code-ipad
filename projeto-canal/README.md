@@ -26,6 +26,7 @@ ou de qualquer trabalho anterior. É um projeto novo, começando do zero.
 | [07-riscos.md](07-riscos.md) | O que desmonetiza e como não tomar strike |
 | [08-automacao.md](08-automacao.md) | O que automatizar, o que não, e por quê |
 | [09-identidade.md](09-identidade.md) | Nome, @, bio, cores e voz do canal |
+| [10-publicacao.md](10-publicacao.md) | Horários, passo a passo de publicação e rótulo de IA |
 
 O pipeline de produção em si fica em [`../automacao/`](../automacao/README.md).
 
