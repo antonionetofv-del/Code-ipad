@@ -95,3 +95,18 @@ Não use "fala galera, tudo bem?" — custa 40% da audiência antes do assunto.
 
 **Abertura:** a dor, direto, na primeira frase.
 **Fechamento:** sempre uma pergunta específica que gere comentário.
+
+### Opções geradas na Canva
+
+Quatro alternativas de logo, todas na conta da Canva (apague as que não usar):
+
+| Opção | Título | Ver | Editar |
+|---|---|---|---|
+| 1 | Minimalist Logo with Bold 'IA' and Yellow Bar | [ver](https://www.canva.com/d/O2U8dRXau0587ja) | [editar](https://www.canva.com/d/9zUdZ1gB1bsQrHi) |
+| 2 | Bold 'IA' Logo with Half-Width Yellow Bar | [ver](https://www.canva.com/d/_AHu_Mu3F0wgfPP) | [editar](https://www.canva.com/d/EQE99wr5uCdeFFe) |
+| 3 | Clarity-Focused Logo with 'IA' and Sunflower Yellow Bar | [ver](https://www.canva.com/d/x2lc75D6mJQ_c1K) | [editar](https://www.canva.com/d/YquUZKR_fP1Ub9n) |
+| 4 | Flat Square Logo with 'IA' and Optimistic Yellow Accent | [ver](https://www.canva.com/d/kzCLt6BXeNuMSAs) | [editar](https://www.canva.com/d/L7B0ftw6C7h9-Wd) |
+
+Para escolher: abra cada uma e **afaste o aparelho até a imagem ficar do tamanho
+de uma unha**. A que ainda se lê é a certa. Depois exporte em PNG 1024×1024 pela
+própria Canva.
