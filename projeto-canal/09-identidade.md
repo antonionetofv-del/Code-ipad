@@ -113,7 +113,21 @@ disponível em y=0,15 é só 0,5 ± 0,33 — por isso o corpo do balão começa 
 0,16 e não colado na borda, e a ponta do rabicho para em 0,85. Sem isso, a
 plataforma corta os cantos de cima e a ponta.
 
-### Opções geradas na Canva
+### Escolhidas — prontas para subir
+
+| Peça | Design na Canva | Editar |
+|---|---|---|
+| Foto de perfil | [Conversational AI Profile Icon](https://www.canva.com/d/KCS0flXB2BFpHyb) | [editar](https://www.canva.com/d/UsJ3t83uHxrVVwu) |
+| Capa do YouTube | [Digital Banner White and Yellow](https://www.canva.com/d/npADEvK9I5E016j) | [editar](https://www.canva.com/d/KDpBlvsImGkykNo) |
+
+Exporte pela própria Canva: perfil em **PNG 1024×1024**, capa em **PNG 2560×1440**.
+
+**Antes de subir a capa**, confira a zona segura: só a faixa central de
+1546×423 aparece em todos os aparelhos. Se o nome do canal encostar na borda,
+ele some na TV. Na Canva dá para conferir posicionando um retângulo dessa
+medida por cima e ver se o texto cabe dentro.
+
+### Todas as opções geradas na Canva
 
 Quatro alternativas de logo, todas na conta da Canva (apague as que não usar):
 
