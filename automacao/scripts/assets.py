@@ -22,6 +22,14 @@ from comum import (CACHE, FORMATOS, carregar_json, carregar_roteiro, ffmpeg,
 CHAVE = os.environ.get("PEXELS_API_KEY", "").strip()
 BUSCA = "https://api.pexels.com/videos/search"
 
+# O User-Agent não é enfeite: sem ele o urllib se identifica como
+# "Python-urllib/3.x", que o WAF na frente da API recusa com 403 — o que é
+# fácil de confundir com chave inválida, já que credencial errada devolve 401.
+CABECALHOS = {
+    "User-Agent": "Mozilla/5.0 (compatible; projeto-canal/1.0)",
+    "Accept": "application/json",
+}
+
 # Paletas dos degradês de reserva, por clima. O fundo acompanha o que o bloco
 # está dizendo em vez de trocar de cor a esmo.
 CLIMAS = {
@@ -71,23 +79,29 @@ def _consultar(termo, orientacao):
     if orientacao:
         parametros["orientation"] = orientacao
     requisicao = urllib.request.Request(f"{BUSCA}?{urllib.parse.urlencode(parametros)}",
-                                        headers={"Authorization": CHAVE})
+                                        headers={**CABECALHOS, "Authorization": CHAVE})
     try:
         with urllib.request.urlopen(requisicao, timeout=30) as resposta:
             return json.load(resposta).get("videos", [])
     except urllib.error.HTTPError as erro:
-        # 401/403 é a chave sendo recusada, não falta de resultado. Insistir só
-        # gasta minutos de máquina para entregar vídeos sem filmagem nenhuma,
-        # então paramos na primeira ocorrência.
+        # Recusa de acesso não é falta de resultado. Insistir só gasta minutos
+        # de máquina para entregar vídeos sem filmagem nenhuma, então paramos
+        # na primeira ocorrência — e mostramos o corpo da resposta, que é o que
+        # distingue chave inválida de bloqueio de WAF.
         if erro.code in (401, 403):
+            try:
+                corpo = erro.read().decode("utf-8", "replace").strip()[:400]
+            except Exception:
+                corpo = "(sem corpo)"
+            diagnostico = ("chave inválida ou revogada" if erro.code == 401
+                           else "requisição bloqueada (WAF) ou chave sem permissão")
             raise SystemExit(
                 f"\n  {'!' * 66}\n"
-                f"  O Pexels RECUSOU a chave (HTTP {erro.code}).\n"
-                f"  O secret existe e chegou até aqui, mas o valor não é aceito.\n"
-                f"  Causas usuais: a chave foi copiada com espaço ou incompleta,\n"
-                f"  ou foi gerada uma chave nova (o que invalida a anterior).\n"
-                f"  Confira em pexels.com/api e salve de novo em\n"
-                f"  Settings -> Secrets and variables -> Actions -> PEXELS_API_KEY\n"
+                f"  O Pexels recusou o acesso (HTTP {erro.code}).\n"
+                f"  Leitura mais provável: {diagnostico}.\n"
+                f"  Chave recebida: {len(CHAVE)} caracteres.\n"
+                f"  Resposta do servidor:\n"
+                f"  {corpo or '(vazia)'}\n"
                 f"  {'!' * 66}"
             )
         if erro.code == 429:
