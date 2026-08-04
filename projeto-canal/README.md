@@ -25,6 +25,7 @@ ou de qualquer trabalho anterior. É um projeto novo, começando do zero.
 | [06-metricas.md](06-metricas.md) | O que medir e quando mudar de rota |
 | [07-riscos.md](07-riscos.md) | O que desmonetiza e como não tomar strike |
 | [08-automacao.md](08-automacao.md) | O que automatizar, o que não, e por quê |
+| [09-identidade.md](09-identidade.md) | Nome, @, bio, cores e voz do canal |
 
 O pipeline de produção em si fica em [`../automacao/`](../automacao/README.md).
 
