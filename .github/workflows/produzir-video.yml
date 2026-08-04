@@ -1,0 +1,71 @@
+name: Produzir vídeo
+
+# Roda o pipeline inteiro na nuvem. Você só precisa escrever o roteiro e dar
+# commit — nem precisa de computador, funciona do iPad pelo navegador.
+on:
+  workflow_dispatch:
+    inputs:
+      roteiro:
+        description: 'Roteiro a produzir (ex: roteiros/exemplo-nota-fiscal.md). Vazio = todos.'
+        required: false
+        default: ''
+  push:
+    paths:
+      - 'automacao/roteiros/**.md'
+
+jobs:
+  produzir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Instalar ffmpeg e fontes
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq ffmpeg
+          fi
+          sudo apt-get install -y -qq fonts-dejavu-core
+          ffmpeg -version | head -1
+
+      - name: Instalar dependências
+        run: pip install -r automacao/requirements.txt
+
+      - name: Produzir
+        working-directory: automacao
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: |
+          TRILHA=""
+          if [ -n "$(ls -A trilhas/*.mp3 2>/dev/null)" ]; then
+            TRILHA="--trilha $(ls trilhas/*.mp3 | head -1)"
+          fi
+          if [ -n "${{ github.event.inputs.roteiro }}" ]; then
+            python scripts/produzir.py "${{ github.event.inputs.roteiro }}" $TRILHA
+          else
+            python scripts/produzir.py --todos $TRILHA
+          fi
+
+      - name: Reunir os arquivos de entrega
+        working-directory: automacao
+        run: |
+          mkdir -p entrega
+          find saida -name 'video.mp4' | while read -r arquivo; do
+            pasta=$(basename "$(dirname "$arquivo")")
+            cp "$arquivo" "entrega/${pasta}.mp4"
+            cp "$(dirname "$arquivo")/publicar.txt" "entrega/${pasta}.txt" 2>/dev/null || true
+          done
+          ls -lh entrega
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: videos
+          path: automacao/entrega/
+          retention-days: 30

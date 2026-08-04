@@ -24,6 +24,9 @@ ou de qualquer trabalho anterior. É um projeto novo, começando do zero.
 | [05-plano-90-dias.md](05-plano-90-dias.md) | O que fazer em cada semana |
 | [06-metricas.md](06-metricas.md) | O que medir e quando mudar de rota |
 | [07-riscos.md](07-riscos.md) | O que desmonetiza e como não tomar strike |
+| [08-automacao.md](08-automacao.md) | O que automatizar, o que não, e por quê |
+
+O pipeline de produção em si fica em [`../automacao/`](../automacao/README.md).
 
 ## Regra número um
 
