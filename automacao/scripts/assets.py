@@ -114,6 +114,23 @@ def _consultar(termo, orientacao):
         return []
 
 
+def _simplificar(termo):
+    """Versões cada vez mais genéricas do termo de busca.
+
+    Termo longo e específico é ótimo quando acerta e péssimo quando erra: se
+    "person shielding laptop screen privacy office" não devolve nada novo, o
+    bloco caía direto no degradê. Encurtar antes de desistir recupera boa
+    parte desses casos.
+    """
+    palavras = termo.split()
+    tentativas = []
+    if len(palavras) > 3:
+        tentativas.append(" ".join(palavras[:3]))
+    if len(palavras) > 1:
+        tentativas.append(" ".join(palavras[:2]))
+    return tentativas
+
+
 def buscar_no_pexels(termo, orientacao, usados):
     """Melhor arquivo de vídeo para o termo, sem repetir o que já foi usado.
 
@@ -124,6 +141,15 @@ def buscar_no_pexels(termo, orientacao, usados):
     videos = _consultar(termo, orientacao)
     if len(videos) < 3:
         videos += _consultar(termo, None)
+
+    # A regra de não repetir clipe pode esgotar os resultados de um termo
+    # muito específico. Antes de cair no degradê, tenta o termo encurtado.
+    for alternativo in _simplificar(termo):
+        if any(a["link"] not in usados
+               for v in videos for a in v.get("video_files", [])):
+            break
+        print(f"    sem clipe novo; tentando '{alternativo}'")
+        videos += _consultar(alternativo, orientacao) or _consultar(alternativo, None)
 
     for video in videos:
         # Clipe curto demais fica repetindo em loop e denuncia o truque.

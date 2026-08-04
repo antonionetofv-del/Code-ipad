@@ -9,9 +9,12 @@ from pathlib import Path
 from PIL import Image
 
 from comum import (CACHE, FORMATOS, carregar_json, carregar_roteiro, duracao,
-                   ffmpeg, pasta_saida, rodar)
+                   ffmpeg, pasta_saida, rodar, tem_audio)
 
 VOLUME_TRILHA = 0.07
+
+# Volume do som ambiente vindo dos próprios clipes, antes da compressão.
+VOLUME_AMBIENTE = 0.34
 
 # Quanto o fundo é ampliado antes do corte, para sobrar margem de movimento.
 AMPLIACAO = 1.14
@@ -68,18 +71,34 @@ def movimento(indice, largura, altura):
 
 
 def normalizar(origem, indice, largura, altura, segundos, destino):
-    """Recorta o fundo para o canvas e a duração do bloco, com deriva de câmera."""
+    """Recorta o fundo para o canvas e a duração do bloco, com deriva de câmera.
+
+    O áudio do clipe é preservado. É ele que amarra o som ao que está na tela:
+    a rua do motorista, o teclado do escritório, a conversa da reunião. Som
+    genérico colado por cima nunca soa do mesmo lugar que a imagem.
+
+    Clipe mudo recebe silêncio, para todas as partes terem as mesmas faixas —
+    o concat exige isso.
+    """
     x, y = movimento(indice, largura, altura)
     alvo_l, alvo_a = int(largura * AMPLIACAO), int(altura * AMPLIACAO)
+
+    entradas = ["-stream_loop", "-1", "-i", str(origem)]
+    if tem_audio(origem):
+        mapa_audio = ["-map", "0:a:0"]
+    else:
+        entradas += ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo"]
+        mapa_audio = ["-map", "1:a:0"]
+
     rodar([
-        ffmpeg(), "-y",
-        # Repete o clipe se ele for mais curto que a narração do bloco.
-        "-stream_loop", "-1", "-i", str(origem),
+        ffmpeg(), "-y", *entradas,
         "-t", f"{segundos:.3f}",
         "-vf", (f"scale={alvo_l}:{alvo_a}:force_original_aspect_ratio=increase,"
                 f"crop={largura}:{altura}:x='{x}':y='{y}',{GRADE},fps=30,setsar=1"),
-        "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
-        "-pix_fmt", "yuv420p", str(destino),
+        "-map", "0:v:0", *mapa_audio,
+        "-c:v", "libx264", "-preset", "veryfast", "-crf", "22", "-pix_fmt", "yuv420p",
+        "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-ac", "2",
+        str(destino),
     ])
     return destino
 
@@ -103,13 +122,13 @@ def principal(caminho_roteiro, trilha=None):
     lista.write_text("".join(f"file 'parte_{i:02d}.mp4'\n" for i in range(len(blocos))),
                      encoding="utf-8")
     rodar([ffmpeg(), "-y", "-f", "concat", "-safe", "0", "-i", "lista.txt",
-           "-c", "copy", "../video_mudo.mp4"], cwd=partes)
+           "-c", "copy", "../video_base.mp4"], cwd=partes)
 
     legendas = destino / "legendas.ass"
     final = destino / "video.mp4"
     efeitos = destino / "efeitos.wav"
 
-    entradas = [ffmpeg(), "-y", "-i", str(destino / "video_mudo.mp4")]
+    entradas = [ffmpeg(), "-y", "-i", str(destino / "video_base.mp4")]
     filtros = []
     proxima = 1
 
@@ -124,7 +143,21 @@ def principal(caminho_roteiro, trilha=None):
     indice_narracao = proxima
     proxima += 1
 
-    audios = [f"[{indice_narracao}:a]"]
+    # A narração é usada duas vezes: como voz e como chave para abaixar o
+    # ambiente. Por isso ela é duplicada logo de saída.
+    filtros.append(f"[{indice_narracao}:a]asplit=2[voz][chave]")
+
+    # Ambiente do próprio clipe. O corte de graves tira ronco de câmera e
+    # vento; o sidechain abaixa o ambiente sozinho quando a voz entra, e
+    # devolve nas pausas. É isso que faz o som parecer gravado com a cena em
+    # vez de colado depois.
+    filtros.append(
+        f"[0:a]highpass=f=180,volume={VOLUME_AMBIENTE}[amb];"
+        f"[amb][chave]sidechaincompress="
+        f"threshold=0.02:ratio=12:attack=15:release=350:makeup=1[ambiente]"
+    )
+    audios = ["[voz]", "[ambiente]"]
+    print("  ambiente dos clipes, abaixado sob a narração")
     if trilha and Path(trilha).exists():
         entradas += ["-stream_loop", "-1", "-i", str(trilha)]
         filtros.append(f"[{proxima}:a]volume={VOLUME_TRILHA}[trilha]")

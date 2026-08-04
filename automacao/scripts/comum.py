@@ -58,6 +58,22 @@ def duracao(caminho):
     return int(h) * 3600 + int(m) * 60 + float(s)
 
 
+def tem_audio(caminho):
+    """Diz se o arquivo tem faixa de áudio.
+
+    Clipe de banco às vezes vem mudo. Sem essa checagem o grafo de filtros
+    referencia uma entrada que não existe e a montagem inteira quebra.
+    """
+    if ffprobe := shutil.which("ffprobe"):
+        proc = subprocess.run(
+            [ffprobe, "-v", "error", "-select_streams", "a", "-show_entries",
+             "stream=index", "-of", "csv=p=0", str(caminho)],
+            capture_output=True, text=True)
+        return bool(proc.stdout.strip())
+    proc = subprocess.run([ffmpeg(), "-i", str(caminho)], capture_output=True, text=True)
+    return "Audio:" in proc.stderr
+
+
 def slug(texto):
     """Transforma um título em nome de pasta seguro."""
     texto = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode()
