@@ -2,3 +2,5 @@ saida/
 cache_assets/
 entrega/
 trilhas/*.mp3
+__pycache__/
+*.pyc
