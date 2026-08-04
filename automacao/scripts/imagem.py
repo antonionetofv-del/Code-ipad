@@ -20,9 +20,11 @@ CHAVE = os.environ.get("GEMINI_API_KEY", "").strip()
 BASE = "https://generativelanguage.googleapis.com/v1beta/models"
 
 # Os apelidos são o que as pessoas usam; o id é o que a API aceita.
+# Confirmados como disponíveis em: GET /v1beta/models
 MODELOS = {
-    "lite": "gemini-3.1-flash-lite-image",   # "Nano Banana 2 Lite" — mais barato
-    "pro": "gemini-3-pro-image-preview",     # "Nano Banana Pro" — melhor qualidade
+    "lite": "gemini-3.1-flash-lite-image",  # "Nano Banana 2 Lite" — mais barato
+    "nb2": "gemini-3.1-flash-image",        # "Nano Banana 2"
+    "pro": "gemini-3-pro-image",            # "Nano Banana Pro" — melhor com texto
 }
 
 
@@ -67,8 +69,10 @@ def gerar(prompt, modelo="lite", proporcao=None, destino=Path("imagem.png")):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("prompt", help="descrição da imagem, em inglês (responde melhor)")
-    parser.add_argument("--modelo", default="lite", choices=list(MODELOS) + ["custom"],
-                        help="lite (barato) ou pro (melhor). Padrão: lite")
+    # Sem `choices`: aceita os apelidos e também um id cru da API, para não
+    # travar quando o Google publicar um modelo novo.
+    parser.add_argument("--modelo", default="lite",
+                        help=f"apelido ({', '.join(MODELOS)}) ou id da API. Padrão: lite")
     parser.add_argument("--proporcao", help="ex: 1:1, 16:9, 9:16")
     parser.add_argument("--saida", default="imagem.png")
     args = parser.parse_args()
