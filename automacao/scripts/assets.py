@@ -131,6 +131,22 @@ def _simplificar(termo):
     return tentativas
 
 
+def _escolher(videos, usados):
+    """Primeiro arquivo aproveitável da lista, ou None."""
+    for video in videos:
+        # Clipe curto demais fica repetindo em loop e denuncia o truque.
+        if (video.get("duration") or 0) < 5:
+            continue
+        # Prefere o menor arquivo que ainda tenha resolução suficiente.
+        arquivos = sorted((a for a in video.get("video_files", [])
+                           if (a.get("width") or 0) >= 1080),
+                          key=lambda a: a["width"])
+        if arquivos and arquivos[0]["link"] not in usados:
+            usados.add(arquivos[0]["link"])
+            return arquivos[0]["link"]
+    return None
+
+
 def buscar_no_pexels(termo, orientacao, usados):
     """Melhor arquivo de vídeo para o termo, sem repetir o que já foi usado.
 
@@ -142,25 +158,26 @@ def buscar_no_pexels(termo, orientacao, usados):
     if len(videos) < 3:
         videos += _consultar(termo, None)
 
-    # A regra de não repetir clipe pode esgotar os resultados de um termo
-    # muito específico. Antes de cair no degradê, tenta o termo encurtado.
-    for alternativo in _simplificar(termo):
-        if any(a["link"] not in usados
-               for v in videos for a in v.get("video_files", [])):
-            break
-        print(f"    sem clipe novo; tentando '{alternativo}'")
-        videos += _consultar(alternativo, orientacao) or _consultar(alternativo, None)
+    link = _escolher(videos, usados)
+    if link:
+        return link
 
-    for video in videos:
-        # Clipe curto demais fica repetindo em loop e denuncia o truque.
-        if (video.get("duration") or 0) < 5:
-            continue
-        # Prefere o menor arquivo que ainda tenha resolução suficiente.
-        arquivos = sorted((a for a in video["video_files"] if (a.get("width") or 0) >= 1080),
-                          key=lambda a: a["width"])
-        if arquivos and arquivos[0]["link"] not in usados:
-            usados.add(arquivos[0]["link"])
-            return arquivos[0]["link"]
+    # A regra de não repetir clipe esgota os resultados de um termo muito
+    # específico. Antes de cair no degradê, tenta o termo encurtado.
+    #
+    # A decisão de tentar precisa vir de _escolher, e não de uma checagem
+    # própria: a primeira versão perguntava apenas se havia algum arquivo
+    # não usado, mas a seleção também exige 1080 de largura e 5 segundos.
+    # Vídeo com só arquivos pequenos passava na checagem e falhava na
+    # seleção, e o fallback nunca chegava a rodar.
+    for alternativo in _simplificar(termo):
+        print(f"    sem clipe novo; tentando '{alternativo}'")
+        alternativos = _consultar(alternativo, orientacao)
+        if len(alternativos) < 3:
+            alternativos += _consultar(alternativo, None)
+        link = _escolher(alternativos, usados)
+        if link:
+            return link
     return None
 
 
