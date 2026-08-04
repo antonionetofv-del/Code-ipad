@@ -158,6 +158,12 @@ canvas, então os valores são pixels reais.
 **Curtos abaixo de 61 segundos disparam aviso.** O TikTok Creator Rewards só
 considera vídeos acima de 1 minuto.
 
+**As chamadas ao Pexels mandam um `User-Agent` de verdade.** Sem ele o urllib
+se identifica como `Python-urllib/3.x` e o WAF na frente da API recusa tudo com
+**403**. É uma pegadinha cruel porque 403 parece chave inválida — mas chave
+inválida devolve **401**. Se um dia voltar a dar 403 com a chave certa, olhe o
+cabeçalho antes de trocar a credencial.
+
 ## Desempenho medido
 
 Primeira execução real no GitHub Actions, 7 vídeos verticais:
