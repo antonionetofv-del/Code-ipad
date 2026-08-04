@@ -123,6 +123,24 @@ canvas, então os valores são pixels reais.
 **Curtos abaixo de 61 segundos disparam aviso.** O TikTok Creator Rewards só
 considera vídeos acima de 1 minuto.
 
+## Desempenho medido
+
+Primeira execução real no GitHub Actions, 7 vídeos verticais:
+
+| Etapa | Tempo |
+|---|---|
+| Instalar ffmpeg e fontes | 50s |
+| Instalar dependências | 6s |
+| Produzir os 7 vídeos | 8min51s |
+| **Total** | **~10 min** |
+
+Isso dá cerca de 76 segundos de máquina por vídeo — bem dentro dos 2.000
+minutos mensais gratuitos.
+
+O grosso desse tempo é a geração dos degradês de reserva, que usam `zoompan` em
+1080x1920 e é caro. **Com a chave do Pexels configurada esse passo some**, e a
+produção fica mais rápida além de ficar mais bonita.
+
 ## Limites conhecidos
 
 - **Publicação é manual.** A API do TikTok exige aprovação comercial; a do
