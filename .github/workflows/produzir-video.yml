@@ -38,6 +38,12 @@ jobs:
       - name: Instalar dependências
         run: pip install -r automacao/requirements.txt
 
+      # Falha em segundos se faltar uma dependência, em vez de descobrir isso
+      # depois de minutos de produção.
+      - name: Conferir importações
+        working-directory: automacao/scripts
+        run: python -c "import produzir, narrar, assets, personagem, sons, montar, cortar"
+
       - name: Produzir
         working-directory: automacao
         env:
