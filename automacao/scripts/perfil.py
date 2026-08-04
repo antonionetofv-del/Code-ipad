@@ -65,20 +65,65 @@ def desenhar(lado=LADO):
     return img
 
 
+def balao(lado=LADO):
+    """Versão balão de fala.
+
+    A ideia é a silhueta, não a letra. A 40 pixels ninguém lê um monograma
+    antes de reconhecer a forma — e um quadrado com letras tem a mesma
+    silhueta de todo outro canal. O balão diz de cara o que o canal promete:
+    inteligência artificial que fala com você, não que te explica manual.
+    """
+    img = Image.new("RGB", (lado, lado), (0, 0, 0))
+    d = ImageDraw.Draw(img)
+
+    # Fundo azul com vinheta suave.
+    d.rectangle([0, 0, lado, lado], fill=(13, 34, 92))
+    brilho = Image.new("RGB", (lado, lado), (13, 34, 92))
+    bd = ImageDraw.Draw(brilho)
+    bd.ellipse([-lado * 0.1, -lado * 0.15, lado * 1.1, lado * 0.95], fill=(28, 68, 160))
+    img = Image.blend(img, brilho.filter(ImageFilter.GaussianBlur(lado // 12)), 0.85)
+    d = ImageDraw.Draw(img)
+
+    # Balão amarelo: corpo generoso e rabicho grosso, para a forma sobreviver
+    # à redução. Rabicho fino some antes dos 40 pixels.
+    #
+    # As medidas respeitam o recorte circular. Num círculo de raio 0,5 a
+    # largura disponível em y=0,15 é apenas 0,5 ± 0,33 — por isso o corpo
+    # começa em 0,16 e não colado na borda: senão os cantos de cima entram
+    # na parte que a plataforma corta fora.
+    esq, dir_ = lado * 0.16, lado * 0.84
+    topo, base = lado * 0.15, lado * 0.695
+    d.rounded_rectangle([esq, topo, dir_, base], radius=lado * 0.19, fill=AMARELO)
+    # Rabicho: largo na saída e com a ponta bem dentro do círculo.
+    d.polygon([(lado * 0.34, base - lado * 0.04), (lado * 0.58, base - lado * 0.04),
+               (lado * 0.37, lado * 0.85)], fill=AMARELO)
+    corpo = [esq, topo, dir_, base]
+
+    # "IA" em azul dentro do balão.
+    fonte = ImageFont.truetype(FONTE, int(lado * 0.40))
+    caixa = d.textbbox((0, 0), "IA", font=fonte)
+    largura, altura = caixa[2] - caixa[0], caixa[3] - caixa[1]
+    centro_y = (corpo[1] + corpo[3]) / 2
+    d.text(((lado - largura) / 2 - caixa[0], centro_y - altura / 2 - caixa[1]),
+           "IA", font=fonte, fill=(13, 34, 92))
+    return img
+
+
+def salvar(img, destino, prefixo):
+    img.save(destino / f"{prefixo}-1024.png")
+    # Prova real: as plataformas recortam em círculo e exibem pequeno.
+    for tamanho in (400, 98, 40):
+        img.resize((tamanho, tamanho), Image.LANCZOS).save(
+            destino / f"{prefixo}-{tamanho}.png")
+
+
 def principal():
     destino = RAIZ.parent / "projeto-canal" / "marca"
     destino.mkdir(parents=True, exist_ok=True)
-
-    img = desenhar()
-    caminho = destino / "perfil-1024.png"
-    img.save(caminho)
-
-    # Prova real: as plataformas recortam em círculo e exibem pequeno.
-    for tamanho in (400, 98, 40):
-        img.resize((tamanho, tamanho), Image.LANCZOS).save(destino / f"perfil-{tamanho}.png")
-
+    salvar(desenhar(), destino, "perfil")
+    salvar(balao(), destino, "perfil-balao")
     print(f"Foto de perfil em {destino}")
-    return caminho
+    return destino
 
 
 if __name__ == "__main__":

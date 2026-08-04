@@ -96,6 +96,23 @@ Não use "fala galera, tudo bem?" — custa 40% da audiência antes do assunto.
 **Abertura:** a dor, direto, na primeira frase.
 **Fechamento:** sempre uma pergunta específica que gere comentário.
 
+### Versão balão de fala — recomendada
+
+`marca/perfil-balao-1024.png`
+
+A silhueta é o argumento. A 40 pixels ninguém lê um monograma antes de
+reconhecer a **forma** — e quadrado com letras tem a mesma silhueta de todo
+outro canal. O balão se identifica de longe e diz o que o canal promete:
+inteligência artificial que fala com você, não que te entrega manual.
+
+Amarelo dominante também vence o feed: o monograma azul vira uma bolinha
+escura no meio de dezenas de outras.
+
+As medidas respeitam o recorte circular. Num círculo de raio 0,5 a largura
+disponível em y=0,15 é só 0,5 ± 0,33 — por isso o corpo do balão começa em
+0,16 e não colado na borda, e a ponta do rabicho para em 0,85. Sem isso, a
+plataforma corta os cantos de cima e a ponta.
+
 ### Opções geradas na Canva
 
 Quatro alternativas de logo, todas na conta da Canva (apague as que não usar):
