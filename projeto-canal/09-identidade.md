@@ -52,10 +52,24 @@ Vídeo novo todo dia.
 | Cor de destaque | Amarelo `#FFC700` — só para números e alertas |
 | Fonte de título | Pesada e condensada (Anton, Archivo Black) |
 | Fonte de legenda | DejaVu Sans Bold, branca com contorno preto |
-| Foto de perfil | As letras **IA** em branco sobre o azul, bem grandes |
+| Foto de perfil | Monograma **IA** branco sobre azul, com barra amarela |
 
 A foto de perfil precisa ser legível em 40 pixels. Duas letras funcionam;
 logotipo com detalhe, não.
+
+### Arquivos prontos
+
+Em [`marca/`](marca/): `perfil-1024.png` para subir, mais as reduções de 400,
+98 e 40 pixels — que existem para conferência, não para upload. Suba sempre a
+de 1024; a plataforma reduz melhor que qualquer redimensionamento manual.
+
+Para regerar depois de mexer nas cores: `python automacao/scripts/perfil.py`.
+
+**Por que monograma e não ilustração.** As duas plataformas exibem o perfil em
+círculo, com cerca de 40 pixels na timeline. Nesse tamanho qualquer ilustração
+vira um borrão colorido — mascote, cena, rosto, tanto faz. O que sobrevive é
+contraste alto e no máximo duas formas. É por isso que quase toda marca grande
+usa monograma no avatar e guarda a ilustração para capa e thumbnail.
 
 ## Padrão de thumbnail (só para vídeo longo)
 
