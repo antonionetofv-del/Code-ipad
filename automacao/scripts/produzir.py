@@ -25,16 +25,50 @@ def produzir(caminho, trilha=None):
 
 
 def escrever_metadados(caminho):
-    """Gera título, descrição e hashtags prontos para colar na plataforma."""
+    """Gera os textos de publicação, separados por plataforma.
+
+    O arquivo de vídeo é o mesmo nos dois lugares (1080x1920), mas o texto não:
+    o Shorts usa título curto + descrição longa e indexa por busca, enquanto o
+    TikTok usa uma legenda única e curta, onde as hashtags fazem o trabalho.
+    """
     meta, blocos = carregar_roteiro(caminho)
     destino = pasta_saida(meta)
-    texto = "\n".join([
-        meta["titulo"],
-        "",
-        meta.get("descricao", " ".join(b["texto"] for b in blocos[:2])),
-        "",
-        meta.get("hashtags", ""),
-    ])
+
+    descricao = meta.get("descricao") or " ".join(b["texto"] for b in blocos[:2])
+    hashtags = meta.get("hashtags", "")
+    titulo_yt = meta.get("titulo_youtube", meta["titulo"])
+    legenda_tt = meta.get("legenda_tiktok", meta["titulo"])
+    cta = meta.get("cta", "")
+
+    if len(titulo_yt) > 100:
+        print(f"    AVISO: título do YouTube tem {len(titulo_yt)} caracteres (limite 100)")
+
+    texto = f"""=== YOUTUBE SHORTS ===
+
+TÍTULO ({len(titulo_yt)}/100)
+{titulo_yt}
+
+DESCRIÇÃO
+{descricao}
+
+{cta}
+
+{hashtags} #Shorts
+
+
+=== TIKTOK ===
+
+LEGENDA ({len(legenda_tt)} caracteres — o ideal fica abaixo de 150)
+{legenda_tt}
+
+{hashtags}
+
+
+=== LEMBRETES ===
+- Conta do TikTok precisa ser PESSOAL para entrar no Creator Rewards
+- Publique o mesmo arquivo nos dois; não republique com marca d'água
+- Responda os comentários nas 2 primeiras horas
+"""
     (destino / "publicar.txt").write_text(texto, encoding="utf-8")
     print(f"Metadados: {destino / 'publicar.txt'}")
 
