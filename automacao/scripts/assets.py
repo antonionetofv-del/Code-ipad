@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 import re
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -74,6 +75,26 @@ def _consultar(termo, orientacao):
     try:
         with urllib.request.urlopen(requisicao, timeout=30) as resposta:
             return json.load(resposta).get("videos", [])
+    except urllib.error.HTTPError as erro:
+        # 401/403 é a chave sendo recusada, não falta de resultado. Insistir só
+        # gasta minutos de máquina para entregar vídeos sem filmagem nenhuma,
+        # então paramos na primeira ocorrência.
+        if erro.code in (401, 403):
+            raise SystemExit(
+                f"\n  {'!' * 66}\n"
+                f"  O Pexels RECUSOU a chave (HTTP {erro.code}).\n"
+                f"  O secret existe e chegou até aqui, mas o valor não é aceito.\n"
+                f"  Causas usuais: a chave foi copiada com espaço ou incompleta,\n"
+                f"  ou foi gerada uma chave nova (o que invalida a anterior).\n"
+                f"  Confira em pexels.com/api e salve de novo em\n"
+                f"  Settings -> Secrets and variables -> Actions -> PEXELS_API_KEY\n"
+                f"  {'!' * 66}"
+            )
+        if erro.code == 429:
+            print("    Pexels: limite de requisições atingido; usando degradê")
+        else:
+            print(f"    Pexels falhou (HTTP {erro.code})")
+        return []
     except Exception as erro:
         print(f"    Pexels falhou ({erro})")
         return []
