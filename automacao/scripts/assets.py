@@ -10,6 +10,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -20,8 +21,48 @@ from comum import (CACHE, FORMATOS, carregar_json, carregar_roteiro, ffmpeg,
 CHAVE = os.environ.get("PEXELS_API_KEY", "").strip()
 BUSCA = "https://api.pexels.com/videos/search"
 
-# Cores dos degradês de reserva, usadas quando não há banco de imagens.
-PALETA = ["0f2b75", "1a1a2e", "2d1b4e", "0d3b2e", "3b1f1f", "16324f"]
+# Paletas dos degradês de reserva, por clima. O fundo acompanha o que o bloco
+# está dizendo em vez de trocar de cor a esmo.
+CLIMAS = {
+    "alerta": ["4a1220", "3b1f1f", "4d1a0d"],     # aviso, erro, risco
+    "positivo": ["0d3b2e", "134d3a", "16404a"],   # resolvido, economia, ganho
+    "destaque": ["2d1b4e", "3a2260", "241a52"],   # passo a passo, instrução
+    "neutro": ["0f2b75", "16324f", "1a1a2e"],     # explicação, contexto
+}
+
+# Palavras que denunciam o clima do bloco. A ordem importa: o primeiro clima
+# que casar vence, e "alerta" vem antes porque é o mais específico.
+#
+# O sufixo "*" marca radical (casa qualquer terminação); sem ele a pista só
+# casa como palavra inteira. Isso não é preciosismo: "mente" como substring
+# casaria dentro de "exatamente", "realmente" e "novamente", e pintaria de
+# vermelho metade dos blocos explicativos.
+PISTAS = [
+    ("alerta", ("nunca", "cuidado", "erro", "erros", "mente", "golpe", "golpes",
+                "risco", "riscos", "perigo", "desconfie", "problema",
+                "confidencial", "senha", "senhas", "perdeu", "invent*")),
+    ("positivo", ("pronto", "pronta", "economiz*", "resolvid*", "ganha", "sobra",
+                  "organizad*", "funciona", "volta")),
+    ("destaque", ("passo", "primeira", "segunda", "terceira", "quarta", "quinta",
+                  "peça", "escreve", "manda", "liste")),
+]
+
+_REGEX = {
+    clima: re.compile(
+        "|".join(rf"\b{re.escape(p[:-1])}\w*" if p.endswith("*") else rf"\b{re.escape(p)}\b"
+                 for p in pistas)
+    )
+    for clima, pistas in PISTAS
+}
+
+
+def detectar_clima(texto):
+    """Escolhe o clima do bloco a partir do que o texto diz."""
+    minusculo = texto.lower()
+    for clima, _ in PISTAS:
+        if _REGEX[clima].search(minusculo):
+            return clima
+    return "neutro"
 
 
 def buscar_no_pexels(termo, orientacao):
@@ -56,9 +97,10 @@ def baixar(url, destino):
     return destino
 
 
-def degrade(indice, largura, altura, segundos, destino):
-    """Gera um fundo em degradê com leve movimento, sem depender de rede."""
-    cor = PALETA[indice % len(PALETA)]
+def degrade(indice, clima, largura, altura, segundos, destino):
+    """Gera um fundo em degradê no clima do bloco, sem depender de rede."""
+    paleta = CLIMAS[clima]
+    cor = paleta[indice % len(paleta)]
     rodar([
         ffmpeg(), "-y",
         "-f", "lavfi", "-i", f"color=c=0x{cor}:s={largura}x{altura}:d={segundos:.2f}:r=30",
@@ -89,7 +131,9 @@ def principal(caminho_roteiro):
         print("PEXELS_API_KEY não definida — usando degradês gerados localmente.")
 
     for indice, bloco in enumerate(blocos):
-        print(f"  bloco {indice:02d}")
+        clima = bloco.get("clima") or detectar_clima(bloco["texto"])
+        bloco["clima"] = clima
+        print(f"  bloco {indice:02d}  [{clima}]")
         saida = fundos / f"fundo_{indice:02d}.mp4"
 
         if bloco.get("arquivo"):
@@ -108,7 +152,7 @@ def principal(caminho_roteiro):
             nome = hashlib.sha1(url.encode()).hexdigest()[:16] + ".mp4"
             bloco["fundo"] = str(baixar(url, CACHE / nome).resolve())
         else:
-            bloco["fundo"] = str(degrade(indice, largura, altura,
+            bloco["fundo"] = str(degrade(indice, clima, largura, altura,
                                          bloco["duracao"] + 0.5, saida).resolve())
 
     salvar_json(destino / "blocos.json", dados)

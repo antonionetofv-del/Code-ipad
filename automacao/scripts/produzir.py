@@ -12,6 +12,8 @@ from pathlib import Path
 import assets
 import montar
 import narrar
+import personagem
+import sons
 from comum import RAIZ, carregar_roteiro, pasta_saida
 
 
@@ -20,6 +22,10 @@ def produzir(caminho, trilha=None):
     asyncio.run(narrar.principal(caminho))
     print("\n-- fundos --")
     assets.principal(caminho)
+    print("\n-- personagem --")
+    personagem.principal(caminho)
+    print("\n-- efeitos sonoros --")
+    sons.principal(caminho)
     print("\n-- montagem --")
     return montar.principal(caminho, trilha)
 

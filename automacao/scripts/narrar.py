@@ -37,6 +37,10 @@ Style: Legenda,DejaVu Sans,{corpo},&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,-
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
 
+# Amarelo da identidade (#FFC700). No ASS a cor vai em BGR, não em RGB.
+DESTAQUE = r"{\c&H00C7FF&}"
+NORMAL = r"{\c&HFFFFFF&}"
+
 
 async def sintetizar(texto, voz, ritmo, destino):
     """Sintetiza um bloco e devolve as marcações de palavra (em segundos)."""
@@ -78,15 +82,23 @@ def montar_ass(palavras, formato, destino):
     )]
 
     for indice in range(0, len(palavras), PALAVRAS_POR_LEGENDA):
-        grupo = palavras[indice:indice + PALAVRAS_POR_LEGENDA]
-        texto = " ".join(p["texto"] for p in grupo).strip()
-        if not texto:
+        grupo = [p for p in palavras[indice:indice + PALAVRAS_POR_LEGENDA] if p["texto"].strip()]
+        if not grupo:
             continue
-        # O respiro de 10ms evita dois cues ativos no mesmo quadro — quando
-        # isso acontece o libass empilha um em cima do outro.
-        fim = max(grupo[-1]["fim"] - 0.01, grupo[0]["inicio"] + 0.05)
-        linhas.append(f"Dialogue: 0,{marcador(grupo[0]['inicio'])},{marcador(fim)},"
-                      f"Legenda,,0,0,0,,{texto.upper()}")
+
+        # Uma linha por palavra: o grupo inteiro fica na tela e só a palavra
+        # que está sendo falada acende em amarelo. É o que dá a sensação de
+        # legenda viva, e sai de graça porque já temos o tempo de cada palavra.
+        for posicao, palavra in enumerate(grupo):
+            texto = " ".join(
+                (DESTAQUE + p["texto"].upper() + NORMAL) if i == posicao else p["texto"].upper()
+                for i, p in enumerate(grupo)
+            )
+            # O respiro de 10ms evita dois cues ativos no mesmo quadro — quando
+            # isso acontece o libass empilha um em cima do outro.
+            fim = max(palavra["fim"] - 0.01, palavra["inicio"] + 0.04)
+            linhas.append(f"Dialogue: 0,{marcador(palavra['inicio'])},{marcador(fim)},"
+                          f"Legenda,,0,0,0,,{NORMAL}{texto}")
 
     Path(destino).write_text("\n".join(linhas) + "\n", encoding="utf-8")
 
@@ -122,7 +134,9 @@ async def principal(caminho_roteiro):
            "-c", "copy", "../narracao.mp3"], cwd=audios)
 
     montar_ass(todas_palavras, meta["formato"], destino / "legendas.ass")
-    salvar_json(destino / "blocos.json", {"meta": meta, "blocos": blocos})
+    # As marcações de palavra também alimentam o lip-sync do personagem.
+    salvar_json(destino / "blocos.json",
+                {"meta": meta, "blocos": blocos, "palavras": todas_palavras})
 
     print(f"\nNarração: {deslocamento:.1f}s no total")
     if meta["formato"] == "vertical" and deslocamento < 61:

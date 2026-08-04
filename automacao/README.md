@@ -78,11 +78,39 @@ São 15 vozes neurais. `AntonioNeural` (masculina) e `FranciscaNeural`
 | Script | O que faz |
 |---|---|
 | `produzir.py` | Roda tudo. É o único que você precisa chamar. |
-| `narrar.py` | Roteiro → narração `.mp3` + legenda `.ass` sincronizada |
-| `assets.py` | Baixa os fundos no Pexels (ou gera degradê) |
-| `montar.py` | Fundos + narração + legenda + trilha → `video.mp4` |
+| `narrar.py` | Roteiro → narração `.mp3` + legenda `.ass` animada |
+| `assets.py` | Baixa os fundos no Pexels (ou gera degradê no clima do bloco) |
+| `personagem.py` | Desenha o apresentador e sincroniza a boca com a fala |
+| `sons.py` | Sintetiza os efeitos e monta a trilha de transições |
+| `montar.py` | Junta tudo em `video.mp4` |
 | `cortar.py` | Recorta um vídeo longo em verticais com fundo desfocado |
 | `comum.py` | Leitura do roteiro e utilidades compartilhadas |
+
+## As quatro camadas do vídeo
+
+**1. Personagem com lip-sync.** O apresentador é desenhado por código (Pillow),
+não baixado de serviço nenhum: roda igual em toda execução, não depende de
+conta, não custa por vídeo e não some se um serviço externo mudar de política.
+A boca sincroniza com a fala usando as marcações de palavra do Edge TTS, com
+piscada automática a cada ~3,4s. Para mudar a aparência, edite `desenhar()`
+em `personagem.py`.
+
+**2. Legenda viva.** O grupo de 3 palavras fica na tela e só a palavra sendo
+falada acende em amarelo. Sai de graça porque o tempo de cada palavra já é
+conhecido.
+
+**3. Fundo no clima do bloco.** Sem chave do Pexels, o degradê muda de família
+de cor conforme o que o texto diz: vermelho em alerta, verde em resultado
+positivo, roxo em instrução, azul em explicação. A detecção é por palavra
+inteira — `assets.py` tem a tabela de pistas e aceita `[clima: alerta]` no
+roteiro para forçar um valor.
+
+**4. Movimento e som.** Cada bloco tem deriva lenta de câmera (direção alternada
+para o vídeo não parecer deslizar sempre para o mesmo lado), o personagem
+respira, e cada corte leva um whoosh sintetizado pelo próprio ffmpeg — sem
+arquivo baixado, sem dúvida de licença. O áudio final é normalizado em
+**-14 LUFS**, que é o alvo do TikTok e do YouTube: sem isso cada vídeo sobe num
+nível diferente e o canal soa irregular.
 
 ### Recortar um vídeo longo
 
