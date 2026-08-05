@@ -54,6 +54,11 @@ Os roteiros já produzidos ficam em `roteiros-semana1/`. O `--todos` só varre
 - `[busca: ...]` é o termo procurado no Pexels — **escreva em inglês**, o acervo
   responde muito melhor
 - `[arquivo: ...]` usa um vídeo seu (captura de tela, por exemplo)
+- **Varie o termo do bloco de CTA entre os roteiros.** Todos terminam com
+  "comenta aí", e repetir `person reading comments on smartphone` em sete
+  roteiros esgota os resultados: o último bloco é justamente o que mais cai no
+  degradê. Use ângulos diferentes — pessoa rindo do celular, grupo de amigos
+  vendo a tela, mão digitando resposta
 - Sem chave do Pexels não há filmagem: o pipeline cai para degradê e continua rodando
 
 ### Campos do cabeçalho
@@ -62,7 +67,7 @@ Os roteiros já produzidos ficam em `roteiros-semana1/`. O `--todos` só varre
 |---|---|---|
 | `titulo` | nome do arquivo | Vira o nome da pasta de saída |
 | `voz` | `pt-BR-AntonioNeural` | Escolha uma e nunca mais mude |
-| `ritmo` | `+0%` | `-5%` deixa mais didático, `+10%` mais dinâmico |
+| `ritmo` | `+8%` | Ritmo aprovado do canal. `+12%` acelera mais, `+5%` acalma |
 | `formato` | `vertical` | `vertical`, `horizontal` ou `quadrado` |
 | `hashtags` | — | Copiadas para `publicar.txt` |
 | `descricao` | 2 primeiros blocos | Copiada para `publicar.txt` |

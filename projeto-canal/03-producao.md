@@ -91,6 +91,8 @@ Não pule.
 |---|---|
 | Formato | 1080 × 1920, vertical |
 | Duração | **61 a 90 segundos** |
+| Ritmo da narração | `+8%`, com o silêncio das pontas aparado |
+| Corte | Um bloco novo a cada 6 a 7 segundos |
 | Legenda | Queimada no vídeo, sempre |
 | Gancho | Primeiros 2 segundos definem tudo |
 | Corte | Troca de imagem a cada 2–3 segundos |

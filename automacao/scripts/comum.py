@@ -110,7 +110,9 @@ def carregar_roteiro(caminho):
     meta.setdefault("titulo", Path(caminho).stem)
     meta.setdefault("voz", VOZ_PADRAO)
     meta.setdefault("formato", "vertical")
-    meta.setdefault("ritmo", "+0%")
+    # +8% é o ritmo aprovado do canal. A locução padrão do TTS soa arrastada
+    # para vídeo curto, e o roteiro que nasce sem `ritmo` deve já sair certo.
+    meta.setdefault("ritmo", "+8%")
 
     if meta["formato"] not in FORMATOS:
         sys.exit(f"Formato '{meta['formato']}' inválido. Use: {', '.join(FORMATOS)}")
