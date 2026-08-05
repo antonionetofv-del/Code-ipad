@@ -3,7 +3,7 @@ titulo: IA para professor corrigir e planejar aula
 titulo_youtube: "IA para professor: 3 usos que devolvem o seu domingo"
 legenda_tiktok: "Professor corrige no domingo. Isso aqui devolve boa parte desse tempo."
 voz: pt-BR-AntonioNeural
-ritmo: -3%
+ritmo: +8%
 formato: vertical
 hashtags: "#professor #educacao #ia #dicas #trabalho #inteligenciaartificial"
 descricao: "Professor leva trabalho para casa todo fim de semana. Nesse vídeo eu mostro três usos concretos: gerar variações de prova, transformar conteúdo em plano de aula e escrever devolutiva para os pais — sem terceirizar a nota, que continua sendo do professor."
@@ -36,6 +36,12 @@ Um aviso: não peça pra ela dar a nota. Correção com critério é trabalho se
 
 [busca: teacher relaxed at home with coffee weekend]
 Use pra tirar o trabalho burocrático, não pra tirar o pedagógico. Aí sobra domingo de verdade.
+
+[busca: teacher helping student with difficulty in classroom]
+Quarto uso, e esse muda vida: adaptar material. Mande a atividade e peça uma versão para o aluno que ainda não acompanha.
+
+[busca: teacher smiling with students in classroom]
+Não é facilitar. É dar o mesmo conteúdo num degrau que ele consiga subir hoje.
 
 [busca: person reading comments on smartphone]
 Você dá aula de quê? Comenta que eu faço um vídeo da sua matéria.

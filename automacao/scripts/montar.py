@@ -65,8 +65,10 @@ def movimento(indice, largura, altura):
     folga_y = (altura * AMPLIACAO - altura) / 2
     # Quatro combinações de direção, revezadas conforme o índice do bloco.
     sx, sy = [(1, 1), (-1, 1), (1, -1), (-1, -1)][indice % 4]
-    x = f"{folga_x:.1f}+{sx * folga_x * 0.75:.1f}*sin(t*0.22)"
-    y = f"{folga_y:.1f}+{sy * folga_y * 0.75:.1f}*sin(t*0.17)"
+    # A deriva acompanha o ritmo da fala: com narração mais rápida e pausas
+    # aparadas, um movimento lento demais faz o corte parecer parado.
+    x = f"{folga_x:.1f}+{sx * folga_x * 0.75:.1f}*sin(t*0.34)"
+    y = f"{folga_y:.1f}+{sy * folga_y * 0.75:.1f}*sin(t*0.26)"
     return x, y
 
 

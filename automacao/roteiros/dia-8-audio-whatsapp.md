@@ -3,7 +3,7 @@ titulo: Audio de 8 minutos no WhatsApp vira 3 linhas
 titulo_youtube: "Áudio de 8 minutos no WhatsApp vira 3 linhas de texto"
 legenda_tiktok: "Aquele áudio de 8 minutos que você não aguenta ouvir? Resolve assim."
 voz: pt-BR-AntonioNeural
-ritmo: -3%
+ritmo: +8%
 formato: vertical
 hashtags: "#whatsapp #ia #produtividade #dicas #trabalho #inteligenciaartificial"
 descricao: "Todo mundo tem aquela pessoa que manda áudio de oito minutos. Nesse vídeo eu mostro como transformar o áudio em texto resumido em segundos, e o cuidado que você precisa ter antes de fazer isso com conversa dos outros."
@@ -33,6 +33,12 @@ E apague o arquivo do histórico depois. Leva dois toques e evita que a conversa
 
 [busca: relaxed person checking phone smiling]
 Oito minutos de áudio viram três linhas. E você responde na hora, em vez de deixar a pessoa esperando o dia inteiro.
+
+[busca: person listening to audio with headphones at desk]
+Funciona com áudio em outra língua também. Ela transcreve e já entrega traduzido, o que resolve fornecedor de fora.
+
+[busca: hands holding smartphone with long audio file]
+Áudio muito longo às vezes não vai de uma vez. Aí você corta em dois no próprio celular e manda em duas partes.
 
 [busca: friends laughing looking at phone together]
 Manda esse vídeo pra aquela pessoa que só manda áudio. Com carinho, mas manda.

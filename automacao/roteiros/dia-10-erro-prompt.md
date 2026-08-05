@@ -3,7 +3,7 @@ titulo: O erro que faz a IA te dar resposta generica
 titulo_youtube: "O erro que faz a IA te dar resposta genérica"
 legenda_tiktok: "Se a resposta vem sem graça, o problema não é ela. É a pergunta."
 voz: pt-BR-AntonioNeural
-ritmo: -3%
+ritmo: +8%
 formato: vertical
 hashtags: "#ia #prompt #dicas #produtividade #chatgpt #inteligenciaartificial"
 descricao: "Pedido vago devolve resposta vaga. Nesse vídeo eu mostro os três dados que faltam na maioria dos pedidos e o hábito que muda tudo: pedir para a inteligência artificial perguntar antes de responder."
@@ -33,6 +33,15 @@ Ela vai perguntar três ou quatro coisas. Você responde. E a resposta que vem d
 
 [busca: satisfied woman reading document at desk]
 Leva vinte segundos a mais e economiza cinco reescritas. É a troca mais fácil que existe.
+
+[busca: person showing example document on screen]
+Tem um atalho que vale por tudo: mande um exemplo do que você quer. Um texto antigo seu que deu certo.
+
+[busca: woman comparing options on laptop screen]
+E peça três versões diferentes em vez de uma. Escolher entre três leva dez segundos e sai melhor que reescrever uma.
+
+[busca: person giving feedback pointing at screen]
+E se a resposta vier quase boa, não recomece do zero. Diga o que ficou ruim e peça só aquele trecho de novo.
 
 [busca: person engaging with comments on phone]
 Testa hoje e me conta se melhorou. Comenta aí embaixo que eu quero saber.

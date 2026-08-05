@@ -3,7 +3,7 @@ titulo: 5 coisas que a IA nao deve fazer por voce
 titulo_youtube: "5 coisas que a inteligência artificial NÃO deve fazer por você"
 legenda_tiktok: "Canal de IA falando o que a IA não deve fazer. O 4 é polêmico."
 voz: pt-BR-AntonioNeural
-ritmo: -3%
+ritmo: +8%
 formato: vertical
 hashtags: "#ia #cuidado #dicas #tecnologia #reflexao #inteligenciaartificial"
 descricao: "Um canal que só fala das maravilhas está te vendendo alguma coisa. Nesse vídeo eu listo as cinco situações em que usar inteligência artificial custa mais caro do que resolve — inclusive uma que quase ninguém admite."
@@ -33,6 +33,15 @@ Ela é excelente pra tirar o trabalho chato do caminho. Péssima pra assumir o q
 
 [busca: person making thoughtful decision at desk]
 O teste é simples: se der errado, quem responde? Se a resposta é você, a decisão continua sendo sua.
+
+[busca: person working efficiently with laptop and coffee]
+E o que ela faz muito bem? Rascunho, resumo, organização, tradução, primeira versão de qualquer coisa.
+
+[busca: person reviewing and editing document carefully]
+A regra que eu uso: ela começa, eu termino. Nunca o contrário.
+
+[busca: person taking notes while studying at desk]
+Um jeito honesto de usar no estudo: peça pra ela te explicar, te dar exercício e corrigir o seu. Não pra entregar pronto.
 
 [busca: person reading comments on smartphone engaged]
 Discorda de algum? Comenta aí, que eu quero mesmo o contraponto.

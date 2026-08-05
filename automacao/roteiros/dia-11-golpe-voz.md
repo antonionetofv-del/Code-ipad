@@ -3,7 +3,7 @@ titulo: O golpe da voz clonada e como se proteger
 titulo_youtube: "O golpe da voz clonada — e a senha que protege sua família"
 legenda_tiktok: "Clonar a voz de alguém leva 30 segundos de áudio. Combine isso hoje."
 voz: pt-BR-AntonioNeural
-ritmo: -3%
+ritmo: +8%
 formato: vertical
 hashtags: "#golpe #seguranca #ia #familia #dicas #inteligenciaartificial"
 descricao: "Com poucos segundos de áudio já dá para imitar a voz de uma pessoa. O golpe é uma ligação aflita pedindo dinheiro urgente. Nesse vídeo eu mostro os três sinais que denunciam e a senha de família que resolve em cinco segundos."
@@ -33,6 +33,12 @@ E a proteção, que é simples: combine uma senha com a sua família. Uma palavr
 
 [busca: person calling back on landline phone at home]
 Se alguém ligar pedindo dinheiro, você pergunta a senha. E desliga e liga de volta no número que você já tem salvo.
+
+[busca: person receiving video call on smartphone]
+Já existe versão com vídeo também. Imagem travando e áudio estranho são o sinal, mas não conte só com isso.
+
+[busca: person reporting fraud on computer at desk]
+Se cair no golpe, registre boletim de ocorrência e avise o banco na hora. Nas primeiras horas ainda dá para bloquear.
 
 [busca: family hugging together at home safe]
 Cinco segundos de combinação hoje evitam um prejuízo que muita gente já teve. Manda esse vídeo pra sua família.

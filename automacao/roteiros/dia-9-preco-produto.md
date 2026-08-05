@@ -3,7 +3,7 @@ titulo: Como calcular o preco do seu produto sem chutar
 titulo_youtube: "Como calcular o preço do seu produto sem chutar"
 legenda_tiktok: "Você não está cobrando barato. Você está esquecendo de contar coisa."
 voz: pt-BR-AntonioNeural
-ritmo: -3%
+ritmo: +8%
 formato: vertical
 hashtags: "#mei #empreendedorismo #preco #ia #negocios #inteligenciaartificial"
 descricao: "Quem vende bolo, artesanato ou serviço quase sempre esquece de contar o próprio tempo e o custo fixo. Nesse vídeo eu mostro o pedido exato que devolve o custo real por unidade e três faixas de preço, mais o item que quase todo mundo deixa de fora."
@@ -33,6 +33,12 @@ E some a perda. Bolo que desanda, peça que sai torta, cliente que desiste. Uns 
 
 [busca: confident small business owner in shop smiling]
 O número que sai costuma ser maior do que você cobra hoje. Isso não é problema. É informação.
+
+[busca: delivery person handing package to customer]
+Se você entrega, some o frete e o tempo do deslocamento. Muita gente entrega de graça e chama isso de gentileza.
+
+[busca: shop owner talking to customer at counter]
+E se o preço novo assustar, não suba tudo de uma vez. Suba nos clientes novos primeiro e mantenha os antigos por um mês.
 
 [busca: person reading comments on smartphone]
 Você vende o quê? Comenta aí que eu faço a conta do seu caso no próximo vídeo.

@@ -19,6 +19,16 @@ from comum import (FORMATOS, carregar_roteiro, duracao, ffmpeg, pasta_saida,
 # Quantas palavras cabem confortavelmente numa linha de legenda queimada.
 PALAVRAS_POR_LEGENDA = 3
 
+# Sobra deixada antes da primeira palavra e depois da última, ao aparar o
+# silêncio do bloco. Zero cortaria a consoante inicial e o final da frase.
+MARGEM_INICIO = 0.06
+MARGEM_FIM = 0.18
+
+# Respiro entre blocos. O TTS já devolve cada fala com silêncio nas pontas, e
+# emendar nove blocos empilha nove desses silêncios — é isso que faz o vídeo
+# parecer arrastado. Aparamos tudo e devolvemos um respiro curto e igual.
+PAUSA_ENTRE_BLOCOS = 0.12
+
 # Cabeçalho ASS. Escrevemos .ass em vez de .srt porque o libass assume uma tela
 # de 384x288 para legenda SRT — corpo de fonte e margem sairiam na escala errada.
 # Com PlayResX/PlayResY explícitos, os valores abaixo são pixels reais.
@@ -113,19 +123,35 @@ async def principal(caminho_roteiro):
 
     deslocamento = 0.0
     todas_palavras = []
+    aparado_total = 0.0
     for indice, bloco in enumerate(blocos):
+        bruto = audios / f"bruto_{indice:02d}.mp3"
         arquivo = audios / f"bloco_{indice:02d}.mp3"
-        palavras = await sintetizar(bloco["texto"], meta["voz"], meta["ritmo"], arquivo)
+        palavras = await sintetizar(bloco["texto"], meta["voz"], meta["ritmo"], bruto)
+
+        # Apara o silêncio das pontas usando a própria marcação de palavra:
+        # a primeira começa onde a fala começa, a última termina onde ela
+        # acaba. Não precisa de detector de silêncio.
+        recorte = max(0.0, palavras[0]["inicio"] - MARGEM_INICIO)
+        fim_fala = palavras[-1]["fim"] + MARGEM_FIM
+        rodar([ffmpeg(), "-y", "-i", str(bruto),
+               "-af", (f"atrim=start={recorte:.3f}:end={fim_fala:.3f},"
+                       f"asetpts=PTS-STARTPTS,apad=pad_dur={PAUSA_ENTRE_BLOCOS}"),
+               "-c:a", "libmp3lame", "-b:a", "128k", str(arquivo)])
+        aparado_total += recorte + max(0.0, duracao(bruto) - fim_fala)
+        bruto.unlink()
 
         bloco["audio"] = str(arquivo.relative_to(destino))
         bloco["duracao"] = duracao(arquivo)
         for palavra in palavras:
-            palavra["inicio"] += deslocamento
-            palavra["fim"] += deslocamento
+            palavra["inicio"] += deslocamento - recorte
+            palavra["fim"] += deslocamento - recorte
         todas_palavras.extend(palavras)
         deslocamento += bloco["duracao"]
 
         print(f"  bloco {indice:02d}  {bloco['duracao']:5.1f}s  {bloco['texto'][:50]}...")
+
+    print(f"  {aparado_total:.1f}s de silêncio aparado das pontas")
 
     # Junta os blocos numa narração única.
     lista = audios / "lista.txt"

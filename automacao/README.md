@@ -158,6 +158,18 @@ de 384×288 e interpreta corpo de fonte e margem nessa escala, o que joga o
 texto para fora do lugar. O `.ass` carrega `PlayResX`/`PlayResY` iguais ao
 canvas, então os valores são pixels reais.
 
+**O silêncio das pontas é aparado em cada bloco.** O TTS devolve cada fala com
+silêncio antes e depois; emendar onze blocos empilharia onze desses silêncios, e
+é isso que faz um vídeo parecer arrastado mesmo com o texto bom. O corte usa a
+própria marcação de palavra — a primeira começa onde a fala começa — então não
+precisa de detector de silêncio, e as legendas são deslocadas junto. No lugar
+entra um respiro fixo e curto de 0,12s.
+
+**Ritmo `+8%` com pausas aparadas encurta o vídeo em torno de 15%.** Se você
+acelerar sem acrescentar texto, o curto cai abaixo dos 61 segundos e perde o
+Creator Rewards. A conta prática: cerca de 2,9 palavras por segundo no ritmo
+`+8%`, mais 0,12s por bloco.
+
 **Curtos abaixo de 61 segundos disparam aviso.** O TikTok Creator Rewards só
 considera vídeos acima de 1 minuto.
 
