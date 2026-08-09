@@ -5,10 +5,25 @@ preço nem produto). Direção **editorial minimalista**: ciclorama warm greige 
 proceduralmente, foto de campanha composta dentro dele e tipografia geométrica leve em
 caixa alta com muito respiro no topo.
 
-**A linha.** `PERSONALIDADE / É O QUE ELE / VESTE MELHOR.` — personalidade e estilo na
-mesma frase, com o verbo *vestir* fazendo a ponte. É uma linha generosa vindo de uma loja
-de roupa: diz que o que veste melhor nele não está no cabide. O topo leva **só o símbolo**
-do logotipo, sem o lettering — a assinatura da marca fica na base, junto do cumprimento.
+**A linha.** `O ESTILO DELE / NINGUÉM COPIA. / MARCA REGISTRADA.`
+
+Escolhida depois de mapear o que a categoria está usando em 2026:
+
+| Território | Quem ocupa |
+| --- | --- |
+| Decodificar o presente | C&A, *"A gente traduz o que seu pai quer"* |
+| Estilo herdado entre gerações | Vans, *"Clássicos criam Clássicos"*; Aramis |
+| Inversão do presente | Aramis, *"Você é o maior presente que seu pai já recebeu"* |
+| Paternidade presente | Reserva, *"Quem cuida, ama"*; Hering; Lupo |
+| Humor do cotidiano | Renner; Lupo, *"Pergunta para sua mãe"* |
+
+"Estilo que se herda" está saturado — Vans e Aramis ocupam esse terreno com peso de mídia.
+A saída foi usar o ativo que nenhum concorrente pode copiar: o próprio nome da loja. Marca
+registrada é, por definição, aquilo que ninguém pode copiar, e a frase fecha nele. Nenhuma
+outra loja consegue rodar essa linha.
+
+O topo leva **só o símbolo** do logotipo, sem o lettering — quem diz o nome é o remate da
+frase, e repetir o wordmark acima gastaria a virada antes dela chegar.
 
 ## Arquivos
 

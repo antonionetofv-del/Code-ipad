@@ -12,8 +12,8 @@ D = pathlib.Path(__file__).parent
 W, H = 1080, 1920
 
 # ------------------------------------------------------------------ conteudo
-LINHA_A  = ['Personalidade']                    # bloco alinhado a esquerda
-LINHA_B  = ['é o que ele', 'veste melhor.']     # bloco alinhado a direita
+LINHA_A  = ['O estilo dele', 'ninguém copia.']  # bloco alinhado a esquerda
+LINHA_B  = ['Marca registrada.']                # bloco alinhado a direita
 ASSINA   = 'Feliz Dia dos Pais'
 ARROBA   = '@marcaregistrada'
 
@@ -177,7 +177,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
 /* ---------------------------------------------------------- titulo */
 .tit-a{{left:92px;top:350px;width:900px;text-align:left;
        font-weight:250;font-size:80px;line-height:1.02;letter-spacing:.010em;}}
-.tit-b{{right:92px;top:458px;width:900px;text-align:right;
+.tit-b{{right:92px;top:540px;width:900px;text-align:right;
        font-weight:250;font-size:80px;line-height:1.02;letter-spacing:.010em;}}
 
 /* ---------------------------------------------------------- assinatura */
