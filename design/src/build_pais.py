@@ -15,11 +15,13 @@ W, H = 1080, 1920
 # Mensagem em caixa alta e baixa: texto longo em versal nao se le. A caixa
 # alta tracked fica so na assinatura. As quebras sao manuais, para controlar
 # o rio do paragrafo.
-MENSAGEM = ['Hoje é o dia de quem segurou',
-            'a nossa mão até a gente aprender',
-            'a caminhar sozinho. E que continua',
-            'por perto, para o caso de a gente',
-            'precisar segurar de novo.']
+# Uma frase por linha: assim a anafora ("Ha quem... Ha quem...") abre duas
+# linhas no mesmo ponto e o paralelismo fica visivel, nao so audivel.
+MENSAGEM = ['Há quem ensine sem dizer uma palavra.',
+            'Há quem eduque só de estar presente.']
+# O remate sai do bloco e ganha respiro: com o mesmo espacamento das duas
+# linhas paralelas, ele era lido como a terceira do par, e nao como desfecho.
+REMATE = 'Hoje é o dia deles.'
 ASSINA   = 'Feliz Dia dos Pais'
 ARROBA   = '@marcaregistrada'
 
@@ -181,8 +183,10 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
        width:{SIMBOLO_L}px;height:{SIMBOLO_A}px;}}
 
 /* ---------------------------------------------------------- titulo */
-.msg{{left:92px;top:392px;width:920px;text-align:left;text-transform:none;
-      font-weight:300;font-size:44px;line-height:1.36;letter-spacing:.004em;}}
+.msg,.remate{{left:92px;width:896px;text-align:left;text-transform:none;
+      font-weight:300;font-size:48px;line-height:1.52;letter-spacing:.004em;}}
+.msg{{top:420px;}}
+.remate{{top:598px;}}
 
 /* ---------------------------------------------------------- assinatura */
 .regua2{{left:496px;top:1512px;width:88px;height:1px;
@@ -204,6 +208,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
        alt="Marca Registrada">
 
   <div class="msg">{BR.join(MENSAGEM)}</div>
+  <div class="remate">{REMATE}</div>
 
   <div class="regua2"></div>
   <div class="assina">{ASSINA}</div>
