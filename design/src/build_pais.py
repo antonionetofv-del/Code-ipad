@@ -43,11 +43,12 @@ sombra = -0.13 * np.exp(-((v - 0.682) ** 2) / (2 * 0.030 ** 2))
 topo = np.clip((v - 0.02) / 0.34, 0.0, 1.0) ** 0.85
 lados = 1.0 - np.clip((np.abs(u - 0.5) - 0.24) / 0.26, 0.0, 1.0) ** 1.3 * 0.45
 
-# vinheta radial: fecha os quatro cantos e sustenta a tipografia no topo
+# vinheta radial: fecha os quatro cantos e sustenta a tipografia no topo.
+# Aplicada la embaixo, sobre a arte ja montada, para valer tambem sobre a foto.
 r = np.sqrt(((u - 0.5) * 1.05) ** 2 + ((v - 0.52) * 0.80) ** 2) / 0.62
-vinheta = 1.0 - 0.38 * np.clip(r, 0, 1) ** 1.9
+vinheta = (1.0 - 0.38 * np.clip(r, 0, 1) ** 1.9)[:, :, None]
 
-k = np.clip((0.05 + 0.86 * pool * topo + 0.30 * horizonte + sombra) * lados * vinheta, 0, 1)
+k = np.clip((0.05 + 0.86 * pool * topo + 0.30 * horizonte + sombra) * lados, 0, 1)
 
 # rampa em dois trechos, passando pelo meio-tom
 t2 = np.clip(k / 0.5, 0, 1)[:, :, None]
@@ -72,7 +73,7 @@ simbolo[:, :, 0], simbolo[:, :, 1], simbolo[:, :, 2] = (
 simbolo[:, :, 3] = np.clip(cobertura * 255, 0, 255).astype(np.uint8)
 Image.fromarray(simbolo, 'RGBA').save(D / 'simbolo_creme.png')
 
-SIMBOLO_L = 240                                       # largura na arte, em px
+SIMBOLO_L = 190                                       # largura na arte, em px
 SIMBOLO_A = round(SIMBOLO_L * lg.shape[0] / lg.shape[1])
 
 
@@ -88,9 +89,11 @@ def octave(scale, amp):
 # Se existir src/foto.jpg, ela e graduada para a paleta quente, casada em tom
 # com o ciclorama na altura da emenda e fundida por um degrade longo. O grao
 # entra depois, por cima de tudo, para foto e fundo compartilharem a textura.
-FOTO_TOPO_CABECA = 0.051   # onde comeca a cabeca no original (fracao da altura)
-FOTO_CABECA_Y = 946        # onde a cabeca deve cair no canvas
+FOTO_TOPO_CABECA = 0.382   # onde comeca a cabeca na foto (fracao da altura)
+FOTO_CABECA_Y = 800        # onde a cabeca deve cair no canvas
 FOTO_FUSAO = 360           # altura do degrade de fusao, em px
+FOTO_REF = (0.02, 0.10, 0.05, 0.85)   # retalho de fundo liso, para o cinza de
+                                      # referencia: (y0, y1, x0, x1) em fracao
 
 foto_src = D / 'foto.jpg'
 tem_foto = foto_src.exists()
@@ -99,12 +102,15 @@ if tem_foto:
     ph = Image.open(foto_src).convert('RGB')
     p = np.asarray(ph).astype(np.float32)
 
-    # 1. neutraliza o fundo do estudio (cinza-azulado) usando-o como referencia
-    ref = p[200:900, 150:900].reshape(-1, 3).mean(0)
+    # 1. neutraliza o fundo do estudio usando um retalho dele como referencia
+    ry0, ry1, rx0, rx1 = FOTO_REF
+    ref = p[int(ry0 * ph.height):int(ry1 * ph.height),
+            int(rx0 * ph.width):int(rx1 * ph.width)].reshape(-1, 3).mean(0)
     p *= (ref.mean() / ref)[None, None, :]
 
-    # 2. grade da campanha: puxa o neutro para o greige quente
-    p *= np.array([1.03, 0.945, 0.855], np.float32)[None, None, :]
+    # 2. grade da campanha: puxa o neutro para o greige quente. Comedido de
+    #    proposito — passar disso vira sepia e a pele amarela.
+    p *= np.array([1.020, 0.968, 0.912], np.float32)[None, None, :]
 
     alt = int(round(W * ph.height / ph.width))
     p = np.asarray(Image.fromarray(np.clip(p, 0, 255).astype(np.uint8))
@@ -130,6 +136,8 @@ if tem_foto:
     t = np.clip((np.arange(y0, y1, dtype=np.float32) - topo) / FOTO_FUSAO, 0, 1)
     alfa = (t * t * (3 - 2 * t))[:, None, None]
     base[y0:y1] = base[y0:y1] * (1 - alfa) + recorte * alfa
+
+base *= vinheta            # fecha os cantos da arte inteira, foto inclusive
 
 mottle = octave(230, 1.1) + octave(60, 1.0)          # manchas do papel infinito
 grain = rng.normal(0, 2.0, (H, W)).astype(np.float32)  # grao de filme
@@ -163,14 +171,14 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
          rgba(30,26,22,.74) 72%, rgba(30,26,22,.88) 100%);}}
 
 /* ---------------------------------------------------------- cabecalho */
-.marca{{left:{(W - SIMBOLO_L) // 2}px;top:150px;
+.marca{{left:{(W - SIMBOLO_L) // 2}px;top:140px;
        width:{SIMBOLO_L}px;height:{SIMBOLO_A}px;}}
 
 /* ---------------------------------------------------------- titulo */
-.tit-a{{left:92px;top:424px;width:900px;text-align:left;
-       font-weight:250;font-size:96px;line-height:1.02;letter-spacing:.008em;}}
-.tit-b{{right:92px;top:598px;width:900px;text-align:right;
-       font-weight:250;font-size:96px;line-height:1.02;letter-spacing:.008em;}}
+.tit-a{{left:92px;top:350px;width:900px;text-align:left;
+       font-weight:250;font-size:80px;line-height:1.02;letter-spacing:.010em;}}
+.tit-b{{right:92px;top:458px;width:900px;text-align:right;
+       font-weight:250;font-size:80px;line-height:1.02;letter-spacing:.010em;}}
 
 /* ---------------------------------------------------------- assinatura */
 .regua2{{left:496px;top:1512px;width:88px;height:1px;
