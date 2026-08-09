@@ -21,8 +21,8 @@ MENSAGEM = ['Feliz Dia dos Pais aos pais que ensinam',
             'Hoje o dia é todo deles.']
 # O remate sai do bloco e ganha respiro: colado, seria lido como continuacao
 # da lista, e nao como a virada que e.
-REMATE = ['Porque um dia alguém aponta o jeito de levar a vida,',
-          'a mão no bolso, o estilo que já era dele.']
+REMATE = ['Porque um dia a gente repete o jeito de levar a vida',
+          'e um pouco do estilo que já era dele.']
 # Sem "Feliz Dia dos Pais" aqui: o desejo agora abre o texto, e repeti-lo na
 # base gastaria duas vezes a mesma coisa. Fica so o arroba.
 ARROBA = '@marcaregistrada'
