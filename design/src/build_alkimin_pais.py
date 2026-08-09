@@ -43,12 +43,14 @@ WHITE = '#FFFFFF'
 # Dessaturacao leve, so para acalmar o xadrez vermelho ao lado do card azul.
 # Sem esfriar: a foto e quente e humana, e e essa temperatura que faz ela
 # funcionar num Dia dos Pais. Contra o concreto neutro, o quente vira o foco.
-DESSAT = 0.28
+DESSAT = 0.12
+QUENTE = np.array([1.035, 1.000, 0.945], np.float32)
 
 ph = Image.open(D / 'foto_alkimin.jpg').convert('RGB')
 p = np.asarray(ph).astype(np.float32)
 cinza = p @ np.array([0.299, 0.587, 0.114], np.float32)
 p = p * (1 - DESSAT) + cinza[:, :, None] * DESSAT
+p *= QUENTE
 Image.fromarray(np.clip(p, 0, 255).astype(np.uint8)).save(D / 'foto_grade.jpg', quality=93)
 
 # ------------------------------------------------------------------- assets
@@ -67,7 +69,7 @@ FONTES = '\n'.join([font_face('Anton', 400, 'anton.woff2'),
                     font_face('Poppins', 700, 'poppins700.woff2')])
 
 
-def pagina(nome, rotulo, css_extra, corpo, card_y, titulo_px=96, logo_l=260):
+def pagina(nome, rotulo, css_extra, corpo, card_y, titulo_px=96, logo_l=340):
     """Monta uma variacao. O bloco de texto e identico nas duas."""
     tit_y = card_y + 70
     rule_y = tit_y + round(titulo_px * 1.02 * 2) + 42
@@ -77,7 +79,7 @@ def pagina(nome, rotulo, css_extra, corpo, card_y, titulo_px=96, logo_l=260):
     # A logo e azul e fica no concreto, abaixo do card: sobre o card azul ela
     # sumiria e sobre a foto ficaria suja. Alinhada em x=124, com o texto.
     logo_a = round(logo_l * 944 / 1607)
-    logo_y = card_y + card_h + 48
+    logo_y = card_y + card_h + 44
     assert logo_y + logo_a < 1670, 'logo cairia atras da barra de resposta'
 
     html = f"""<meta name="hz:slide-selector" content=".page">
@@ -103,7 +105,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
      font-weight:400;font-size:34px;line-height:1.52;color:{WHITE};}}
 .assina{{left:124px;top:{ass_y}px;width:812px;
         font-weight:700;font-size:40px;color:{LIME};letter-spacing:.5px;}}
-.logo{{left:124px;top:{logo_y}px;width:{logo_l}px;}}
+.logo{{left:{(W - logo_l) // 2}px;top:{logo_y}px;width:{logo_l}px;}}
 </style>
 
 <div class="page" data-document-role="page" data-label="Dia dos Pais - {rotulo}"
@@ -130,14 +132,14 @@ pagina(
     'moldura', 'Moldura',
     # A foto se alinha a margem do card (60 px); o verde e que sai do eixo,
     # aparecendo em cima e a direita — dois lados vizinhos, nunca quatro.
-    f""".bloco{{left:100px;top:50px;width:960px;height:560px;
+    f""".bloco{{left:100px;top:50px;width:960px;height:520px;
        background:{GREEN};border-radius:44px;}}
-.foto{{left:60px;top:90px;width:960px;height:560px;
+.foto{{left:60px;top:90px;width:960px;height:520px;
       border-radius:44px;object-fit:cover;object-position:center 35%;}}""",
     """  <div class="bloco"></div>
   <img class="foto" src="data:image/jpeg;base64,{FOTO}" alt="Dois trabalhadores em uma máquina">
 """.replace('{FOTO}', b64('foto_grade.jpg')),
-    card_y=650)
+    card_y=610)
 
 # --------------------------------------------------------------- polaroide
 # Moldura branca com a borda de baixo mais larga, girada de leve. A sombra
@@ -148,14 +150,14 @@ pagina(
 # com pilhas delas.
 pagina(
     'polaroid', 'Polaroide',
-    """.polaroid{left:220px;top:50px;width:640px;height:590px;
+    """.polaroid{left:242px;top:50px;width:597px;height:550px;
           background:#F4F2ED;border-radius:8px;
           box-shadow:0 20px 42px rgba(0,0,0,.32);
           transform:rotate(-2.4deg);}
-.polaroid .foto{position:absolute;left:28px;top:28px;width:584px;height:437px;
+.polaroid .foto{position:absolute;left:26px;top:26px;width:545px;height:407px;
       object-fit:cover;object-position:center 35%;}""",
     """  <div class="polaroid">
     <img class="foto" src="data:image/jpeg;base64,{FOTO}" alt="Dois trabalhadores em uma máquina">
   </div>
 """.replace('{FOTO}', b64('foto_grade.jpg')),
-    card_y=666, titulo_px=88)
+    card_y=630, titulo_px=88)

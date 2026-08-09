@@ -54,12 +54,13 @@ sem virar palavra de ordem.
 **Origem da imagem:** fornecida pelo cliente. Guardada reduzida para 2400 px de largura
 (o build renderiza a 960).
 
-**O tratamento é leve de propósito: `DESSAT = 0.28`, sem esfriar.** Uma versão anterior
+**O tratamento é leve de propósito: `DESSAT = 0.12` mais um ganho quente
+(`[1.035, 1.000, 0.945]`).** Uma versão anterior
 desta peça usava uma foto de banco fria e industrial, e ali dessaturar 55% e puxar para o
 azul não custava nada. Esta é quente e humana, e é a temperatura que faz ela funcionar num
-Dia dos Pais — o tratamento pesado a deixava cinza e sem vida. Os 28% servem só para
-acalmar o xadrez vermelho ao lado do card azul. Contra o concreto neutro, o quente da foto
-vira o foco da peça.
+Dia dos Pais — o tratamento pesado a deixava cinza e sem vida. A dessaturação sobrou só
+para tirar o excesso do xadrez vermelho ao lado do card azul, e o ganho quente devolve o
+dourado da madeira. Contra o concreto neutro, o quente da foto vira o foco da peça.
 
 O enquadramento é `object-position: center 35%`, que dá folga acima da cabeça do pai — em
 42% ela encostava na borda superior da moldura.
@@ -82,9 +83,10 @@ recuada 32 px de três lados e 148 px embaixo. A foto vai **dentro** da div da m
 ao lado dela: assim a rotação é uma só e as duas nunca se desencontram. Sombra única, e não
 uma pilha — o importador do Express não lida bem com várias. Card em `y 840–1620`.
 
-**A logo** fica em `x 124, y` logo abaixo do card, com 260 px de largura, alinhada com o
-bloco de texto. Ela é azul e por isso precisa de cinza atrás: sobre o card azul sumiria, e
-sobre a foto ficaria suja. O build calcula a posição a partir do fim do card e tem um
+**A logo** fica centralizada logo abaixo do card, com 340 px de largura. Ela é azul e por
+isso precisa de cinza atrás: sobre o card azul sumiria, e sobre a foto ficaria suja.
+Centralizada e nesse tamanho ela fecha a peça como assinatura — foi para caber nela que a
+foto encolheu de 560 para 520 px de altura. O build calcula a posição a partir do fim do card e tem um
 `assert` que falha se ela cair atrás da barra de resposta do Instagram — assim mexer no
 texto nunca empurra a logo para fora da área segura sem avisar.
 
