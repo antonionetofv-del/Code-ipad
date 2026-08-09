@@ -1,8 +1,8 @@
-"""Dia dos Pais — Stories 1080x1920 para loja multimarcas.
+"""Dia dos Pais — Stories 1080x1920 para a Marca Registrada.
 
-Gera o fundo de estudio (ciclorama warm greige) e o HTML autocontido.
-Se existir `src/foto.jpg`, a foto de campanha entra em sangria no terco
-inferior, dissolvida no fundo por uma mascara em gradiente.
+Gera o fundo de estudio (ciclorama warm greige) com a foto de campanha ja
+composta dentro dele, recorta o simbolo do logotipo em creme e escreve o
+HTML autocontido.
 """
 import base64, pathlib
 from PIL import Image, ImageFilter
@@ -12,12 +12,10 @@ D = pathlib.Path(__file__).parent
 W, H = 1080, 1920
 
 # ------------------------------------------------------------------ conteudo
-MARCA    = 'NOME DA LOJA'
-LABEL    = 'Dia dos Pais'
-LINHA_A  = ['O presente certo', 'não é o mais caro.']
-LINHA_B  = ['É o mais ele.']
-ASSINA   = 'As marcas que ele veste, em um lugar só.'
-ARROBA   = '@nomedaloja'
+LINHA_A  = ['Cada pai tem']              # bloco alinhado a esquerda
+LINHA_B  = ['sua marca', 'registrada.']  # bloco alinhado a direita
+ASSINA   = 'Feliz Dia dos Pais'
+ARROBA   = '@marcaregistrada'
 
 # ------------------------------------------------------------------- paleta
 ESCURO = np.array([0x2A, 0x24, 0x1F], np.float32)   # topo / vinheta lateral
@@ -108,13 +106,31 @@ textura = (mottle + grain)[:, :, None] * (0.45 + 0.55 * k[:, :, None])
 Image.fromarray(np.clip(base + textura, 0, 255).astype(np.uint8)) \
      .save(D / 'bg_pais.jpg', quality=95)
 
+# ---------------------------------------------------------------- simbolo
+# O logotipo do cliente vem preto sobre branco, com o lettering embaixo. Aqui
+# so o simbolo e recortado e repintado em creme, porque quem diz o nome da
+# marca na peca e o proprio titulo.
+SIMBOLO_CAIXA = (150, 0, 952, 620)   # recorte do simbolo no arquivo original
+
+lg = np.asarray(Image.open(D / 'logo_marca_registrada.png').convert('RGBA')
+                .crop(SIMBOLO_CAIXA)).astype(np.float32)
+cobertura = (1.0 - lg[:, :, :3].mean(2) / 255.0) * (lg[:, :, 3] / 255.0)
+simbolo = np.zeros(lg.shape, np.uint8)
+simbolo[:, :, 0], simbolo[:, :, 1], simbolo[:, :, 2] = (
+    int(CREME[1:3], 16), int(CREME[3:5], 16), int(CREME[5:7], 16))
+simbolo[:, :, 3] = np.clip(cobertura * 255, 0, 255).astype(np.uint8)
+Image.fromarray(simbolo, 'RGBA').save(D / 'simbolo_creme.png')
+
+SIMBOLO_L = 240                                       # largura na arte, em px
+SIMBOLO_A = round(SIMBOLO_L * lg.shape[0] / lg.shape[1])
+
 # ------------------------------------------------------------------ assets
 def b64(name):
     return base64.b64encode((D / name).read_bytes()).decode()
 
 BR = '<br>'
 html = f"""<meta name="hz:slide-selector" content=".page">
-<title>Dia dos Pais — {MARCA} (Stories)</title>
+<title>Dia dos Pais — Marca Registrada (Stories)</title>
 <style>
 @font-face{{font-family:'Jost';font-style:normal;font-weight:100 900;
   src:url(data:font/woff2;base64,{b64('jost-var.woff2')}) format('woff2');}}
@@ -133,20 +149,14 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
          rgba(30,26,22,.74) 72%, rgba(30,26,22,.88) 100%);}}
 
 /* ---------------------------------------------------------- cabecalho */
-.marca{{left:0;top:150px;width:{W}px;text-align:center;
-       font-weight:300;font-size:38px;letter-spacing:.40em;text-indent:.40em;}}
-.regua{{left:496px;top:232px;width:88px;height:1px;
-       background:{AREIA};opacity:.55;}}
+.marca{{left:{(W - SIMBOLO_L) // 2}px;top:150px;
+       width:{SIMBOLO_L}px;height:{SIMBOLO_A}px;}}
 
 /* ---------------------------------------------------------- titulo */
-.label{{left:92px;top:352px;font-weight:400;font-size:21px;
-       letter-spacing:.42em;color:{AREIA};}}
-.tracinho{{left:92px;top:398px;width:44px;height:1px;background:{AREIA};opacity:.7;}}
-
-.tit-a{{left:92px;top:440px;width:900px;text-align:left;
-       font-weight:250;font-size:84px;line-height:1.02;letter-spacing:.010em;}}
-.tit-b{{right:92px;top:694px;width:900px;text-align:right;
-       font-weight:250;font-size:84px;line-height:1.02;letter-spacing:.010em;}}
+.tit-a{{left:92px;top:424px;width:900px;text-align:left;
+       font-weight:250;font-size:96px;line-height:1.02;letter-spacing:.008em;}}
+.tit-b{{right:92px;top:598px;width:900px;text-align:right;
+       font-weight:250;font-size:96px;line-height:1.02;letter-spacing:.008em;}}
 
 /* ---------------------------------------------------------- assinatura */
 .regua2{{left:496px;top:1512px;width:88px;height:1px;
@@ -164,11 +174,9 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
   <img class="bg" src="data:image/jpeg;base64,{b64('bg_pais.jpg')}" alt="Fundo de estúdio">
   <div class="scrim"></div>
 
-  <div class="marca">{MARCA}</div>
-  <div class="regua"></div>
+  <img class="marca" src="data:image/png;base64,{b64('simbolo_creme.png')}"
+       alt="Marca Registrada">
 
-  <div class="label">{LABEL}</div>
-  <div class="tracinho"></div>
   <div class="tit-a">{BR.join(LINHA_A)}</div>
   <div class="tit-b">{BR.join(LINHA_B)}</div>
 

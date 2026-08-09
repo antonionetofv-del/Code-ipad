@@ -1,9 +1,14 @@
-# Dia dos Pais — Stories 1080×1920 (loja multimarcas)
+# Dia dos Pais — Stories 1080×1920 — Marca Registrada
 
-Arte de campanha para Instagram Stories, direção **editorial minimalista**: ciclorama
-warm greige gerado proceduralmente, tipografia geométrica leve em caixa alta e muito
-respiro no topo. A referência de linguagem foi um editorial de moda com fundo neutro e
-texto fino tracked — mas paleta, tipografia, layout e copy são originais.
+Publicação comemorativa de Dia dos Pais (não é peça de venda: não fala em presente,
+preço nem produto). Direção **editorial minimalista**: ciclorama warm greige gerado
+proceduralmente, foto de campanha composta dentro dele e tipografia geométrica leve em
+caixa alta com muito respiro no topo.
+
+**A linha.** `CADA PAI TEM / SUA MARCA REGISTRADA.` — o nome da loja é o desfecho da
+frase. "Marca registrada" no sentido do jeito dele, aquilo que só aquele pai faz. Por
+isso o topo leva **só o símbolo** do logotipo, sem o lettering: quem diz o nome da marca
+na peça é o próprio título, e repetir o wordmark logo acima mataria a virada.
 
 ## Arquivos
 
@@ -15,6 +20,8 @@ texto fino tracked — mas paleta, tipografia, layout e copy são originais.
 | `src/render.py` | Exporta qualquer HTML de design para PNG via Chromium. |
 | `src/bg_pais.jpg` | Ciclorama + foto já compostos (não editar à mão — sai do build). |
 | `src/jost-var.woff2` | Jost variable 100–900, subset latin (SIL Open Font License). |
+| `src/logo_marca_registrada.png` | Logotipo original do cliente, como recebido. |
+| `src/simbolo_creme.png` | Símbolo recortado e repintado em creme (sai do build). |
 | `src/foto.jpg` | Foto de campanha. Se o arquivo existir, entra automaticamente. |
 
 **Crédito da imagem:** Adobe Stock, asset `639834895` — *"Portrait of happy casual older
@@ -27,11 +34,11 @@ Guardada aqui reduzida para 2160 px de largura (o build renderiza em 1080).
 
 | Uso | Peso | Corpo | Tracking |
 | --- | --- | --- | --- |
-| Assinatura da loja (topo) | 300 | 38 px | .40 em |
-| Rótulo da campanha | 400 | 21 px | .42 em |
-| Título | 250 | 84 px | .010 em, entrelinha 1.02 |
+| Título | 250 | 96 px | .008 em, entrelinha 1.02 |
 | Linha de assinatura | 300 | 28 px | .14 em |
 | @ da loja | 400 | 22 px | .34 em |
+
+O símbolo do logotipo entra com 240 px de largura, centralizado, a 150 px do topo.
 
 **Paleta**
 
@@ -42,22 +49,22 @@ Guardada aqui reduzida para 2160 px de largura (o build renderiza em 1080).
 | Ciclorama escuro | `#2A241F` | Topo e vinheta lateral |
 | Ciclorama claro | `#ADA08F` | Centro do refletor e piso |
 
-**Grade** — margem lateral 92 px. Assinatura da loja no topo (fora da faixa de UI do
-Instagram), título em dois blocos com alinhamentos opostos (esquerda e depois direita),
-bloco de assinatura terminando em y=1690 para não cair atrás da barra de resposta.
+**Grade** — margem lateral 92 px. Símbolo no topo (fora da faixa de UI do Instagram),
+título em dois blocos com alinhamentos opostos (esquerda e depois direita), bloco de
+assinatura terminando em y=1646 para não cair atrás da barra de resposta.
 
 ## Trocar os textos
 
 Tudo fica no topo de `src/build_pais.py`:
 
 ```python
-MARCA   = 'NOME DA LOJA'
-LABEL   = 'Dia dos Pais'
-LINHA_A = ['O presente certo', 'não é o mais caro.']
-LINHA_B = ['É o mais ele.']
-ASSINA  = 'As marcas que ele veste, em um lugar só.'
-ARROBA  = '@nomedaloja'
+LINHA_A = ['Cada pai tem']              # bloco alinhado à esquerda
+LINHA_B = ['sua marca', 'registrada.']  # bloco alinhado à direita
+ASSINA  = 'Feliz Dia dos Pais'
+ARROBA  = '@marcaregistrada'
 ```
+
+O `@` está como suposição — confirmar o handle real antes de publicar.
 
 ## Trocar a foto de campanha
 
