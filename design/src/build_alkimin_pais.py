@@ -7,8 +7,10 @@ Gera duas versoes a partir do mesmo texto e da mesma foto:
   polaroid — a foto montada como polaroide, com moldura branca e a borda
              inferior mais larga, levemente girada
 
-Sem logo e sem elementos de reciclagem (pedido do cliente). O fundo de
-concreto e o card azul continuam sendo os do sistema da marca.
+Sem os elementos de reciclagem soltos (pedido do cliente). A logo volta em
+azul, no concreto abaixo do card — sobre o card ela sumiria e sobre a foto
+ficaria suja. O fundo de concreto e o card azul seguem sendo os do sistema
+da marca.
 
     python3 src/build_alkimin_pais.py
 """
@@ -63,13 +65,18 @@ FONTES = '\n'.join([font_face('Anton', 400, 'anton.woff2'),
                     font_face('Poppins', 700, 'poppins700.woff2')])
 
 
-def pagina(nome, rotulo, css_extra, corpo, card_y, titulo_px=96):
+def pagina(nome, rotulo, css_extra, corpo, card_y, titulo_px=96, logo_l=260):
     """Monta uma variacao. O bloco de texto e identico nas duas."""
     tit_y = card_y + 70
     rule_y = tit_y + round(titulo_px * 1.02 * 2) + 42
     msg_y = rule_y + 58
     ass_y = msg_y + round(34 * 1.52 * len(MENSAGEM)) + 46
     card_h = ass_y + 52 + 74 - card_y
+    # A logo e azul e fica no concreto, abaixo do card: sobre o card azul ela
+    # sumiria e sobre a foto ficaria suja. Alinhada em x=124, com o texto.
+    logo_a = round(logo_l * 944 / 1607)
+    logo_y = card_y + card_h + 48
+    assert logo_y + logo_a < 1670, 'logo cairia atras da barra de resposta'
 
     html = f"""<meta name="hz:slide-selector" content=".page">
 <meta name="hz:canvas-width" content="{W}">
@@ -94,6 +101,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
      font-weight:400;font-size:34px;line-height:1.52;color:{WHITE};}}
 .assina{{left:124px;top:{ass_y}px;width:812px;
         font-weight:700;font-size:40px;color:{LIME};letter-spacing:.5px;}}
+.logo{{left:124px;top:{logo_y}px;width:{logo_l}px;}}
 </style>
 
 <div class="page" data-document-role="page" data-label="Dia dos Pais - {rotulo}"
@@ -105,6 +113,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
   <div class="rule"></div>
   <div class="msg">{BR.join(MENSAGEM)}</div>
   <div class="assina">{ASSINA}</div>
+  <img class="logo" src="data:image/png;base64,{b64('logo.png')}" alt="Ferro Velho Alkimin">
 </div>
 """
     out = D.parent / f'alkimin-dia-dos-pais-{nome}.html'
@@ -119,14 +128,14 @@ pagina(
     'moldura', 'Moldura',
     # A foto se alinha a margem do card (60 px); o verde e que sai do eixo,
     # aparecendo em cima e a direita — dois lados vizinhos, nunca quatro.
-    f""".bloco{{left:100px;top:90px;width:960px;height:660px;
+    f""".bloco{{left:100px;top:50px;width:960px;height:560px;
        background:{GREEN};border-radius:44px;}}
-.foto{{left:60px;top:130px;width:960px;height:660px;
+.foto{{left:60px;top:90px;width:960px;height:560px;
       border-radius:44px;object-fit:cover;object-position:center 42%;}}""",
     """  <div class="bloco"></div>
   <img class="foto" src="data:image/jpeg;base64,{FOTO}" alt="Dois trabalhadores em uma máquina">
 """.replace('{FOTO}', b64('foto_grade.jpg')),
-    card_y=790)
+    card_y=650)
 
 # --------------------------------------------------------------- polaroide
 # Moldura branca com a borda de baixo mais larga, girada de leve. A sombra
@@ -137,14 +146,14 @@ pagina(
 # com pilhas delas.
 pagina(
     'polaroid', 'Polaroide',
-    """.polaroid{left:160px;top:110px;width:760px;height:700px;
+    """.polaroid{left:220px;top:50px;width:640px;height:590px;
           background:#F4F2ED;border-radius:8px;
           box-shadow:0 20px 42px rgba(0,0,0,.32);
           transform:rotate(-2.4deg);}
-.polaroid .foto{position:absolute;left:32px;top:32px;width:696px;height:520px;
+.polaroid .foto{position:absolute;left:28px;top:28px;width:584px;height:437px;
       object-fit:cover;object-position:center 42%;}""",
     """  <div class="polaroid">
     <img class="foto" src="data:image/jpeg;base64,{FOTO}" alt="Dois trabalhadores em uma máquina">
   </div>
 """.replace('{FOTO}', b64('foto_grade.jpg')),
-    card_y=840, titulo_px=88)
+    card_y=666, titulo_px=88)

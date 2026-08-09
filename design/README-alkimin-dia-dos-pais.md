@@ -11,8 +11,8 @@ Duas versões da mesma peça, geradas pelo mesmo build:
   larga, levemente girada.
 
 Fundo de concreto (`src/bg_story.jpg`), card azul, Anton + Poppins e a paleta continuam
-sendo os do sistema da marca. **Sem logo e sem elementos de reciclagem**, a pedido — vale
-saber que, assim, a peça não carrega marca visível.
+sendo os do sistema da marca. Os elementos soltos de reciclagem saíram, a pedido; a logo
+ficou, em azul.
 
 ## O texto
 
@@ -79,6 +79,12 @@ A foto se alinha à margem do card (60 px); quem sai do eixo é o verde. Card em
 recuada 32 px de três lados e 148 px embaixo. A foto vai **dentro** da div da moldura, não
 ao lado dela: assim a rotação é uma só e as duas nunca se desencontram. Sombra única, e não
 uma pilha — o importador do Express não lida bem com várias. Card em `y 840–1620`.
+
+**A logo** fica em `x 124, y` logo abaixo do card, com 260 px de largura, alinhada com o
+bloco de texto. Ela é azul e por isso precisa de cinza atrás: sobre o card azul sumiria, e
+sobre a foto ficaria suja. O build calcula a posição a partir do fim do card e tem um
+`assert` que falha se ela cair atrás da barra de resposta do Instagram — assim mexer no
+texto nunca empurra a logo para fora da área segura sem avisar.
 
 Os dois cards terminam acima de y=1670, onde começa a barra de resposta do Instagram.
 
