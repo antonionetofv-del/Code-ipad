@@ -12,8 +12,14 @@ D = pathlib.Path(__file__).parent
 W, H = 1080, 1920
 
 # ------------------------------------------------------------------ conteudo
-LINHA_A  = ['O estilo dele', 'ninguém copia.']  # bloco alinhado a esquerda
-LINHA_B  = ['Marca registrada.']                # bloco alinhado a direita
+# Mensagem em caixa alta e baixa: texto longo em versal nao se le. A caixa
+# alta tracked fica so na assinatura. As quebras sao manuais, para controlar
+# o rio do paragrafo.
+MENSAGEM = ['A gente cresce, ganha altura,',
+            'aprende a se virar sozinho.',
+            'Mas tem dia em que o lugar',
+            'mais seguro do mundo',
+            'ainda é ao lado dele.']
 ASSINA   = 'Feliz Dia dos Pais'
 ARROBA   = '@marcaregistrada'
 
@@ -175,10 +181,8 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
        width:{SIMBOLO_L}px;height:{SIMBOLO_A}px;}}
 
 /* ---------------------------------------------------------- titulo */
-.tit-a{{left:92px;top:350px;width:900px;text-align:left;
-       font-weight:250;font-size:80px;line-height:1.02;letter-spacing:.010em;}}
-.tit-b{{right:92px;top:540px;width:900px;text-align:right;
-       font-weight:250;font-size:80px;line-height:1.02;letter-spacing:.010em;}}
+.msg{{left:92px;top:392px;width:920px;text-align:left;text-transform:none;
+      font-weight:300;font-size:46px;line-height:1.36;letter-spacing:.004em;}}
 
 /* ---------------------------------------------------------- assinatura */
 .regua2{{left:496px;top:1512px;width:88px;height:1px;
@@ -199,8 +203,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
   <img class="marca" src="data:image/png;base64,{b64('simbolo_creme.png')}"
        alt="Marca Registrada">
 
-  <div class="tit-a">{BR.join(LINHA_A)}</div>
-  <div class="tit-b">{BR.join(LINHA_B)}</div>
+  <div class="msg">{BR.join(MENSAGEM)}</div>
 
   <div class="regua2"></div>
   <div class="assina">{ASSINA}</div>
