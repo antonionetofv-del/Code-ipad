@@ -54,6 +54,53 @@ def octave(scale, amp):
     return (arr - arr.mean()) / (arr.std() + 1e-6) * amp
 
 
+# -------------------------------------------------------------- campanha
+# Se existir src/foto.jpg, ela e graduada para a paleta quente, casada em tom
+# com o ciclorama na altura da emenda e fundida por um degrade longo. O grao
+# entra depois, por cima de tudo, para foto e fundo compartilharem a textura.
+FOTO_TOPO_CABECA = 0.051   # onde comeca a cabeca no original (fracao da altura)
+FOTO_CABECA_Y = 946        # onde a cabeca deve cair no canvas
+FOTO_FUSAO = 360           # altura do degrade de fusao, em px
+
+foto_src = D / 'foto.jpg'
+tem_foto = foto_src.exists()
+
+if tem_foto:
+    ph = Image.open(foto_src).convert('RGB')
+    p = np.asarray(ph).astype(np.float32)
+
+    # 1. neutraliza o fundo do estudio (cinza-azulado) usando-o como referencia
+    ref = p[200:900, 150:900].reshape(-1, 3).mean(0)
+    p *= (ref.mean() / ref)[None, None, :]
+
+    # 2. grade da campanha: puxa o neutro para o greige quente
+    p *= np.array([1.03, 0.945, 0.855], np.float32)[None, None, :]
+
+    alt = int(round(W * ph.height / ph.width))
+    p = np.asarray(Image.fromarray(np.clip(p, 0, 255).astype(np.uint8))
+                   .resize((W, alt), Image.LANCZOS)).astype(np.float32)
+
+    topo = int(round(FOTO_CABECA_Y - FOTO_TOPO_CABECA * alt))
+
+    # 3. casa a luminancia da foto com a do ciclorama na linha da emenda
+    faixa = slice(max(0, topo), min(H, topo + 70))
+    alvo = base[faixa].reshape(-1, 3).mean(0)
+    p *= np.clip(alvo / p[:70].reshape(-1, 3).mean(0), 0.75, 1.35)[None, None, :]
+
+    # 4. prolonga o fundo da foto para cima, a partir da propria primeira linha,
+    #    para o degrade ter onde acontecer sem criar degrau na emenda
+    tira = p[0:6].mean(0)[None, :, :]
+    p = np.concatenate([np.repeat(tira, FOTO_FUSAO, axis=0), p], axis=0)
+    topo -= FOTO_FUSAO
+
+    # 5. recorta na moldura e monta com alfa em smoothstep (derivada zero nas
+    #    duas pontas, entao nem o inicio nem o fim do degrade aparecem)
+    y0, y1 = max(0, topo), min(H, topo + p.shape[0])
+    recorte = p[y0 - topo:y1 - topo]
+    t = np.clip((np.arange(y0, y1, dtype=np.float32) - topo) / FOTO_FUSAO, 0, 1)
+    alfa = (t * t * (3 - 2 * t))[:, None, None]
+    base[y0:y1] = base[y0:y1] * (1 - alfa) + recorte * alfa
+
 mottle = octave(230, 1.1) + octave(60, 1.0)          # manchas do papel infinito
 grain = rng.normal(0, 2.0, (H, W)).astype(np.float32)  # grao de filme
 textura = (mottle + grain)[:, :, None] * (0.45 + 0.55 * k[:, :, None])
@@ -64,15 +111,6 @@ Image.fromarray(np.clip(base + textura, 0, 255).astype(np.uint8)) \
 # ------------------------------------------------------------------ assets
 def b64(name):
     return base64.b64encode((D / name).read_bytes()).decode()
-
-
-foto = D / 'foto.jpg'
-tem_foto = foto.exists()
-camada_foto = (
-    f'  <img class="foto" src="data:image/jpeg;base64,{b64("foto.jpg")}" '
-    f'alt="Campanha Dia dos Pais">\n' if tem_foto else
-    '  <!-- coloque src/foto.jpg e rode o build para a foto entrar aqui -->\n'
-)
 
 BR = '<br>'
 html = f"""<meta name="hz:slide-selector" content=".page">
@@ -86,19 +124,13 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
       font-family:'Jost',sans-serif;color:{CREME};
       text-transform:uppercase;font-kerning:normal;}}
 .page > *{{position:absolute;}}
-.bg,.foto{{left:0;top:0;width:{W}px;height:{H}px;object-fit:cover;}}
+.bg{{left:0;top:0;width:{W}px;height:{H}px;object-fit:cover;}}
 
-/* foto de campanha: sangra por baixo e dissolve no ciclorama */
-.foto{{object-position:center 28%;
-      -webkit-mask-image:linear-gradient(to bottom,
-        rgba(0,0,0,0) 33%, rgba(0,0,0,.55) 41%, #000 50%);
-              mask-image:linear-gradient(to bottom,
-        rgba(0,0,0,0) 33%, rgba(0,0,0,.55) 41%, #000 50%);}}
-
-/* scrim inferior para a assinatura ler sobre qualquer foto */
-.scrim{{left:0;top:1400px;width:{W}px;height:520px;
+/* scrim inferior para a assinatura ler sobre a foto */
+.scrim{{left:0;top:1330px;width:{W}px;height:590px;
        background:linear-gradient(to bottom,
-         rgba(35,31,27,0) 0%, rgba(35,31,27,.55) 55%, rgba(35,31,27,.80) 100%);}}
+         rgba(30,26,22,0) 0%, rgba(30,26,22,.42) 42%,
+         rgba(30,26,22,.74) 72%, rgba(30,26,22,.88) 100%);}}
 
 /* ---------------------------------------------------------- cabecalho */
 .marca{{left:0;top:150px;width:{W}px;text-align:center;
@@ -117,12 +149,12 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
        font-weight:250;font-size:84px;line-height:1.02;letter-spacing:.010em;}}
 
 /* ---------------------------------------------------------- assinatura */
-.regua2{{left:496px;top:1556px;width:88px;height:1px;
+.regua2{{left:496px;top:1512px;width:88px;height:1px;
         background:{AREIA};opacity:.45;}}
-.assina{{left:140px;top:1594px;width:800px;text-align:center;
+.assina{{left:140px;top:1550px;width:800px;text-align:center;
         font-weight:300;font-size:28px;line-height:1.35;letter-spacing:.14em;
         text-indent:.14em;}}
-.arroba{{left:0;top:1656px;width:{W}px;text-align:center;
+.arroba{{left:0;top:1612px;width:{W}px;text-align:center;
         font-weight:400;font-size:22px;letter-spacing:.34em;text-indent:.34em;
         color:{AREIA};text-transform:none;}}
 </style>
@@ -130,7 +162,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
 <div class="page" data-document-role="page" data-label="Dia dos Pais - Stories"
      data-canvas-width="{W}" data-canvas-height="{H}">
   <img class="bg" src="data:image/jpeg;base64,{b64('bg_pais.jpg')}" alt="Fundo de estúdio">
-{camada_foto}  <div class="scrim"></div>
+  <div class="scrim"></div>
 
   <div class="marca">{MARCA}</div>
   <div class="regua"></div>

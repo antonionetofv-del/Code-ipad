@@ -13,9 +13,13 @@ texto fino tracked — mas paleta, tipografia, layout e copy são originais.
 | `dia-dos-pais-stories-1080x1920.png` | Export para publicação. |
 | `src/build_pais.py` | Gera o fundo de estúdio e o HTML. Todo o texto está no topo do arquivo. |
 | `src/render.py` | Exporta qualquer HTML de design para PNG via Chromium. |
-| `src/bg_pais.jpg` | Ciclorama gerado (não editar à mão — sai do build). |
+| `src/bg_pais.jpg` | Ciclorama + foto já compostos (não editar à mão — sai do build). |
 | `src/jost-var.woff2` | Jost variable 100–900, subset latin (SIL Open Font License). |
-| `src/foto.jpg` | **Opcional.** Foto de campanha. Se existir, entra automaticamente. |
+| `src/foto.jpg` | Foto de campanha. Se o arquivo existir, entra automaticamente. |
+
+**Crédito da imagem:** Adobe Stock, asset `639834895` — *"Portrait of happy casual older
+bearded man with glasses and gray hair smiling"*, licenciada pela conta Adobe da loja.
+Guardada aqui reduzida para 2160 px de largura (o build renderiza em 1080).
 
 ## Sistema
 
@@ -55,12 +59,31 @@ ASSINA  = 'As marcas que ele veste, em um lugar só.'
 ARROBA  = '@nomedaloja'
 ```
 
-## Colocar a foto de campanha
+## Trocar a foto de campanha
 
-Salve a foto como `src/foto.jpg` e rode o build. Ela entra em sangria, ocupando o terço
-inferior, com uma máscara em gradiente que dissolve o topo dentro do ciclorama — por isso
-funciona melhor com **foto de estúdio, fundo neutro liso, vertical, sujeito na metade de
-baixo do quadro**. O enquadramento se ajusta em `.foto { object-position }`.
+Salve a nova foto como `src/foto.jpg` e rode o build. Ela não é uma camada por cima do
+fundo: o build a compõe *dentro* do ciclorama, em cinco passos —
+
+1. neutraliza o fundo do estúdio da foto, usando o próprio fundo como referência de cinza;
+2. aplica o grade da campanha (empurra o neutro para o greige quente);
+3. casa a luminância da foto com a do ciclorama exatamente na linha da emenda;
+4. prolonga o fundo da foto para cima, para o degradê ter onde acontecer;
+5. funde com alfa em *smoothstep*, e só depois joga o grão por cima de tudo.
+
+É o passo 5 que faz a emenda sumir: foto e fundo terminam compartilhando a mesma textura.
+Por isso funciona melhor com **foto de estúdio, fundo neutro liso, vertical, sujeito
+enquadrado do peito para cima**.
+
+Dois parâmetros controlam o encaixe, no topo do `build_pais.py`:
+
+```python
+FOTO_TOPO_CABECA = 0.051   # onde a cabeça começa na foto (fração da altura)
+FOTO_CABECA_Y    = 946     # onde a cabeça deve cair no canvas
+FOTO_FUSAO       = 360     # altura do degradê de fusão, em px
+```
+
+Ao trocar a foto, meça `FOTO_TOPO_CABECA` na imagem nova — é o único valor que costuma
+mudar.
 
 ## Regenerar
 
