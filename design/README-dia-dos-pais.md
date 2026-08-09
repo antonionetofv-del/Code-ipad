@@ -5,10 +5,10 @@ preço nem produto). Direção **editorial minimalista**: ciclorama warm greige 
 proceduralmente, foto de campanha composta dentro dele e tipografia geométrica leve em
 caixa alta com muito respiro no topo.
 
-**A linha.** `CADA PAI TEM / SUA MARCA REGISTRADA.` — o nome da loja é o desfecho da
-frase. "Marca registrada" no sentido do jeito dele, aquilo que só aquele pai faz. Por
-isso o topo leva **só o símbolo** do logotipo, sem o lettering: quem diz o nome da marca
-na peça é o próprio título, e repetir o wordmark logo acima mataria a virada.
+**A linha.** `PERSONALIDADE / É O QUE ELE / VESTE MELHOR.` — personalidade e estilo na
+mesma frase, com o verbo *vestir* fazendo a ponte. É uma linha generosa vindo de uma loja
+de roupa: diz que o que veste melhor nele não está no cabide. O topo leva **só o símbolo**
+do logotipo, sem o lettering — a assinatura da marca fica na base, junto do cumprimento.
 
 ## Arquivos
 
@@ -45,9 +45,15 @@ O símbolo do logotipo entra com 240 px de largura, centralizado, a 150 px do to
 | Cor | Hex | Uso |
 | --- | --- | --- |
 | Creme | `#F3EFE7` | Título, assinatura da loja |
-| Areia | `#B9AC9B` | Rótulos, filetes, @ |
-| Ciclorama escuro | `#2A241F` | Topo e vinheta lateral |
-| Ciclorama claro | `#ADA08F` | Centro do refletor e piso |
+| Areia | `#B9AC9B` | Filetes, @ |
+| Sombra | `#1E1C1C` | Cantos e topo |
+| Meio-tom | `#5C5348` | Corpo da parede |
+| Luz | `#B6A894` | Centro do refletor e piso |
+
+O ciclorama usa **três** pontos de cor, não dois: a sombra puxa de leve para o frio e a
+luz para o quente, e a rampa passa pelo meio-tom. Um degradê de dois pontos achata o
+fundo; com três ele ganha profundidade. Por cima, uma vinheta radial fecha os quatro
+cantos — é ela que sustenta a tipografia no topo.
 
 **Grade** — margem lateral 92 px. Símbolo no topo (fora da faixa de UI do Instagram),
 título em dois blocos com alinhamentos opostos (esquerda e depois direita), bloco de
@@ -58,8 +64,8 @@ assinatura terminando em y=1646 para não cair atrás da barra de resposta.
 Tudo fica no topo de `src/build_pais.py`:
 
 ```python
-LINHA_A = ['Cada pai tem']              # bloco alinhado à esquerda
-LINHA_B = ['sua marca', 'registrada.']  # bloco alinhado à direita
+LINHA_A = ['Personalidade']                  # bloco alinhado à esquerda
+LINHA_B = ['é o que ele', 'veste melhor.']   # bloco alinhado à direita
 ASSINA  = 'Feliz Dia dos Pais'
 ARROBA  = '@marcaregistrada'
 ```

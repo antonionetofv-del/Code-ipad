@@ -12,14 +12,17 @@ D = pathlib.Path(__file__).parent
 W, H = 1080, 1920
 
 # ------------------------------------------------------------------ conteudo
-LINHA_A  = ['Cada pai tem']              # bloco alinhado a esquerda
-LINHA_B  = ['sua marca', 'registrada.']  # bloco alinhado a direita
+LINHA_A  = ['Personalidade']                    # bloco alinhado a esquerda
+LINHA_B  = ['é o que ele', 'veste melhor.']     # bloco alinhado a direita
 ASSINA   = 'Feliz Dia dos Pais'
 ARROBA   = '@marcaregistrada'
 
 # ------------------------------------------------------------------- paleta
-ESCURO = np.array([0x2A, 0x24, 0x1F], np.float32)   # topo / vinheta lateral
-CLARO  = np.array([0xAD, 0xA0, 0x8F], np.float32)   # centro do refletor
+# Tres pontos, nao dois: a sombra puxa levemente para o frio e a luz para o
+# quente, entao o fundo ganha profundidade em vez de virar um degrade chapado.
+SOMBRA = np.array([0x1E, 0x1C, 0x1C], np.float32)   # cantos, topo
+MEIO   = np.array([0x5C, 0x53, 0x48], np.float32)   # meio-tom da parede
+LUZ    = np.array([0xB6, 0xA8, 0x94], np.float32)   # centro do refletor
 CREME  = '#F3EFE7'
 AREIA  = '#B9AC9B'
 FUNDO  = '#332E29'   # cor de referencia para os scrims em CSS
@@ -40,8 +43,37 @@ sombra = -0.13 * np.exp(-((v - 0.682) ** 2) / (2 * 0.030 ** 2))
 topo = np.clip((v - 0.02) / 0.34, 0.0, 1.0) ** 0.85
 lados = 1.0 - np.clip((np.abs(u - 0.5) - 0.24) / 0.26, 0.0, 1.0) ** 1.3 * 0.45
 
-k = np.clip((0.05 + 0.86 * pool * topo + 0.30 * horizonte + sombra) * lados, 0, 1)
-base = ESCURO[None, None, :] * (1 - k[:, :, None]) + CLARO[None, None, :] * k[:, :, None]
+# vinheta radial: fecha os quatro cantos e sustenta a tipografia no topo
+r = np.sqrt(((u - 0.5) * 1.05) ** 2 + ((v - 0.52) * 0.80) ** 2) / 0.62
+vinheta = 1.0 - 0.38 * np.clip(r, 0, 1) ** 1.9
+
+k = np.clip((0.05 + 0.86 * pool * topo + 0.30 * horizonte + sombra) * lados * vinheta, 0, 1)
+
+# rampa em dois trechos, passando pelo meio-tom
+t2 = np.clip(k / 0.5, 0, 1)[:, :, None]
+t3 = np.clip((k - 0.5) / 0.5, 0, 1)[:, :, None]
+base = (SOMBRA[None, None, :] * (1 - t2) + MEIO[None, None, :] * t2) * (1 - t3) \
+     + LUZ[None, None, :] * t3
+
+
+# ---------------------------------------------------------------- simbolo
+# O logotipo do cliente vem preto sobre branco, com o lettering embaixo. Aqui
+# so o simbolo e recortado: ele serve duas vezes, como marca em creme no topo
+# e como textura gigante no fundo.
+SIMBOLO_CAIXA = (150, 0, 952, 620)   # recorte do simbolo no arquivo original
+
+lg = np.asarray(Image.open(D / 'logo_marca_registrada.png').convert('RGBA')
+                .crop(SIMBOLO_CAIXA)).astype(np.float32)
+cobertura = (1.0 - lg[:, :, :3].mean(2) / 255.0) * (lg[:, :, 3] / 255.0)
+
+simbolo = np.zeros(lg.shape, np.uint8)
+simbolo[:, :, 0], simbolo[:, :, 1], simbolo[:, :, 2] = (
+    int(CREME[1:3], 16), int(CREME[3:5], 16), int(CREME[5:7], 16))
+simbolo[:, :, 3] = np.clip(cobertura * 255, 0, 255).astype(np.uint8)
+Image.fromarray(simbolo, 'RGBA').save(D / 'simbolo_creme.png')
+
+SIMBOLO_L = 240                                       # largura na arte, em px
+SIMBOLO_A = round(SIMBOLO_L * lg.shape[0] / lg.shape[1])
 
 
 def octave(scale, amp):
@@ -105,24 +137,6 @@ textura = (mottle + grain)[:, :, None] * (0.45 + 0.55 * k[:, :, None])
 
 Image.fromarray(np.clip(base + textura, 0, 255).astype(np.uint8)) \
      .save(D / 'bg_pais.jpg', quality=95)
-
-# ---------------------------------------------------------------- simbolo
-# O logotipo do cliente vem preto sobre branco, com o lettering embaixo. Aqui
-# so o simbolo e recortado e repintado em creme, porque quem diz o nome da
-# marca na peca e o proprio titulo.
-SIMBOLO_CAIXA = (150, 0, 952, 620)   # recorte do simbolo no arquivo original
-
-lg = np.asarray(Image.open(D / 'logo_marca_registrada.png').convert('RGBA')
-                .crop(SIMBOLO_CAIXA)).astype(np.float32)
-cobertura = (1.0 - lg[:, :, :3].mean(2) / 255.0) * (lg[:, :, 3] / 255.0)
-simbolo = np.zeros(lg.shape, np.uint8)
-simbolo[:, :, 0], simbolo[:, :, 1], simbolo[:, :, 2] = (
-    int(CREME[1:3], 16), int(CREME[3:5], 16), int(CREME[5:7], 16))
-simbolo[:, :, 3] = np.clip(cobertura * 255, 0, 255).astype(np.uint8)
-Image.fromarray(simbolo, 'RGBA').save(D / 'simbolo_creme.png')
-
-SIMBOLO_L = 240                                       # largura na arte, em px
-SIMBOLO_A = round(SIMBOLO_L * lg.shape[0] / lg.shape[1])
 
 # ------------------------------------------------------------------ assets
 def b64(name):
