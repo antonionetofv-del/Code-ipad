@@ -5,25 +5,27 @@ preço nem produto). Direção **editorial minimalista**: ciclorama warm greige 
 proceduralmente, foto de campanha composta dentro dele e tipografia geométrica leve em
 caixa alta com muito respiro no topo.
 
-**A linha.** `O ESTILO DELE / NINGUÉM COPIA. / MARCA REGISTRADA.`
+**O texto.**
 
-Escolhida depois de mapear o que a categoria está usando em 2026:
+> Feliz Dia dos Pais aos pais que ensinam
+> com o que fazem: a hora de acordar,
+> a palavra que se cumpre, o serviço bem feito.
+> Hoje o dia é todo deles.
+>
+> Porque um dia a gente se pega no jeito de andar,
+> na mão no bolso, na camisa dobrada igual.
 
-| Território | Quem ocupa |
-| --- | --- |
-| Decodificar o presente | C&A, *"A gente traduz o que seu pai quer"* |
-| Estilo herdado entre gerações | Vans, *"Clássicos criam Clássicos"*; Aramis |
-| Inversão do presente | Aramis, *"Você é o maior presente que seu pai já recebeu"* |
-| Paternidade presente | Reserva, *"Quem cuida, ama"*; Hering; Lupo |
-| Humor do cotidiano | Renner; Lupo, *"Pergunta para sua mãe"* |
+Abre com o desejo e fecha na herança — mas a herança aparece como **gestos**, não como
+a palavra. Dizer "isso é herança" explica o sentimento; mostrar a mão no bolso e a camisa
+dobrada igual faz o leitor chegar nele sozinho, que é o que emociona.
 
-"Estilo que se herda" está saturado — Vans e Aramis ocupam esse terreno com peso de mídia.
-A saída foi usar o ativo que nenhum concorrente pode copiar: o próprio nome da loja. Marca
-registrada é, por definição, aquilo que ninguém pode copiar, e a frase fecha nele. Nenhuma
-outra loja consegue rodar essa linha.
+O "Porque" no início do remate liga as duas metades: o dia é deles *porque* o jeito deles
+segue vivo em quem ficou.
 
-O topo leva **só o símbolo** do logotipo, sem o lettering — quem diz o nome é o remate da
-frase, e repetir o wordmark acima gastaria a virada antes dela chegar.
+O desejo agora abre o texto, então a assinatura da base perdeu o "Feliz Dia dos Pais" e
+ficou só o `@` — repetido, o desejo apareceria duas vezes em quinze segundos de Stories.
+
+O topo leva **só o símbolo** do logotipo, sem o lettering.
 
 ## Arquivos
 

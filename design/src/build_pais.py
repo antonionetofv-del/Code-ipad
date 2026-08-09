@@ -15,15 +15,17 @@ W, H = 1080, 1920
 # Mensagem em caixa alta e baixa: texto longo em versal nao se le. A caixa
 # alta tracked fica so na assinatura. As quebras sao manuais, para controlar
 # o rio do paragrafo.
-# Uma frase por linha: assim a anafora ("Ha quem... Ha quem...") abre duas
-# linhas no mesmo ponto e o paralelismo fica visivel, nao so audivel.
-MENSAGEM = ['Há quem ensine sem dizer uma palavra.',
-            'Há quem eduque só de estar presente.']
-# O remate sai do bloco e ganha respiro: com o mesmo espacamento das duas
-# linhas paralelas, ele era lido como a terceira do par, e nao como desfecho.
-REMATE = 'Hoje é o dia deles.'
-ASSINA   = 'Feliz Dia dos Pais'
-ARROBA   = '@marcaregistrada'
+MENSAGEM = ['Feliz Dia dos Pais aos pais que ensinam',
+            'com o que fazem: a hora de acordar,',
+            'a palavra que se cumpre, o serviço bem feito.',
+            'Hoje o dia é todo deles.']
+# O remate sai do bloco e ganha respiro: colado, seria lido como continuacao
+# da lista, e nao como a virada que e.
+REMATE = ['Porque um dia a gente se pega no jeito de andar,',
+          'na mão no bolso, na camisa dobrada igual.']
+# Sem "Feliz Dia dos Pais" aqui: o desejo agora abre o texto, e repeti-lo na
+# base gastaria duas vezes a mesma coisa. Fica so o arroba.
+ARROBA = '@marcaregistrada'
 
 # ------------------------------------------------------------------- paleta
 # Tres pontos, nao dois: a sombra puxa levemente para o frio e a luz para o
@@ -184,17 +186,14 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
 
 /* ---------------------------------------------------------- titulo */
 .msg,.remate{{left:92px;width:896px;text-align:left;text-transform:none;
-      font-weight:300;font-size:48px;line-height:1.52;letter-spacing:.004em;}}
-.msg{{top:420px;}}
-.remate{{top:598px;}}
+      font-weight:300;font-size:38px;line-height:1.5;letter-spacing:.004em;}}
+.msg{{top:372px;}}
+.remate{{top:626px;}}
 
 /* ---------------------------------------------------------- assinatura */
-.regua2{{left:496px;top:1512px;width:88px;height:1px;
+.regua2{{left:496px;top:1548px;width:88px;height:1px;
         background:{AREIA};opacity:.45;}}
-.assina{{left:140px;top:1550px;width:800px;text-align:center;
-        font-weight:300;font-size:28px;line-height:1.35;letter-spacing:.14em;
-        text-indent:.14em;}}
-.arroba{{left:0;top:1612px;width:{W}px;text-align:center;
+.arroba{{left:0;top:1592px;width:{W}px;text-align:center;
         font-weight:400;font-size:22px;letter-spacing:.34em;text-indent:.34em;
         color:{AREIA};text-transform:none;}}
 </style>
@@ -208,10 +207,9 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
        alt="Marca Registrada">
 
   <div class="msg">{BR.join(MENSAGEM)}</div>
-  <div class="remate">{REMATE}</div>
+  <div class="remate">{BR.join(REMATE)}</div>
 
   <div class="regua2"></div>
-  <div class="assina">{ASSINA}</div>
   <div class="arroba">{ARROBA}</div>
 </div>
 """
