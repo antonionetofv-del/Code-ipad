@@ -25,7 +25,7 @@ REMATE = ['Porque um dia a gente repete o jeito de levar a vida',
           'e um pouco do estilo que já era dele.']
 # Sem "Feliz Dia dos Pais" aqui: o desejo agora abre o texto, e repeti-lo na
 # base gastaria duas vezes a mesma coisa. Fica so o arroba.
-ARROBA = '@marcaregistrada'
+ARROBA = '@marcaregistradamr'
 
 # ------------------------------------------------------------------- paleta
 # Tres pontos, nao dois: a sombra puxa levemente para o frio e a luz para o
@@ -105,7 +105,7 @@ FOTO_FUSAO = 360           # altura do degrade de fusao, em px
 FOTO_REF = (0.02, 0.10, 0.05, 0.85)   # retalho de fundo liso, para o cinza de
                                       # referencia: (y0, y1, x0, x1) em fracao
 
-foto_src = D / 'foto.jpg'
+foto_src = D / 'foto.png' if (D / 'foto.png').exists() else D / 'foto.jpg'
 tem_foto = foto_src.exists()
 
 if tem_foto:
@@ -125,6 +125,15 @@ if tem_foto:
     alt = int(round(W * ph.height / ph.width))
     p = np.asarray(Image.fromarray(np.clip(p, 0, 255).astype(np.uint8))
                    .resize((W, alt), Image.LANCZOS)).astype(np.float32)
+
+    # O print chegou comprimido e mole. Um filtro bilateral leve derruba o
+    # bloco de JPEG sem chapar a pele, e so entao a mascara de nitidez entra —
+    # nessa ordem, senao a nitidez amplificaria justamente o artefato.
+    import cv2
+    p = cv2.bilateralFilter(np.clip(p, 0, 255).astype(np.uint8), 5, 26, 6).astype(np.float32)
+    borrado = np.asarray(Image.fromarray(p.astype(np.uint8))
+                         .filter(ImageFilter.GaussianBlur(1.2))).astype(np.float32)
+    p = np.clip(p + (p - borrado) * 0.62, 0, 255)
 
     topo = int(round(FOTO_CABECA_Y - FOTO_TOPO_CABECA * alt))
 
@@ -154,7 +163,7 @@ grain = rng.normal(0, 2.0, (H, W)).astype(np.float32)  # grao de filme
 textura = (mottle + grain)[:, :, None] * (0.45 + 0.55 * k[:, :, None])
 
 Image.fromarray(np.clip(base + textura, 0, 255).astype(np.uint8)) \
-     .save(D / 'bg_pais.jpg', quality=95)
+     .save(D / 'bg_pais.jpg', quality=97, subsampling=0)
 
 # ------------------------------------------------------------------ assets
 def b64(name):
@@ -191,9 +200,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
 .remate{{top:630px;}}
 
 /* ---------------------------------------------------------- assinatura */
-.regua2{{left:496px;top:1548px;width:88px;height:1px;
-        background:{AREIA};opacity:.45;}}
-.arroba{{left:0;top:1592px;width:{W}px;text-align:center;
+.arroba{{left:0;top:1568px;width:{W}px;text-align:center;
         font-weight:400;font-size:22px;letter-spacing:.34em;text-indent:.34em;
         color:{AREIA};text-transform:none;}}
 </style>
@@ -209,7 +216,6 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
   <div class="msg">{BR.join(MENSAGEM)}</div>
   <div class="remate">{BR.join(REMATE)}</div>
 
-  <div class="regua2"></div>
   <div class="arroba">{ARROBA}</div>
 </div>
 """

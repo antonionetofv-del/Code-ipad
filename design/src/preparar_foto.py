@@ -40,6 +40,7 @@ peso = cv2.GaussianBlur(cv2.dilate(mascara, np.ones((25, 25), np.uint8)),
                         (0, 0), 12).astype(np.float32)[:, :, None] / 255.0
 limpo = (limpo * (1 - peso) + suave * peso).astype(np.uint8)
 
-Image.fromarray(cv2.cvtColor(limpo, cv2.COLOR_BGR2RGB)).save(D / 'foto.jpg', quality=94,
-                                                             subsampling=0)
-print(f'foto.jpg {cartao.size} | pixels tratados: {int((mascara > 0).sum()):,}')
+# PNG, nao JPEG: o print ja veio comprimido pelo Instagram, e cada gravacao
+# em JPEG a mais soma artefato sobre artefato.
+Image.fromarray(cv2.cvtColor(limpo, cv2.COLOR_BGR2RGB)).save(D / 'foto.png')
+print(f'foto.png {cartao.size} | pixels tratados: {int((mascara > 0).sum()):,}')

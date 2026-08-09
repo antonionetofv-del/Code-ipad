@@ -44,7 +44,7 @@ O topo leva **só o símbolo** do logotipo, sem o lettering.
 | `src/jost-var.woff2` | Jost variable 100–900, subset latin (SIL Open Font License). |
 | `src/logo_marca_registrada.png` | Logotipo original do cliente, como recebido. |
 | `src/simbolo_creme.png` | Símbolo recortado e repintado em creme (sai do build). |
-| `src/foto.jpg` | Foto de campanha. Se o arquivo existir, entra automaticamente. |
+| `src/foto.png` | Foto de campanha, sem perda. O build prefere o PNG ao JPEG quando existe. |
 
 **Origem da imagem:** foto de campanha fornecida pelo cliente, recebida como print de
 tela de um Stories. O cliente informou ter autorização de uso. O print original trazia a
@@ -91,13 +91,12 @@ assinatura terminando em y=1646 para não cair atrás da barra de resposta.
 Tudo fica no topo de `src/build_pais.py`:
 
 ```python
-LINHA_A = ['Personalidade']                  # bloco alinhado à esquerda
-LINHA_B = ['é o que ele', 'veste melhor.']   # bloco alinhado à direita
-ASSINA  = 'Feliz Dia dos Pais'
-ARROBA  = '@marcaregistrada'
+MENSAGEM = [...]   # bloco de abertura
+REMATE   = [...]   # a virada, com respiro antes
+ARROBA  = '@marcaregistradamr'
 ```
 
-O `@` está como suposição — confirmar o handle real antes de publicar.
+O `@` é `@marcaregistradamr`, confirmado pelo cliente.
 
 ## Trocar a foto de campanha
 
@@ -126,6 +125,21 @@ FOTO_REF = (0.02, 0.10, 0.05, 0.85)   # retalho de fundo liso para o cinza de re
 Ao trocar a foto, meça `FOTO_TOPO_CABECA` na imagem nova e confira se `FOTO_REF` ainda cai
 em fundo limpo — são os dois valores que mudam. Se a foto for um grupo em vez de um
 retrato único, o título provavelmente precisa subir junto.
+
+## Qualidade da imagem
+
+O material de origem é um print de Stories, ou seja, já chegou comprimido pelo Instagram.
+Três medidas recuperam o que dá para recuperar:
+
+1. `preparar_foto.py` grava em **PNG**, não JPEG — o fluxo antigo somava duas gerações de
+   compressão sobre um arquivo que já tinha uma.
+2. Depois do redimensionamento, um **filtro bilateral leve** derruba o bloco de JPEG sem
+   chapar a pele, e **só então** entra a máscara de nitidez. Nessa ordem, e não na inversa:
+   afiar antes de limpar amplificaria justamente o artefato.
+3. O fundo composto é gravado em qualidade 97 sem subamostragem de croma.
+
+Não dá para inventar detalhe que o print não tem — o que existe aqui é recuperação, não
+ampliação. Para qualidade real, o caminho é o arquivo original da foto, não o print.
 
 ## Regenerar
 
