@@ -51,16 +51,18 @@ sem virar palavra de ordem.
 | `src/foto_alkimin.jpg` | Foto de campanha (Adobe Stock, ver crédito abaixo). |
 | `src/foto_grade.jpg` | A mesma foto já graduada (sai do build). |
 
-**Crédito da imagem:** Adobe Stock `676335764` — *"Instructor teaching the trade to a metal
-industrial factory worker"*, licenciada pela conta Adobe da loja. Guardada reduzida para
-2400 px de largura.
+**Origem da imagem:** fornecida pelo cliente. Guardada reduzida para 2400 px de largura
+(o build renderiza a 960).
 
-Escolhida entre quatro licenciadas porque é a única em que a diferença de gerações se lê:
-o mais velho opera a máquina, o mais novo observa. De lado, máquina real, ninguém posando
-para a câmera — e os uniformes azuis caem na cor da marca por acaso feliz. As descartadas:
-`1390913255` (três gerações em marcenaria, mas com criança), `447723348` (pátio de sucata
-real, porém um trabalhador só, de frente e sorrindo) e `616200017` (dois homens da mesma
-idade, sem leitura de gerações).
+**O tratamento é leve de propósito: `DESSAT = 0.28`, sem esfriar.** Uma versão anterior
+desta peça usava uma foto de banco fria e industrial, e ali dessaturar 55% e puxar para o
+azul não custava nada. Esta é quente e humana, e é a temperatura que faz ela funcionar num
+Dia dos Pais — o tratamento pesado a deixava cinza e sem vida. Os 28% servem só para
+acalmar o xadrez vermelho ao lado do card azul. Contra o concreto neutro, o quente da foto
+vira o foco da peça.
+
+O enquadramento é `object-position: center 35%`, que dá folga acima da cabeça do pai — em
+42% ela encostava na borda superior da moldura.
 
 O fundo `bg_story.jpg` e as fontes são os mesmos já versionados para os outros posts da
 Alkimin.

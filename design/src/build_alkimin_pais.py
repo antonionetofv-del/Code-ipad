@@ -40,13 +40,15 @@ LIME  = '#74C96A'   # verde clareado, para ler sobre o navy
 WHITE = '#FFFFFF'
 
 # -------------------------------------------------------------------- foto
-# Dessaturada e levemente esfriada, para o assunto ser o trabalho e nao a
-# fotografia. Sem degrade nem veu: as bordas agora sao da moldura.
+# Dessaturacao leve, so para acalmar o xadrez vermelho ao lado do card azul.
+# Sem esfriar: a foto e quente e humana, e e essa temperatura que faz ela
+# funcionar num Dia dos Pais. Contra o concreto neutro, o quente vira o foco.
+DESSAT = 0.28
+
 ph = Image.open(D / 'foto_alkimin.jpg').convert('RGB')
 p = np.asarray(ph).astype(np.float32)
 cinza = p @ np.array([0.299, 0.587, 0.114], np.float32)
-p = p * 0.45 + cinza[:, :, None] * 0.55
-p *= np.array([0.94, 0.97, 1.04], np.float32)
+p = p * (1 - DESSAT) + cinza[:, :, None] * DESSAT
 Image.fromarray(np.clip(p, 0, 255).astype(np.uint8)).save(D / 'foto_grade.jpg', quality=93)
 
 # ------------------------------------------------------------------- assets
@@ -131,7 +133,7 @@ pagina(
     f""".bloco{{left:100px;top:50px;width:960px;height:560px;
        background:{GREEN};border-radius:44px;}}
 .foto{{left:60px;top:90px;width:960px;height:560px;
-      border-radius:44px;object-fit:cover;object-position:center 42%;}}""",
+      border-radius:44px;object-fit:cover;object-position:center 35%;}}""",
     """  <div class="bloco"></div>
   <img class="foto" src="data:image/jpeg;base64,{FOTO}" alt="Dois trabalhadores em uma máquina">
 """.replace('{FOTO}', b64('foto_grade.jpg')),
@@ -151,7 +153,7 @@ pagina(
           box-shadow:0 20px 42px rgba(0,0,0,.32);
           transform:rotate(-2.4deg);}
 .polaroid .foto{position:absolute;left:28px;top:28px;width:584px;height:437px;
-      object-fit:cover;object-position:center 42%;}""",
+      object-fit:cover;object-position:center 35%;}""",
     """  <div class="polaroid">
     <img class="foto" src="data:image/jpeg;base64,{FOTO}" alt="Dois trabalhadores em uma máquina">
   </div>
