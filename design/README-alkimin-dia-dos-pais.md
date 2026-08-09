@@ -12,19 +12,26 @@ elemento de assinatura; o que muda dentro dele é o conteúdo.
 
 > **De pai para filho**
 >
-> Ele ensinou a enxergar valor onde os outros só veem sucata. E a não largar no meio do
-> caminho. Hoje a segunda geração toca o que ele começou.
+> A todos os pais que ensinam sem perceber:
+> o que vocês começaram segue firme.
+> Não foi sorte, foi exemplo honesto.
+> E a gente aprendeu a fazer igual.
 >
-> **Feliz Dia dos Pais** · 2ª geração
+> **Feliz Dia dos Pais**
 
-Escrito na voz do ofício — concreto e direto. O registro editorial e econômico usado na
-peça da Marca Registrada (`README-dia-dos-pais.md`) soaria falso aqui: são clientes com
-públicos e tons opostos, ainda que a data seja a mesma.
+A mensagem fala **com** os pais, não *sobre* um pai — daí o "vocês". Para um Stories que o
+cliente vê, endereçar funciona melhor do que narrar.
 
-A frase cobre os três pontos do briefing sem listá-los: **foco** ("enxergar valor onde os
-outros só veem sucata"), **persistência** ("não largar no meio do caminho") e **legado**
-("a segunda geração toca o que ele começou"). O trocadilho está em *sucata* — a palavra
-que descreve o material do negócio é a mesma que descreve o que os outros deixam passar.
+O desejo é a última linha da copy, mas entra na peça como a assinatura verde, em corpo
+maior. Assim ele aparece uma vez só e ainda ganha destaque.
+
+Escrito na voz do ofício — concreto e direto, vocabulário simples. O registro editorial e
+econômico usado na peça da Marca Registrada (`README-dia-dos-pais.md`) soaria falso aqui:
+são clientes com públicos e tons opostos, ainda que a data seja a mesma.
+
+Nada de "sucata", "ferro velho" ou "segunda geração" no texto: o legado aparece por dentro
+("o que vocês começaram segue firme"), não anunciado. Persistência e exemplo estão ditos
+sem virar palavra de ordem.
 
 ## Arquivos
 
@@ -43,14 +50,13 @@ versionados para os outros posts da Alkimin — nada de novo foi criado.
 | Elemento | Posição |
 | --- | --- |
 | Logo | x 70, y 300, largura 380 |
-| Card azul | x 60, y 620, 960×820, raio 53 |
+| Card azul | x 60, y 620, 960×785, raio 53 |
 | Título (Anton 104 px) | x 124, y 690 |
 | Filete verde | x 124, y 942, 176×4 |
 | Mensagem (Poppins 400, 34 px) | x 124, y 1002 |
-| Assinatura (Poppins 700, 40 px) | x 124, y 1268 |
-| Selo (Poppins 600, 25 px) | x 124, y 1334 |
+| Assinatura (Poppins 700, 40 px) | x 124, y 1280 |
 
-O card termina em y=1440, bem acima da barra de resposta do Instagram. As marcas d'água
+O card termina em y=1405, bem acima da barra de resposta do Instagram. As marcas d'água
 inferiores (y=1680) ficam atrás dela de propósito — são textura, não informação.
 
 ## Regenerar

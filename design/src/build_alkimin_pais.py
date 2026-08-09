@@ -16,10 +16,10 @@ W, H = 1080, 1920
 TITULO = ['De pai', 'para filho']
 # Quebras manuais: o texto e o argumento da peca, entao o rio dele nao pode
 # ficar a cargo do navegador.
-MENSAGEM = ['Ele ensinou a enxergar valor onde os',
-            'outros só veem sucata. E a não largar',
-            'no meio do caminho. Hoje a segunda',
-            'geração toca o que ele começou.']
+MENSAGEM = ['A todos os pais que ensinam sem perceber:',
+            'o que vocês começaram segue firme.',
+            'Não foi sorte, foi exemplo honesto.',
+            'E a gente aprendeu a fazer igual.']
 ASSINA = 'Feliz Dia dos Pais'
 
 # ------------------------------------------------------------------- paleta
@@ -66,7 +66,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
 .chev{{left:648px;top:70px;width:452px;height:330px;}}
 .logo{{left:70px;top:300px;width:380px;}}
 
-.card{{left:60px;top:620px;width:960px;height:820px;
+.card{{left:60px;top:620px;width:960px;height:785px;
       background:{CARD};border-radius:53px;}}
 
 .titulo{{left:124px;top:690px;width:812px;
@@ -77,11 +77,8 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
 .msg{{left:124px;top:1002px;width:812px;
      font-weight:400;font-size:34px;line-height:1.52;color:{WHITE};}}
 
-.assina{{left:124px;top:1268px;width:812px;
+.assina{{left:124px;top:1280px;width:812px;
         font-weight:700;font-size:40px;color:{GREEN};letter-spacing:.5px;}}
-.selo{{left:124px;top:1334px;width:812px;
-      font-weight:600;font-size:25px;color:{WHITE};opacity:.72;
-      letter-spacing:3.4px;text-transform:uppercase;}}
 </style>
 
 <div class="page" data-document-role="page" data-label="Dia dos Pais - Stories"
@@ -104,7 +101,6 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
   <div class="rule"></div>
   <div class="msg">{BR.join(MENSAGEM)}</div>
   <div class="assina">{ASSINA}</div>
-  <div class="selo">2ª geração</div>
 </div>
 """
 
