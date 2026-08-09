@@ -15,11 +15,11 @@ W, H = 1080, 1920
 # Mensagem em caixa alta e baixa: texto longo em versal nao se le. A caixa
 # alta tracked fica so na assinatura. As quebras sao manuais, para controlar
 # o rio do paragrafo.
-MENSAGEM = ['A gente cresce, ganha altura,',
-            'aprende a se virar sozinho.',
-            'Mas tem dia em que o lugar',
-            'mais seguro do mundo',
-            'ainda é ao lado dele.']
+MENSAGEM = ['Hoje é o dia de quem segurou',
+            'a nossa mão até a gente aprender',
+            'a caminhar sozinho. E que continua',
+            'por perto, para o caso de a gente',
+            'precisar segurar de novo.']
 ASSINA   = 'Feliz Dia dos Pais'
 ARROBA   = '@marcaregistrada'
 
@@ -182,7 +182,7 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
 
 /* ---------------------------------------------------------- titulo */
 .msg{{left:92px;top:392px;width:920px;text-align:left;text-transform:none;
-      font-weight:300;font-size:46px;line-height:1.36;letter-spacing:.004em;}}
+      font-weight:300;font-size:44px;line-height:1.36;letter-spacing:.004em;}}
 
 /* ---------------------------------------------------------- assinatura */
 .regua2{{left:496px;top:1512px;width:88px;height:1px;
