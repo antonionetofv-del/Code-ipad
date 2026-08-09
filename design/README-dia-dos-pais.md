@@ -12,12 +12,20 @@ caixa alta com muito respiro no topo.
 > a palavra que se cumpre, o serviço bem feito.
 > Hoje o dia é todo deles.
 >
-> Porque um dia a gente se pega no jeito de andar,
-> na mão no bolso, na camisa dobrada igual.
+> Porque um dia alguém aponta o jeito de levar a vida,
+> a mão no bolso, o estilo que já era dele.
 
-Abre com o desejo e fecha na herança — mas a herança aparece como **gestos**, não como
-a palavra. Dizer "isso é herança" explica o sentimento; mostrar a mão no bolso e a camisa
-dobrada igual faz o leitor chegar nele sozinho, que é o que emociona.
+Abre com o desejo e fecha na herança — mas a herança aparece como **gestos**, não como a
+palavra. Dizer "isso é herança" explica o sentimento; mostrar a mão no bolso faz o leitor
+chegar nele sozinho, que é o que emociona.
+
+Os três itens do remate descem de escala de propósito: *levar a vida* (grande e abstrato),
+*a mão no bolso* (pequeno e concreto), *o estilo* (o meio-termo, e a ponte para uma loja de
+roupa). É essa descida que dá ritmo à lista.
+
+Quem aponta é **outra pessoa**, não o próprio filho: ninguém descobre sozinho que herdou um
+gesto — alguém comenta. Uma versão anterior dizia "a gente se pega no jeito de andar", e
+além de soar torto, punha o filho percebendo por conta própria, que não é como acontece.
 
 O "Porque" no início do remate liga as duas metades: o dia é deles *porque* o jeito deles
 segue vivo em quem ficou.
