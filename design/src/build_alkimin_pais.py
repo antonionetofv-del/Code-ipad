@@ -8,6 +8,8 @@ sendo o elemento de assinatura; o que muda dentro dele e o conteudo.
     python3 src/build_alkimin_pais.py
 """
 import base64, pathlib
+from PIL import Image
+import numpy as np
 
 D = pathlib.Path(__file__).parent
 W, H = 1080, 1920
@@ -26,6 +28,41 @@ ASSINA = 'Feliz Dia dos Pais'
 CARD  = '#121B6E'   # azul do card
 GREEN = '#74C96A'   # verde clareado, para ler sobre o navy
 WHITE = '#FFFFFF'
+
+# -------------------------------------------------------------------- foto
+# A foto entra como faixa no topo e derrete no concreto por um degrade, para
+# nao criar uma linha reta cortando a peca. Fica dessaturada e puxada para o
+# frio: o assunto e o trabalho, nao a foto.
+FOTO_H, FOTO_FUSAO = 760, 140
+
+fundo = Image.open(D / 'bg_story.jpg').convert('RGB')
+base = np.asarray(fundo).astype(np.float32)
+
+ph = Image.open(D / 'foto_alkimin.jpg').convert('RGB')
+escala = max(W / ph.width, FOTO_H / ph.height)
+ph = ph.resize((round(ph.width * escala), round(ph.height * escala)), Image.LANCZOS)
+esq = (ph.width - W) // 2
+faixa = np.asarray(ph.crop((esq, 0, esq + W, FOTO_H))).astype(np.float32)
+
+cinza = faixa @ np.array([0.299, 0.587, 0.114], np.float32)
+faixa = faixa * 0.45 + cinza[:, :, None] * 0.55          # dessatura
+faixa *= np.array([0.94, 0.97, 1.04], np.float32)         # esfria de leve
+
+# escurece o topo: da superficie para o logo branco e afunda o quadro
+veu = np.clip((300 - np.arange(FOTO_H)) / 300, 0, 1).astype(np.float32) ** 1.4
+faixa *= (1 - 0.52 * veu)[:, None, None]
+
+alfa = np.clip((FOTO_H - np.arange(FOTO_H)) / FOTO_FUSAO, 0, 1).astype(np.float32)
+alfa = (alfa * alfa * (3 - 2 * alfa))[:, None, None]
+base[:FOTO_H] = base[:FOTO_H] * (1 - alfa) + faixa * alfa
+Image.fromarray(np.clip(base, 0, 255).astype(np.uint8)).save(D / 'bg_pais_alkimin.jpg', quality=94)
+
+# logo em branco, para ler sobre a foto
+lg = np.asarray(Image.open(D / 'logo.png').convert('RGBA')).astype(np.float32)
+branco = np.zeros(lg.shape, np.uint8)
+branco[:, :, :3] = 255
+branco[:, :, 3] = lg[:, :, 3].astype(np.uint8)
+Image.fromarray(branco, 'RGBA').save(D / 'logo_branco.png')
 
 # ------------------------------------------------------------------- assets
 def b64(name):
@@ -64,37 +101,29 @@ body{{display:flex;justify-content:center;align-items:flex-start;}}
 .wm-bl{{left:0px;top:1680px;}}
 .wm-br{{left:863px;top:1680px;}}
 .chev{{left:648px;top:70px;width:452px;height:330px;}}
-.logo{{left:70px;top:300px;width:380px;}}
+.logo{{left:680px;top:96px;width:330px;}}   /* sobre a maquina escura, longe dos rostos */
 
-.card{{left:60px;top:620px;width:960px;height:785px;
+.card{{left:60px;top:800px;width:960px;height:785px;
       background:{CARD};border-radius:53px;}}
 
-.titulo{{left:124px;top:690px;width:812px;
+.titulo{{left:124px;top:870px;width:812px;
         font-family:'Anton',sans-serif;font-weight:400;font-size:104px;
         line-height:1.02;color:{WHITE};letter-spacing:-0.5px;}}
-.rule{{left:124px;top:942px;width:176px;height:4px;background:{GREEN};}}
+.rule{{left:124px;top:1122px;width:176px;height:4px;background:{GREEN};}}
 
-.msg{{left:124px;top:1002px;width:812px;
+.msg{{left:124px;top:1182px;width:812px;
      font-weight:400;font-size:34px;line-height:1.52;color:{WHITE};}}
 
-.assina{{left:124px;top:1280px;width:812px;
+.assina{{left:124px;top:1460px;width:812px;
         font-weight:700;font-size:40px;color:{GREEN};letter-spacing:.5px;}}
 </style>
 
 <div class="page" data-document-role="page" data-label="Dia dos Pais - Stories"
      data-canvas-width="{W}" data-canvas-height="{H}">
-  <img class="bg" src="data:image/jpeg;base64,{b64('bg_story.jpg')}" alt="Fundo cinza texturizado">
-  <img class="wm wm-tl" src="{recycle_uri}" alt="">
+  <img class="bg" src="data:image/jpeg;base64,{b64('bg_pais_alkimin.jpg')}" alt="Pai e filho no trabalho">
   <img class="wm wm-bl" src="{recycle_uri}" alt="">
   <img class="wm wm-br" src="{recycle_uri}" alt="">
-  <svg class="chev" viewBox="0 0 452 330" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke="#3D823B" stroke-width="4" opacity=".52">
-      <path d="M104 262 L262 40 L330 40 L172 262 Z"/>
-      <path d="M212 262 L370 40 L438 40 L280 262 Z"/>
-      <path d="M-4 262 L154 40 L222 40 L64 262 Z"/>
-    </g>
-  </svg>
-  <img class="logo" src="data:image/png;base64,{b64('logo.png')}" alt="Ferro Velho Alkimin">
+  <img class="logo" src="data:image/png;base64,{b64('logo_branco.png')}" alt="Ferro Velho Alkimin">
 
   <div class="card"></div>
   <div class="titulo">{BR.join(TITULO)}</div>
