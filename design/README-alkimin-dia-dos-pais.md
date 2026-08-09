@@ -3,16 +3,23 @@
 Publicação comemorativa de Dia dos Pais para o Ferro Velho Alkimin, empresa de segunda
 geração. Não é peça de venda: não fala em preço, serviço nem sucata comprada.
 
-Montada **dentro do sistema visual que a marca já tem neste repositório** — mesmo fundo
-de concreto (`src/bg_story.jpg`), mesmo logo, mesmas marcas d'água de reciclagem e
-chevrons, mesma dupla Anton + Poppins, mesma paleta. O card azul continua sendo o
-elemento de assinatura; o que muda dentro dele é o conteúdo.
+Duas versões da mesma peça, geradas pelo mesmo build:
+
+- **`moldura`** — retângulo verde atrás, foto de cantos arredondados por cima, card do
+  texto por cima de tudo.
+- **`polaroid`** — a foto montada como polaroide, moldura branca com a borda de baixo mais
+  larga, levemente girada.
+
+Fundo de concreto (`src/bg_story.jpg`), card azul, Anton + Poppins e a paleta continuam
+sendo os do sistema da marca. **Sem logo e sem elementos de reciclagem**, a pedido — vale
+saber que, assim, a peça não carrega marca visível.
 
 ## O texto
 
 > **De pai para filho**
 >
-> A todos os pais que ensinam sem perceber:
+> A todos os pais que ensinam
+> com conselhos ou sem perceber:
 > o que vocês começaram segue firme.
 > Não foi sorte, foi exemplo honesto.
 > E a gente aprendeu a fazer igual.
@@ -37,13 +44,12 @@ sem virar palavra de ordem.
 
 | Arquivo | Descrição |
 | --- | --- |
-| `alkimin-dia-dos-pais.html` | Design final, autocontido. É este arquivo que o Canva/Express importa. |
-| `alkimin-dia-dos-pais-1080x1920.png` | Export para publicação. |
-| `src/build_alkimin_pais.py` | Gera o HTML. Todo o texto está no topo do arquivo. |
+| `alkimin-dia-dos-pais-moldura.html` · `-1080x1920.png` | Versão com retângulo verde e foto arredondada. |
+| `alkimin-dia-dos-pais-polaroid.html` · `-1080x1920.png` | Versão polaroide. |
+| `src/build_alkimin_pais.py` | Gera as duas. Todo o texto está no topo do arquivo. |
 | `src/render.py` | Exporta o HTML para PNG via Chromium. |
 | `src/foto_alkimin.jpg` | Foto de campanha (Adobe Stock, ver crédito abaixo). |
-| `src/bg_pais_alkimin.jpg` | Concreto + foto já compostos (sai do build). |
-| `src/logo_branco.png` | Logo repintado em branco para ler sobre a foto (sai do build). |
+| `src/foto_grade.jpg` | A mesma foto já graduada (sai do build). |
 
 **Crédito da imagem:** Adobe Stock `676335764` — *"Instructor teaching the trade to a metal
 industrial factory worker"*, licenciada pela conta Adobe da loja. Guardada reduzida para
@@ -56,33 +62,25 @@ para a câmera — e os uniformes azuis caem na cor da marca por acaso feliz. As
 real, porém um trabalhador só, de frente e sorrindo) e `616200017` (dois homens da mesma
 idade, sem leitura de gerações).
 
-Os assets (`bg_story.jpg`, `logo.png`, `recycle_paths.txt`, fontes) são os mesmos já
-versionados para os outros posts da Alkimin — nada de novo foi criado.
+O fundo `bg_story.jpg` e as fontes são os mesmos já versionados para os outros posts da
+Alkimin.
 
 ## Grade
 
-| Elemento | Posição |
-| --- | --- |
-| Faixa da foto | y 0 a 760, sangrando nas laterais |
-| Logo (branco) | x 680, y 96, largura 330 |
-| Card azul | x 60, y 800, 960×785, raio 53 |
-| Título (Anton 104 px) | x 124, y 870 |
-| Filete verde | x 124, y 1122, 176×4 |
-| Mensagem (Poppins 400, 34 px) | x 124, y 1182 |
-| Assinatura (Poppins 700, 40 px) | x 124, y 1460 |
+O bloco de texto é idêntico nas duas versões — o build calcula as posições a partir de
+onde o card começa, então mudar o texto não desalinha nada.
 
-O card termina em y=1585, acima da barra de resposta do Instagram. As marcas d'água
-inferiores (y=1680) ficam atrás dela de propósito — são textura, não informação.
+**Moldura** — foto em `x 60–1020, y 130–790`, raio 44. O retângulo verde fica em
+`x 100–1060, y 90–750`: sai do eixo em **dois lados vizinhos** (topo e direita), nunca nos
+quatro, que é o que faz o deslocamento parecer intencional em vez de erro de alinhamento.
+A foto se alinha à margem do card (60 px); quem sai do eixo é o verde. Card em `y 790–1586`.
 
-**A faixa da foto** não é uma imagem colada por cima: o build a compõe dentro do fundo de
-concreto, com um degradê em *smoothstep* nos últimos 140 px, para não deixar uma linha reta
-cortando a peça. A foto entra dessaturada em 55% e levemente esfriada — o assunto é o
-trabalho, não a fotografia. Os 300 px do topo levam um véu escuro que dá superfície ao logo
-branco.
+**Polaroide** — moldura em `x 160–920, y 110–810`, girada −2,4°, com a foto `696×520`
+recuada 32 px de três lados e 148 px embaixo. A foto vai **dentro** da div da moldura, não
+ao lado dela: assim a rotação é uma só e as duas nunca se desencontram. Sombra única, e não
+uma pilha — o importador do Express não lida bem com várias. Card em `y 840–1620`.
 
-O logo foi para a direita, sobre a máquina escura: à esquerda ele caía em cima do rosto do
-trabalhador mais novo. Os chevrons verdes e a marca d'água superior saíram — com a foto no
-topo, virariam ruído.
+Os dois cards terminam acima de y=1670, onde começa a barra de resposta do Instagram.
 
 ## Regenerar
 
