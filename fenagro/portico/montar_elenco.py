@@ -26,7 +26,7 @@ ESVANECE_FILEIRA = 150  # idem no pe de cada fileira
 FILEIRAS = [
     [("b-chapeu-marrom-xadrez", 1.00), ("artista-chapeu-preto", 0.96)],
     [("c-chapeu-marrom-oculos", 0.92), ("b-chapeu-palha-preta", 0.96)],
-    [("sanfoneiro", 1.10), ("b-chapeu-branco-palco", 0.86)],
+    [("sanfoneiro", 1.34, "frente"), ("b-chapeu-branco-palco", 0.84)],
     [("gleyk-e-gleyson", 0.82), ("b-jaqueta-bracos-cruzados", 1.00)],
     [("evandro-do-acordeon", 0.98), ("c-chapeu-branco-camisa-preta", 1.00)],
     [("b-camisa-branca-noturna", 0.94), ("deyse-bandeira", 0.92)],
@@ -65,7 +65,7 @@ def sombra(im):
 def monta_fileira(itens, largura, altura):
     """Escala as fotos a uma altura fixa, alinha pelos pes e fecha a largura."""
     ims = []
-    for nome, escala in itens:
+    for nome, escala, *resto in itens:
         im = limpa(nome, Image.open(REC / (nome + ".png")).convert("RGBA"))
         h = max(1, round(altura * escala))
         ims.append(im.resize((max(1, round(im.width * h / im.height)), h), Image.LANCZOS))
@@ -84,8 +84,10 @@ def monta_fileira(itens, largura, altura):
 
     alt = max(i.height for i in ims)
     fileira = Image.new("RGBA", (max(total, largura), alt), (0, 0, 0, 0))
-    # o rosto central fica na frente: desenha das pontas para o meio
-    for k in sorted(range(len(ims)), key=lambda k: -abs(k - (len(ims) - 1) / 2)):
+    # desenha das pontas para o meio; quem esta marcado "frente" vai por ultimo
+    frente = ["frente" in it[2:] for it in itens]
+    for k in sorted(range(len(ims)),
+                    key=lambda k: (frente[k], -abs(k - (len(ims) - 1) / 2))):
         y = alt - ims[k].height                  # todos apoiados na mesma linha
         fileira.alpha_composite(sombra(ims[k]), (xs[k] - 20, y - 20))
         fileira.alpha_composite(ims[k], (xs[k], y))

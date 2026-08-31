@@ -58,7 +58,7 @@ SHOWS = [
     ("19/09", "", ["XERIFE BAR&Atilde;O", "THIAGO ARA&Uacute;JO", "DJ REMIX"]),
     ("20/09", "CAVALGADA DOS ARROJADOS",
      ["ANT&Ocirc;NIO MARCOS", "EVANDRO DO ACORDEON", "MARQUINHOS PAR&Aacute;",
-      "GLEYK &amp; GLEYSON", "DEYSE BANDEIRA", "DJ REMIX"]),
+      "GLEYK &amp; GLEYSON", "DEYSE BANDEIRA", "LOCUTOR JUNIOR MIL", "DJ REMIX"]),
 ]
 
 DESTAQUES = ["SHOWS", "RODEIO", "XXIII CAVALGADA", "PARQUE DE DIVERS&Atilde;O",
@@ -233,8 +233,8 @@ body {
 .t-logo { width: 450mm; height: 450mm; display: block; }
 .t-centro { text-align: center; }
 .t-centro .eyebrow { font-size: 24mm; letter-spacing: 0.42em; text-indent: 0.42em; }
-.t-centro .wordmark { font-size: 142mm; margin-top: 12mm; }
-.t-centro .tagline { font-size: 30mm; margin-top: 10mm; letter-spacing: 0.03em; }
+.t-centro .wordmark { font-size: 176mm; margin-top: 12mm; }
+.t-centro .tagline { font-size: 40mm; margin-top: 12mm; letter-spacing: 0.03em; }
 .t-dir { text-align: center; }
 .t-dir .datao { font-size: 116mm; }
 .t-dir .sub {
@@ -511,11 +511,7 @@ HTML = """<!DOCTYPE html>
       </div>
     </div>
     <div>
-      <div class="locutor">
-        <div class="lb">LOCUTOR</div>
-        <div class="nm">JUNIOR MIL</div>
-      </div>
-      <div class="l-selos" style="margin-top:40mm">
+      <div class="l-selos">
         <img class="l-cav" src="%(cav)s" width="242" height="143" alt="XXIII Cavalgada dos Arrojados">
         <img class="l-nin" src="%(nin)s" width="165" height="177" alt="Cia de Rodeio Ninho dos Bons">
       </div>
