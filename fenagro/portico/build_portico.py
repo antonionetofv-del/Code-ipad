@@ -32,13 +32,14 @@ MM_PX = 96 / 25.4
 # maior lado de cada logo, em mm, como aparece nas pecas
 LADO_MM = {"logo-fenagro-mr": 470, "logo-cavalgada-arrojados": 330,
            "logo-ninho-dos-bons": 213}
+FOLGA_EXPRESS = 1.25     # folga sobre o tamanho de exibicao das logos
 
 
 def data_uri(p, lado_mm=None):
     dados = p.read_bytes()
     sufixo = p.suffix
     if EXPRESS and lado_mm:
-        limite = round(lado_mm * MM_PX * 2)      # 2x o tamanho de exibicao
+        limite = round(lado_mm * MM_PX * FOLGA_EXPRESS)
         with Image.open(p) as im:
             if max(im.size) > limite:
                 f = limite / max(im.size)
