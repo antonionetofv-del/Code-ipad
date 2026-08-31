@@ -252,7 +252,7 @@ body {
 .t-nin { width: 165mm; height: 213mm; display: block; }
 
 /* ---------- laterais ---------- */
-.l-logo { width: 470mm; height: 470mm; display: block; }
+.l-logo { width: 400mm; height: 389mm; display: block; }
 .l-word { font-size: 80mm; white-space: nowrap; margin-top: 22mm; }
 .l-tag { font-size: 27mm; margin-top: 12mm; letter-spacing: 0.04em; }
 
@@ -387,18 +387,18 @@ body {
   text-shadow: 0 3mm 8mm rgba(0,0,0,0.45);
 }
 
-.l-datao { font-size: 132mm; white-space: nowrap; }
+.l-datao { font-size: 112mm; white-space: nowrap; }
 .l-datasub {
   font-family: "montserrat", sans-serif;
   font-weight: 700;
-  font-size: 36mm;
+  font-size: 32mm;
   letter-spacing: 0.24em;
   text-indent: 0.24em;
   color: #FBF7EB;
   margin-top: 10mm;
 }
-.l-local { font-size: 40mm; margin-top: 30mm; }
-.l-local span { display: block; font-weight: 500; font-size: 32mm; color: #CFE0D2; }
+.l-local { font-size: 36mm; margin-top: 22mm; }
+.l-local span { display: block; font-weight: 500; font-size: 29mm; color: #CFE0D2; }
 
 .l-meio {
   flex: 1;
@@ -500,6 +500,10 @@ HTML = """<!DOCTYPE html>
       <img class="l-logo" src="%(logo)s" width="247" height="247" alt="FENAGRO-MR">
       <div class="wordmark l-word">II FENAGRO-MR</div>
       <div class="tagline l-tag">FEIRA DE NEG&Oacute;CIOS DO AGRO<br>DE M&Atilde;E DO RIO</div>
+        <div class="regua" style="margin:26mm auto 24mm"></div>
+        <div class="datao l-datao">17 A 20</div>
+        <div class="l-datasub">DE SETEMBRO</div>
+        <div class="local l-local">ESPA&Ccedil;O CUIA<span>M&atilde;e do Rio / PA</span></div>
     </div>
     <div class="l-meio">
       <div>
@@ -524,9 +528,11 @@ HTML = """<!DOCTYPE html>
   <div class="luz"></div><div class="veu"></div><div class="moldura"></div>
   <div class="area">
     <div>
-      <div class="datao l-datao">17 A 20</div>
-      <div class="l-datasub">DE SETEMBRO</div>
-      <div class="local l-local">ESPA&Ccedil;O CUIA<span>M&atilde;e do Rio / PA</span></div>
+      <img class="l-logo" src="%(logo)s" width="247" height="247" alt="FENAGRO-MR">
+        <div class="regua" style="margin:26mm auto 24mm"></div>
+        <div class="datao l-datao">17 A 20</div>
+        <div class="l-datasub">DE SETEMBRO</div>
+        <div class="local l-local">ESPA&Ccedil;O CUIA<span>M&atilde;e do Rio / PA</span></div>
     </div>
     <div class="l-meio">
       <div>
