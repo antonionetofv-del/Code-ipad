@@ -28,6 +28,8 @@ IMG = {
         "logo_circ.png",
         "cavalgada.png",
         "spons_realiza.jpg",
+        "coopagi.png",
+        "acaitech.png",
         "spons_apoio.jpg",
         "orn_tractor.jpg",
         "orn_rider.png",
@@ -73,13 +75,21 @@ PROGRAMACAO = [
 ]
 
 PALESTRAS = [
-    ("17/09", [("08:00", "A&Ccedil;A&Iacute;")]),
-    ("18/09", [("08:00", "CACAU")]),
-    ("19/09", [
-        ("08:00", "PISCICULTURA"),
-        ("09:00", "BOVINOCULTURA DE CORTE"),
-        ("10:00", "BOVINO DE LEITE"),
-        ("11:00", "ADEPAR&Aacute;"),
+    ("17/09", "QUARTA-FEIRA", [
+        ("08:00", "CACAU", "Enxertia, poda e nutri&ccedil;&atilde;o no cacau",
+         "Adailton Mendes", "T&eacute;cnico em Agropecu&aacute;ria"),
+    ]),
+    ("18/09", "QUINTA-FEIRA", [
+        ("08:00", "A&Ccedil;A&Iacute;", "", "Arcidio Ornela Filho", ""),
+        ("09:00", "A&Ccedil;A&Iacute;", "Desafios de produzir a&ccedil;a&iacute; em terra firme",
+         "Emerson Silva de Menezes", ""),
+    ]),
+    ("19/09", "SEXTA-FEIRA", [
+        ("08:00", "PISCICULTURA", "", "Eryca Maria de Jesus Vieira",
+         "T&eacute;cnica em Aquicultura"),
+        ("09:00", "BOVINOCULTURA DE CORTE", "", "Wemelly Menezes", "Zootecnista"),
+        ("10:00", "BOVINO DE LEITE", "", "Tomaz Pina Maia", "M&eacute;dico Veterin&aacute;rio"),
+        ("11:00", "ADEPAR&Aacute;", "", "", ""),
     ]),
 ]
 
@@ -117,16 +127,24 @@ def dia_bloco(dia, semana, itens):
     )
 
 
-def palestra_bloco(dia, itens):
+def palestra_bloco(dia, semana, itens):
     linhas = []
-    for hora, tema in itens:
+    for hora, palestra, tema, quem, formacao in itens:
+        corpo = ['<span class="talk-title">%s</span>' % palestra]
+        if tema:
+            corpo.append('<span class="talk-theme">%s</span>' % tema)
+        if quem:
+            credito = "%s &middot; %s" % (quem, formacao) if formacao else quem
+            corpo.append('<span class="talk-who">%s</span>' % credito)
         linhas.append(
-            '<div class="talk"><span class="talk-title">%s</span>'
-            '<span class="talk-time">%s</span></div>' % (tema, hora)
+            '<div class="talk"><span class="talk-time">%s</span>'
+            '<span class="talk-body">%s</span></div>' % (hora, "".join(corpo))
         )
     return (
-        '<div class="talk-day"><span class="talk-date">%s</span>'
-        '<div class="talk-list">%s</div></div>' % (dia, "".join(linhas))
+        '<div class="talk-day">'
+        '<div class="day-pill"><span class="day-date">%s</span>'
+        '<span class="day-week">%s</span></div>%s</div>'
+        % (dia, semana, "".join(linhas))
     )
 
 
@@ -550,38 +568,24 @@ body {
 }
 
 .talks { padding-top: 0; }
-.mark { margin: auto 0; text-align: center; padding: 4mm 0; }
-.mark-txt {
-  font-family: "montserrat", sans-serif;
-  font-weight: 700;
-  font-size: 2.4mm;
-  letter-spacing: 0.26em;
-  color: #14713A;
-  text-indent: 0.26em;
-  margin-top: 3mm;
-}
-.talk-day { display: flex; gap: 3.4mm; margin-bottom: 5mm; }
-.talk-date {
-  font-family: "anton", sans-serif;
-  font-size: 4.4mm;
-  line-height: 1.5;
-  color: #FBF7EB;
-  background: #14713A;
-  border-radius: 4mm;
-  padding: 0.8mm 3mm;
-  height: 8mm;
-  flex: 0 0 auto;
-}
-.talk-list { flex: 1 1 auto; }
+.talk-day { margin-bottom: 4mm; }
 .talk {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 2mm;
-  padding: 2.2mm 0;
+  gap: 3mm;
+  padding: 1.6mm 0;
   border-bottom: 0.25mm solid #E2DCC4;
 }
 .talk:last-child { border-bottom: 0; }
+.talk-time {
+  font-family: "montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 3.1mm;
+  line-height: 1.3;
+  color: #14713A;
+  width: 13mm;
+  flex: 0 0 13mm;
+}
+.talk-body { display: block; }
 .talk-title {
   display: block;
   font-family: "montserrat", sans-serif;
@@ -591,35 +595,43 @@ body {
   color: #14301B;
   letter-spacing: 0.01em;
 }
-.talk-time {
+.talk-theme {
+  display: block;
   font-family: "montserrat", sans-serif;
-  font-weight: 800;
-  font-size: 2.9mm;
-  color: #14713A;
-  flex: 0 0 auto;
+  font-weight: 500;
+  font-size: 2.5mm;
+  line-height: 1.3;
+  color: #5B6A5D;
+  margin-top: 0.5mm;
+}
+.talk-who {
+  display: block;
+  font-family: "montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 2.5mm;
+  line-height: 1.3;
+  color: #C08A1E;
+  margin-top: 0.6mm;
 }
 
-.closer {
-  background: #01270E;
-  border-radius: 2mm;
-  padding: 5mm 4mm;
+.parceiros {
+  margin-top: auto;
+  padding-top: 4mm;
   text-align: center;
 }
-.closer-title {
-  font-family: "anton", sans-serif;
-  font-size: 5.4mm;
-  line-height: 1.14;
-  color: #E3B45A;
-  letter-spacing: 0.01em;
-}
-.closer-sub {
+.parceiros .lbl {
   font-family: "montserrat", sans-serif;
-  font-weight: 600;
-  font-size: 2.7mm;
-  line-height: 1.4;
-  color: #E4EDE5;
-  margin-top: 2mm;
+  font-weight: 700;
+  font-size: 2.2mm;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  color: #14713A;
+  margin-bottom: 3.5mm;
 }
+.parceiros-row { display: flex; align-items: center; justify-content: center; gap: 8mm; }
+.lg-coopagi { width: 32mm; height: 31.8mm; display: block; }
+.lg-acaitech { width: 34mm; height: 29.2mm; display: block; }
+
 .orn-rule { width: 30mm; height: 1.2mm; display: block; margin: 3.5mm auto; }
 """
 
@@ -737,15 +749,12 @@ HTML = """<!DOCTYPE html>
         <div class="hero-title">CRONOGRAMA<br>DE PALESTRAS</div>
       </div>
       <div class="talks">%(palestras)s</div>
-      <div class="mark">
-        %(rule)s
-        <div class="mark-txt">FEIRA DE NEG&Oacute;CIOS DO AGRO</div>
-        %(rule)s
-      </div>
-      <div class="closer">
-        <div class="closer-title">O AGRO QUE MOVIMENTA,<br>CONECTA E TRANSFORMA!</div>
-        %(rule)s
-        <div class="closer-sub">17 a 20 de setembro &middot; Espa&ccedil;o Cuia<br>M&atilde;e do Rio / PA &middot; @fenagromr</div>
+      <div class="parceiros">
+        <div class="lbl">PARCEIROS DAS PALESTRAS</div>
+        <div class="parceiros-row">
+          <img class="lg-coopagi" src="%(coopagi)s" width="360" height="358" alt="COOPAGI">
+          <img class="lg-acaitech" src="%(acaitech)s" width="360" height="309" alt="A&ccedil;a&iacute;Tech">
+        </div>
       </div>
     </div>
   </div>
@@ -766,6 +775,8 @@ html = HTML % {
     "rider": IMG["orn_rider.png"],
     "ig": IG_SVG,
     "rule": ORNAMENTO,
+    "coopagi": IMG["coopagi.png"],
+    "acaitech": IMG["acaitech.png"],
     "tags": "".join('<span class="tag">%s</span>' % t for t in DESTAQUES),
     "atracoes": "".join(atracao_bloco(*a) for a in ATRACOES),
     "dia1": dia_bloco(*PROGRAMACAO[0]),
