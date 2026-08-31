@@ -10,7 +10,9 @@ renderizacao. As luzes do fundo sao gradientes, nao imagem, para nao depender
 da resolucao dos recortes.
 """
 import base64
+import io
 import pathlib
+import sys
 
 from PIL import Image
 
@@ -22,16 +24,31 @@ OUT = BASE / "portico-fenagro.html"
 MIME = {".png": "image/png", ".jpg": "image/jpeg"}
 
 
-def data_uri(p):
-    return "data:%s;base64,%s" % (MIME[p.suffix],
-                                  base64.b64encode(p.read_bytes()).decode())
+# A versao para o Adobe Express reduz cada imagem ao dobro do tamanho em que ela
+# aparece na peca. O arquivo de impressao continua saindo do HTML normal.
+EXPRESS = "--express" in sys.argv
+MM_PX = 96 / 25.4
+
+# maior lado de cada logo, em mm, como aparece nas pecas
+LADO_MM = {"logo-fenagro-mr": 470, "logo-cavalgada-arrojados": 330,
+           "logo-ninho-dos-bons": 213}
 
 
-# logos e fotos enviados pela organizacao, ja com fundo recortado
-IMG = {p.stem: data_uri(p) for p in sorted(REC.glob("*.png"))
-       if not p.stem.startswith("000-")}
-IMG.update({n: data_uri(ASSETS / (n + ".png"))
-            for n in ("coopagi", "acaitech", "elenco")})
+def data_uri(p, lado_mm=None):
+    dados = p.read_bytes()
+    sufixo = p.suffix
+    if EXPRESS and lado_mm:
+        limite = round(lado_mm * MM_PX * 2)      # 2x o tamanho de exibicao
+        with Image.open(p) as im:
+            if max(im.size) > limite:
+                f = limite / max(im.size)
+                im = im.resize((max(1, round(im.width * f)),
+                                max(1, round(im.height * f))), Image.LANCZOS)
+                buf = io.BytesIO(); im.save(buf, "PNG", optimize=True)
+                dados = buf.getvalue()
+    return "data:%s;base64,%s" % (MIME[sufixo], base64.b64encode(dados).decode())
+
+
 
 # nomes por dia, como na arte oficial: sem legenda em cada rosto
 SHOWS = [
@@ -74,6 +91,26 @@ def proporcao(chave):
 
 PROPORCAO = {c: proporcao(c) for c, _ in
              REALIZACAO + PARCEIROS + [i for linha in APOIO for i in linha]}
+
+
+def lado_exibido(chave):
+    """Maior lado, em mm, com que a imagem aparece na peca."""
+    if chave in LADO_MM:
+        return LADO_MM[chave]
+    for c, h in REALIZACAO + PARCEIROS + [i for l in APOIO for i in l]:
+        if c == chave:
+            return max(h, h * PROPORCAO[c])
+    return None
+
+
+# logos e fotos enviados pela organizacao, ja com fundo recortado
+IMG = {p.stem: data_uri(p, lado_exibido(p.stem)) for p in sorted(REC.glob("*.png"))
+       if not p.stem.startswith("000-")}
+IMG.update({n: data_uri(ASSETS / (n + ".png"), lado_exibido(n))
+            for n in ("coopagi", "acaitech")})
+# o elenco pesa quase tudo: na versao Express entra achatado sobre o proprio
+# fundo da peca, o que dispensa o canal alfa e troca o PNG por um JPEG
+IMG["elenco"] = data_uri(ASSETS / ("elenco-express.jpg" if EXPRESS else "elenco.png"))
 
 
 def bloco_show(dia, nota, nomes):
@@ -548,5 +585,24 @@ html = HTML % {
     "destaques": "".join('<div class="dest">%s</div>' % d for d in DESTAQUES),
 }
 
+if EXPRESS:
+    # kit de fontes Adobe gerado para a conta em uso; mesmos nomes CSS
+    html = html.replace("https://use.typekit.net/oia8csk.css",
+                        "https://use.typekit.net/iqu0oeo.css")
+    # metadados que o importador do Adobe Express le para achar e dimensionar
+    # cada peca; o tamanho vai em px a 96 dpi, como o importador espera
+    px = lambda mm: int(round(mm * MM_PX))
+    html = html.replace("<title>",
+        '<meta name="hz:slide-selector" content=".peca">\n'
+        '<meta name="hz:canvas-width" content="%d">\n'
+        '<meta name="hz:canvas-height" content="%d">\n' % (px(600), px(5000))
+        + "<title>", 1)
+    for pid, (w, h) in (("testeira", (3200, 600)), ("lateral-esq", (600, 5000)),
+                        ("lateral-dir", (600, 5000))):
+        html = html.replace('id="%s">' % pid,
+                            'id="%s" data-canvas-width="%d" data-canvas-height="%d">'
+                            % (pid, px(w), px(h)), 1)
+    OUT = BASE / "portico-fenagro-Express-export.html"
+
 OUT.write_text(html, encoding="utf-8")
-print("%s  (%.0f KB)" % (OUT, OUT.stat().st_size / 1024))
+print("%s  (%.1f MB)" % (OUT, OUT.stat().st_size / 1e6))
