@@ -18,10 +18,14 @@ medida que eu regero.
 
 - **Testeira** — logo, "II FENAGRO-MR", subtítulo, datas, local e os selos da
   XXIII Cavalgada dos Arrojados e da Cia de Rodeio Ninho dos Bons.
-- **Lateral esquerda** — marca no topo e as atrações confirmadas dia a dia.
+- **Lateral esquerda** — marca no topo, mosaico com as fotos dos artistas, as
+  atrações dia a dia e o locutor Junior Mil.
 - **Lateral direita** — datas e local, a frase "O agro que movimenta, conecta e
-  transforma!", o que o público encontra na feira, @fenagromr e o painel de
-  realização, apoio e parceiros das palestras.
+  transforma!", as palestras, o que o público encontra na feira, @fenagromr e o
+  painel de realização, apoio e parceiros das palestras.
+
+O fundo tem luzes difusas em gradiente, no espírito da moldura de lâmpadas da
+marca — são CSS, não imagem, então não dependem da resolução de nenhum recorte.
 
 ## Arquivos gerados (`arquivos/`)
 
@@ -38,6 +42,10 @@ Os recortes de logo usados aqui vieram das artes de divulgação, não dos
 arquivos originais. Na escala do pórtico eles ficam entre 13 e 37 dpi, o que
 **não serve para impressão**. Apenas COOPAGI e AçaíTech, enviados como arquivo,
 estão adequados (≈165 dpi).
+
+As fotos dos artistas vêm da arte de divulgação (560 px de largura por bloco,
+≈30 dpi impressas). Servem para aprovação; para imprimir, o ideal são as fotos
+originais dos artistas.
 
 Para fechar o arquivo de impressão são necessários, em vetor (PDF/AI/SVG) ou
 PNG com pelo menos 2000 px de largura: FENAGRO-MR, SIPRUMAR, XXIII Cavalgada
