@@ -12,31 +12,35 @@ da resolucao dos recortes.
 import base64
 import pathlib
 
+from PIL import Image
+
 BASE = pathlib.Path(__file__).parent
 ASSETS = BASE / "assets_hi"
+REC = BASE / "recebidos"
 OUT = BASE / "portico-fenagro.html"
 
 MIME = {".png": "image/png", ".jpg": "image/jpeg"}
 
 
-def data_uri(name):
-    p = ASSETS / name
-    return "data:%s;base64,%s" % (MIME[p.suffix], base64.b64encode(p.read_bytes()).decode())
+def data_uri(p):
+    return "data:%s;base64,%s" % (MIME[p.suffix],
+                                  base64.b64encode(p.read_bytes()).decode())
 
 
-IMG = {n: data_uri(n) for n in (
-    "logo_circ.png", "cavalgada.png", "ninho.png",
-    "spons_realiza.png", "spons_apoio.png", "coopagi.png", "acaitech.png",
-    "art_a.jpg", "art_b.jpg", "art_c.jpg", "art_d.jpg",
-)}
+# logos e fotos enviados pela organizacao, ja com fundo recortado
+IMG = {p.stem: data_uri(p) for p in sorted(REC.glob("*.png"))
+       if not p.stem.startswith("000-")}
+IMG.update({n: data_uri(ASSETS / (n + ".png"))
+            for n in ("coopagi", "acaitech", "elenco")})
 
+# nomes por dia, como na arte oficial: sem legenda em cada rosto
 SHOWS = [
-    ("17/09", "QUINTA", ["Isa&iacute;as Show"]),
-    ("18/09", "SEXTA", ["Leozinho Forrozeiro", "Jo&atilde;o Nunes"]),
-    ("19/09", "S&Aacute;BADO", ["Xerife Bar&atilde;o", "Thiago Ara&uacute;jo"]),
-    ("20/09", "DOMINGO", ["Ant&ocirc;nio Marcos", "Gleyk &amp; Gleyson",
-                          "Evandro do Acordeon", "Marquinhos Par&aacute;",
-                          "Deyse Bandeira"]),
+    ("17/09", "", ["ISAIAS SHOW", "DJ REMIX"]),
+    ("18/09", "", ["LEOZINHO FORROZEIRO", "JOAO NUNES", "DJ REMIX"]),
+    ("19/09", "", ["XERIFE BAR&Atilde;O", "THIAGO ARA&Uacute;JO", "DJ REMIX"]),
+    ("20/09", "CAVALGADA DOS ARROJADOS",
+     ["ANT&Ocirc;NIO MARCOS", "EVANDRO DO ACORDEON", "MARQUINHOS PAR&Aacute;",
+      "GLEYK &amp; GLEYSON", "DEYSE BANDEIRA", "DJ REMIX"]),
 ]
 
 DESTAQUES = ["SHOWS", "RODEIO", "XXIII CAVALGADA", "PARQUE DE DIVERS&Atilde;O",
@@ -49,15 +53,35 @@ PALESTRAS = [
                "BOVINO DE LEITE", "ADEPAR&Aacute;"]),
 ]
 
-MOSAICO = [("art_a.jpg", 560, 290), ("art_b.jpg", 560, 290),
-           ("art_c.jpg", 560, 250), ("art_d.jpg", 560, 250)]
+# (chave, altura em mm) -- a largura sai da proporcao real do arquivo
+REALIZACAO = [("logo-fenagro-mr", 112), ("logo-siprumar", 112)]
+APOIO = [
+    [("logo-faepa", 62), ("logo-sebrae", 46), ("logo-banpara", 33)],
+    [("logo-prefeitura-mae-do-rio", 31), ("logo-governo-para", 86),
+     ("logo-amazon-center-park", 70)],
+]
+PARCEIROS = [("coopagi", 88), ("acaitech", 78)]
+
+def proporcao(chave):
+    """Razao largura/altura do arquivo, para dimensionar as logos pela altura."""
+    for pasta in (REC, ASSETS):
+        f = pasta / (chave + ".png")
+        if f.exists():
+            with Image.open(f) as im:
+                return im.width / im.height
+    raise KeyError(chave)
 
 
-def bloco_show(dia, semana, nomes):
-    linhas = "".join('<div class="sh-name">%s</div>' % n for n in nomes)
-    return ('<div class="sh">'
-            '<div class="sh-pill">%s <span>&middot; %s</span></div>'
-            '<div class="sh-list">%s</div></div>' % (dia, semana, linhas))
+PROPORCAO = {c: proporcao(c) for c, _ in
+             REALIZACAO + PARCEIROS + [i for linha in APOIO for i in linha]}
+
+
+def bloco_show(dia, nota, nomes):
+    linhas = "".join('<div class="tj-nome">%s</div>' % n for n in nomes)
+    obs = '<div class="tj-nota">%s</div>' % nota if nota else ""
+    return ('<div class="tj">'
+            '<div class="tj-dia">%s%s</div>'
+            '<div class="tj-nomes">%s</div></div>' % (dia, obs, linhas))
 
 
 def bloco_palestra(dia, temas):
@@ -65,11 +89,15 @@ def bloco_palestra(dia, temas):
     return '<div class="pa"><div class="pa-dia">%s</div>%s</div>' % (dia, linhas)
 
 
-def bloco_foto(nome, w, h):
-    alt = round(480 * h / w, 1)          # 480 mm de largura util na lateral
-    return ('<img class="foto" src="%s" width="%d" height="%d" '
-            'style="height:%smm" alt="Atra&ccedil;&otilde;es da II FENAGRO-MR">'
-            % (IMG[nome], w, h, alt))
+def logo(chave, altura_mm, classe=""):
+    larg = round(altura_mm * PROPORCAO[chave], 1)
+    return ('<img class="lg %s" src="%s" style="width:%smm;height:%smm" alt="%s">'
+            % (classe, IMG[chave], larg, altura_mm, chave.replace("logo-", "")))
+
+
+def linha_logos(itens, classe="lg-row"):
+    return '<div class="%s">%s</div>' % (
+        classe, "".join(logo(c, h) for c, h in itens))
 
 
 # luzes do fundo, no espirito da moldura de lampadas da marca
@@ -182,8 +210,8 @@ body {
 }
 .t-dir .local { font-size: 25mm; margin-top: 12mm; }
 .t-selos { display: flex; align-items: center; gap: 26mm; }
-.t-cav { width: 300mm; height: 177mm; display: block; }
-.t-nin { width: 172mm; height: 188mm; display: block; }
+.t-cav { width: 330mm; height: 201mm; display: block; }
+.t-nin { width: 165mm; height: 213mm; display: block; }
 
 /* ---------- laterais ---------- */
 .l-logo { width: 470mm; height: 470mm; display: block; }
@@ -210,36 +238,49 @@ body {
   margin-top: 12mm;
 }
 
-/* mosaico das atracoes */
-.mosaico { display: flex; flex-direction: column; gap: 6mm; margin: 30mm 0; }
-.foto {
-  width: 480mm;
-  display: block;
-  object-fit: cover;
-  border: 2.4mm solid #E3B45A;
-  border-radius: 8mm;
-}
+/* composicao de grupo das atracoes, no padrao da arte oficial */
+.elenco { width: 480mm; display: block; margin: 26mm auto 22mm; }
 
-.sh { margin-top: 0; }
-.sh-pill {
-  display: inline-block;
+/* tarja com os nomes agrupados por data */
+.tarja {
+  width: 100%%;
+  background: rgba(4,26,11,0.86);
+  border: 2.4mm solid #E3B45A;
+  border-radius: 10mm;
+  padding: 8mm 20mm;
+}
+.tj {
+  display: flex;
+  align-items: center;
+  gap: 18mm;
+  padding: 14mm 0;
+  text-align: left;
+}
+.tj + .tj { border-top: 0.9mm solid rgba(227,180,90,0.42); }
+.tj-dia {
+  font-family: "anton", sans-serif;
+  font-size: 62mm;
+  line-height: 1;
+  color: #E3B45A;
+  width: 132mm;
+  flex: none;
+}
+.tj-nota {
   font-family: "montserrat", sans-serif;
   font-weight: 800;
-  font-size: 28mm;
-  letter-spacing: 0.1em;
-  color: #01270E;
-  background: #E3B45A;
-  border-radius: 40mm;
-  padding: 12mm 38mm;
-}
-.sh-pill span { font-weight: 700; color: #3A4A20; }
-.sh-name {
-  font-family: "anton", sans-serif;
-  font-size: 76mm;
-  line-height: 1.07;
+  font-size: 13mm;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
   color: #FBF7EB;
-  margin-top: 16mm;
-  text-shadow: 0 2mm 6mm rgba(0,0,0,0.45);
+  margin-top: 5mm;
+}
+.tj-nomes { flex: 1; }
+.tj-nome {
+  font-family: "anton", sans-serif;
+  font-size: 33mm;
+  line-height: 1.24;
+  color: #FBF7EB;
+  letter-spacing: 0.01em;
 }
 
 .locutor {
@@ -331,8 +372,8 @@ body {
 }
 
 .l-selos { display: flex; align-items: flex-end; justify-content: center; gap: 30mm; }
-.l-cav { width: 320mm; height: 189mm; display: block; }
-.l-nin { width: 185mm; height: 202mm; display: block; }
+.l-cav { width: 320mm; height: 195mm; display: block; }
+.l-nin { width: 160mm; height: 207mm; display: block; }
 
 .l-rodape { width: 100%%; }
 .patroc {
@@ -353,11 +394,23 @@ body {
   text-indent: 0.28em;
   color: #4A5A4C;
 }
-.p-realiza { width: 380mm; height: 152mm; display: block; }
-.p-apoio { width: 480mm; height: 47mm; display: block; }
-.parceiros-row { display: flex; align-items: center; justify-content: center; gap: 26mm; }
-.lg-coop { width: 170mm; height: 169mm; display: block; }
-.lg-acai { width: 182mm; height: 156mm; display: block; }
+.lg { display: block; object-fit: contain; }
+.lg-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 22mm;
+}
+/* a marca da prefeitura e em tipografia branca: precisa de fundo escuro */
+.chip-escuro {
+  background: #0E2A4A;
+  border-radius: 5mm;
+  padding: 8mm 10mm;
+  display: flex;
+  align-items: center;
+}
+.divisor { width: 300mm; height: 0.9mm; background: #D6DCD6; margin: 4mm auto; }
 
 .ig {
   margin-bottom: 40mm;
@@ -415,9 +468,9 @@ HTML = """<!DOCTYPE html>
         <div class="regua"></div>
         <div class="sec">ATRA&Ccedil;&Otilde;ES<br>CONFIRMADAS</div>
         <div class="sec-sub">SHOWS TODAS AS NOITES</div>
-        <div class="mosaico">%(mosaico)s</div>
+        <img class="elenco" src="%(elenco)s" alt="Atra&ccedil;&otilde;es da II FENAGRO-MR">
+        <div class="tarja">%(shows)s</div>
       </div>
-      %(shows)s
     </div>
     <div>
       <div class="locutor">
@@ -458,14 +511,13 @@ HTML = """<!DOCTYPE html>
       <div class="ig">@fenagromr</div>
       <div class="patroc">
         <div class="lbl">REALIZA&Ccedil;&Atilde;O</div>
-        <img class="p-realiza" src="%(realiza)s" width="188" height="80" alt="FENAGRO-MR e SIPRUMAR">
+        %(realiza)s
+        <div class="divisor"></div>
         <div class="lbl">APOIO</div>
-        <img class="p-apoio" src="%(apoio)s" width="692" height="68" alt="Apoio">
+        %(apoio)s
+        <div class="divisor"></div>
         <div class="lbl">PARCEIROS DAS PALESTRAS</div>
-        <div class="parceiros-row">
-          <img class="lg-coop" src="%(coopagi)s" width="1134" height="1128" alt="COOPAGI">
-          <img class="lg-acai" src="%(acaitech)s" width="1162" height="996" alt="A&ccedil;a&iacute;Tech">
-        </div>
+        %(parceiros)s
       </div>
     </div>
   </div>
@@ -475,18 +527,24 @@ HTML = """<!DOCTYPE html>
 </html>
 """
 
+apoio_html = "".join(
+    linha_logos(linha) if i == 0 else
+    '<div class="lg-row">%s</div>' % "".join(
+        ('<div class="chip-escuro">%s</div>' % logo(c, h))
+        if c == "logo-prefeitura-mae-do-rio" else logo(c, h) for c, h in linha)
+    for i, linha in enumerate(APOIO))
+
 html = HTML % {
     "css": CSS % {"luzes_lat": LUZES_LATERAL, "luzes_tes": LUZES_TESTEIRA},
-    "logo": IMG["logo_circ.png"],
-    "cav": IMG["cavalgada.png"],
-    "nin": IMG["ninho.png"],
-    "realiza": IMG["spons_realiza.png"],
-    "apoio": IMG["spons_apoio.png"],
-    "coopagi": IMG["coopagi.png"],
-    "acaitech": IMG["acaitech.png"],
-    "mosaico": "".join(bloco_foto(*m) for m in MOSAICO),
-    "shows": "".join(bloco_show(*s) for s in SHOWS),
-    "palestras": "".join(bloco_palestra(*p) for p in PALESTRAS),
+    "logo": IMG["logo-fenagro-mr"],
+    "cav": IMG["logo-cavalgada-arrojados"],
+    "nin": IMG["logo-ninho-dos-bons"],
+    "elenco": IMG["elenco"],
+    "realiza": linha_logos(REALIZACAO),
+    "apoio": apoio_html,
+    "parceiros": linha_logos(PARCEIROS),
+    "shows": "".join(bloco_show(*x) for x in SHOWS),
+    "palestras": "".join(bloco_palestra(*x) for x in PALESTRAS),
     "destaques": "".join('<div class="dest">%s</div>' % d for d in DESTAQUES),
 }
 
