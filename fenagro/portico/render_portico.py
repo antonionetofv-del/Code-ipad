@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Renderiza as pecas do portico em tamanho real e gera os arquivos de impressao.
 
-Cada peca sai em duas versoes:
-  <peca>-RGB.png    referencia / aprovacao
-  <peca>-CMYK.tif   arquivo de impressao (separacao com GCR, LZW)
+Saida padrao: <peca>.png. Com --cmyk sai tambem <peca>-CMYK.tif, com a
+separacao feita por GCR.
 
 Pecas com mais de 16384 px sao capturadas em faixas e emendadas, por causa do
 limite de bitmap do navegador.
@@ -46,7 +45,7 @@ def rgb_para_cmyk(im):
     return Image.fromarray((cmyk * 255.0 + 0.5).astype(np.uint8), mode="CMYK")
 
 
-def render(url, dpi=96):
+def render(url, dpi=96, cmyk=False):
     OUT.mkdir(exist_ok=True)
     escala = dpi / 96.0
     exe = sorted(glob.glob("/opt/pw-browsers/chromium-*/chrome-linux/chrome"))[-1]
@@ -82,10 +81,12 @@ def render(url, dpi=96):
             for f in faixas:
                 cheia.paste(f.convert("RGB"), (0, y))
                 y += f.height
-            cheia.save(OUT / f"{pid}-RGB.png", optimize=True)
+            cheia.save(OUT / f"{pid}.png", optimize=True)
             print(f"{pid}: {cheia.size[0]} x {cheia.size[1]} px  ({n} faixa(s), {dpi} dpi)")
-            # deflate comprime melhor que LZW nas pecas com foto
-            rgb_para_cmyk(cheia).save(OUT / f"{pid}-CMYK.tif", compression="tiff_adobe_deflate")
+            if cmyk:
+                # deflate comprime melhor que LZW nas pecas com foto
+                rgb_para_cmyk(cheia).save(OUT / f"{pid}-CMYK.tif",
+                                          compression="tiff_adobe_deflate")
             for f in faixas:
                 f.close()
             for i in range(n):
@@ -95,4 +96,6 @@ def render(url, dpi=96):
 
 
 if __name__ == "__main__":
-    render(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else 96)
+    render(sys.argv[1],
+           int(sys.argv[2]) if len(sys.argv) > 2 else 96,
+           cmyk="--cmyk" in sys.argv)
