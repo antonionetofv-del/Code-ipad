@@ -42,25 +42,24 @@ IMG = {
 PROGRAMACAO = [
     ("17/09", "QUARTA-FEIRA", [
         ("08:00", "Abertura da Feira", "Abertura oficial da II FENAGRO-MR"),
-        ("10:00", "Palestra", "Inova&ccedil;&atilde;o e Tecnologia no Campo"),
+        ("08:00", "Palestra", "Cacau: enxertia, poda e nutri&ccedil;&atilde;o"),
         ("14:00", "Neg&oacute;cios e Expositores", "Visita&ccedil;&atilde;o aos estandes"),
-        ("16:00", "Palestra", "Cr&eacute;dito Rural e Oportunidades para o Produtor"),
         ("18:00", "Abertura Oficial do Rodeio", ""),
         ("20:00", "Shows", "Isa&iacute;as Show &middot; DJ Remix nos intervalos"),
     ]),
     ("18/09", "QUINTA-FEIRA", [
         ("08:00", "Abertura da Feira", ""),
-        ("09:00", "Palestra", "Gest&atilde;o e Sucess&atilde;o no Agroneg&oacute;cio"),
+        ("08:00", "Palestra", "A&ccedil;a&iacute; irrigado: efici&ecirc;ncia e lucratividade"),
+        ("09:00", "Palestra", "Desafios de produzir a&ccedil;a&iacute; em terra firme"),
         ("14:00", "Neg&oacute;cios e Expositores", "Visita&ccedil;&atilde;o aos estandes"),
-        ("16:00", "Palestra", "Sustentabilidade e Mercado Verde"),
         ("18:00", "Rodeio", ""),
         ("20:00", "Shows", "Leozinho Forrozeiro &middot; Jo&atilde;o Nunes &middot; DJ Remix nos intervalos"),
     ]),
     ("19/09", "SEXTA-FEIRA", [
         ("08:00", "Abertura da Feira", ""),
-        ("09:00", "Palestra", "Bovinocultura de Corte: Produ&ccedil;&atilde;o e Rentabilidade"),
+        ("08:00", "Ciclo de Palestras",
+         "Piscicultura, Bovinocultura de Corte, Bovino de Leite e Adepar&aacute;"),
         ("14:00", "Neg&oacute;cios e Expositores", "Visita&ccedil;&atilde;o aos estandes"),
-        ("16:00", "Palestra", "Piscicultura: Desafios e Perspectivas"),
         ("18:00", "Rodeio", ""),
         ("20:00", "Shows", "Xerife Bar&atilde;o &middot; Thiago Ara&uacute;jo &middot; DJ Remix nos intervalos"),
     ]),
@@ -70,7 +69,8 @@ PROGRAMACAO = [
         ("14:00", "Parque de Divers&atilde;o", "Divers&atilde;o para toda a fam&iacute;lia"),
         ("16:00", "Final do Rodeio", "Premia&ccedil;&otilde;es"),
         ("18:00", "Encerramento Oficial da Feira", ""),
-        ("20:00", "Shows", "Ant&ocirc;nio Marcos &middot; Gleyk &amp; Gleyson &middot; Evandro do Acordeon &middot; Marquinhos Par&aacute; &middot; Deyse Bandeira &middot; DJ Remix nos intervalos"),
+        ("20:00", "Shows", "Ant&ocirc;nio Marcos &middot; Gleyk &amp; Gleyson &middot; Evandro do Acordeon "
+                           "&middot; Marquinhos Par&aacute; &middot; Deyse Bandeira &middot; DJ Remix nos intervalos"),
     ]),
 ]
 
@@ -80,9 +80,11 @@ PALESTRAS = [
          "Adailton Mendes", "T&eacute;cnico em Agropecu&aacute;ria"),
     ]),
     ("18/09", "QUINTA-FEIRA", [
-        ("08:00", "A&Ccedil;A&Iacute;", "", "Arcidio Ornela Filho", ""),
+        ("08:00", "A&Ccedil;A&Iacute;",
+         "A&ccedil;a&iacute; irrigado: como produzir com efici&ecirc;ncia e lucratividade",
+         "Arcidio Ornela Filho", "Especialista na Cultura do A&ccedil;a&iacute;"),
         ("09:00", "A&Ccedil;A&Iacute;", "Desafios de produzir a&ccedil;a&iacute; em terra firme",
-         "Emerson Silva de Menezes", ""),
+         "Emerson Silva de Menezes", "Presidente da COOPAGI"),
     ]),
     ("19/09", "SEXTA-FEIRA", [
         ("08:00", "PISCICULTURA", "", "Eryca Maria de Jesus Vieira",
@@ -568,11 +570,11 @@ body {
 }
 
 .talks { padding-top: 0; }
-.talk-day { margin-bottom: 4mm; }
+.talk-day { margin-bottom: 3mm; }
 .talk {
   display: flex;
   gap: 3mm;
-  padding: 1.6mm 0;
+  padding: 1.3mm 0;
   border-bottom: 0.25mm solid #E2DCC4;
 }
 .talk:last-child { border-bottom: 0; }
@@ -616,9 +618,10 @@ body {
 
 .parceiros {
   margin-top: auto;
-  padding-top: 4mm;
+  padding-top: 3mm;
   text-align: center;
 }
+  /* rotulo dos parceiros */
 .parceiros .lbl {
   font-family: "montserrat", sans-serif;
   font-weight: 700;
@@ -626,11 +629,11 @@ body {
   letter-spacing: 0.28em;
   text-indent: 0.28em;
   color: #14713A;
-  margin-bottom: 3.5mm;
+  margin-bottom: 3mm;
 }
 .parceiros-row { display: flex; align-items: center; justify-content: center; gap: 8mm; }
-.lg-coopagi { width: 32mm; height: 31.8mm; display: block; }
-.lg-acaitech { width: 34mm; height: 29.2mm; display: block; }
+.lg-coopagi { width: 29mm; height: 28.8mm; display: block; }
+.lg-acaitech { width: 31mm; height: 26.6mm; display: block; }
 
 .orn-rule { width: 30mm; height: 1.2mm; display: block; margin: 3.5mm auto; }
 """
@@ -752,8 +755,8 @@ HTML = """<!DOCTYPE html>
       <div class="parceiros">
         <div class="lbl">PARCEIROS DAS PALESTRAS</div>
         <div class="parceiros-row">
-          <img class="lg-coopagi" src="%(coopagi)s" width="360" height="358" alt="COOPAGI">
-          <img class="lg-acaitech" src="%(acaitech)s" width="360" height="309" alt="A&ccedil;a&iacute;Tech">
+          <img class="lg-coopagi" src="%(coopagi)s" width="250" height="249" alt="COOPAGI">
+          <img class="lg-acaitech" src="%(acaitech)s" width="250" height="215" alt="A&ccedil;a&iacute;Tech">
         </div>
       </div>
     </div>
