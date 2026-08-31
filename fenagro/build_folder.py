@@ -88,7 +88,8 @@ PALESTRAS = [
     ]),
     ("19/09", "SEXTA-FEIRA", [
         ("08:00", "PISCICULTURA", "", "Eryca Maria de Jesus Vieira",
-         "T&eacute;cnica em Aquicultura"),
+         "T&eacute;cnica em Aquicultura &middot; Secret&aacute;ria Municipal de Agricultura "
+         "e Desenvolvimento Econ&ocirc;mico de M&atilde;e do Rio"),
         ("09:00", "BOVINOCULTURA DE CORTE", "", "Wemelly Menezes", "Zootecnista"),
         ("10:00", "BOVINO DE LEITE", "", "Tomaz Pina Maia", "M&eacute;dico Veterin&aacute;rio"),
         ("11:00", "ADEPAR&Aacute;", "", "", ""),
@@ -755,8 +756,8 @@ HTML = """<!DOCTYPE html>
       <div class="parceiros">
         <div class="lbl">PARCEIROS DAS PALESTRAS</div>
         <div class="parceiros-row">
-          <img class="lg-coopagi" src="%(coopagi)s" width="250" height="249" alt="COOPAGI">
-          <img class="lg-acaitech" src="%(acaitech)s" width="250" height="215" alt="A&ccedil;a&iacute;Tech">
+          <img class="lg-coopagi" src="%(coopagi)s" width="210" height="209" alt="COOPAGI">
+          <img class="lg-acaitech" src="%(acaitech)s" width="210" height="181" alt="A&ccedil;a&iacute;Tech">
         </div>
       </div>
     </div>
