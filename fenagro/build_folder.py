@@ -68,7 +68,8 @@ PROGRAMACAO = [
         ("08:00", "XXIII Cavalgada dos Arrojados", "Concentra&ccedil;&atilde;o e sa&iacute;da"),
         ("12:00", "Almo&ccedil;o dos Cavaleiros", ""),
         ("14:00", "Entrega das Premia&ccedil;&otilde;es", ""),
-        ("16:00", "Encerramento do Rodeio", ""),
+        ("19:00", "Encerramento do Rodeio", ""),
+        ("20:00", "Encerramento Oficial da Feira", ""),
         ("20:00", "Shows", "Ant&ocirc;nio Marcos &middot; Gleyk &amp; Gleyson &middot; Evandro do Acordeon "
                            "&middot; Marquinhos Par&aacute; &middot; Deyse Bandeira &middot; DJ Remix nos intervalos"),
     ]),
