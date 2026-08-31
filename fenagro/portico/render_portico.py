@@ -84,7 +84,8 @@ def render(url, dpi=96):
                 y += f.height
             cheia.save(OUT / f"{pid}-RGB.png", optimize=True)
             print(f"{pid}: {cheia.size[0]} x {cheia.size[1]} px  ({n} faixa(s), {dpi} dpi)")
-            rgb_para_cmyk(cheia).save(OUT / f"{pid}-CMYK.tif", compression="tiff_lzw")
+            # deflate comprime melhor que LZW nas pecas com foto
+            rgb_para_cmyk(cheia).save(OUT / f"{pid}-CMYK.tif", compression="tiff_adobe_deflate")
             for f in faixas:
                 f.close()
             for i in range(n):
