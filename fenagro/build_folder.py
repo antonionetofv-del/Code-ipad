@@ -70,7 +70,7 @@ PROGRAMACAO = [
         ("14:00", "Entrega das Premia&ccedil;&otilde;es", ""),
         ("19:00", "Encerramento do Rodeio", ""),
         ("20:00", "Encerramento Oficial da Feira", ""),
-        ("20:00", "Shows", "Ant&ocirc;nio Marcos &middot; Gleyk &amp; Gleyson &middot; Evandro do Acordeon "
+        ("20:30", "Shows", "Ant&ocirc;nio Marcos &middot; Gleyk &amp; Gleyson &middot; Evandro do Acordeon "
                            "&middot; Marquinhos Par&aacute; &middot; Deyse Bandeira &middot; DJ Remix nos intervalos"),
     ]),
 ]
@@ -661,7 +661,7 @@ HTML = """<!DOCTYPE html>
     <div class="pad acts">
       <div class="acts-head">
         <div class="sec-title">ATRA&Ccedil;&Otilde;ES<br>CONFIRMADAS</div>
-        <div class="sec-sub">SHOWS TODAS AS NOITES &middot; 20H</div>
+        <div class="sec-sub">SHOWS TODAS AS NOITES</div>
       </div>
       %(atracoes)s
     </div>
