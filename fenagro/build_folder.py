@@ -59,7 +59,7 @@ PROGRAMACAO = [
     ("19/09", "S&Aacute;BADO", [
         ("08:00", "Abertura da Feira", ""),
         ("08:00", "Ciclo de Palestras",
-         "Piscicultura, Bovinocultura de Corte, Bovino de Leite e Adepar&aacute;"),
+         "Piscicultura, Bovino de Corte, Bovino de Leite e Adepar&aacute;"),
         ("14:00", "Neg&oacute;cios e Expositores", "Visita&ccedil;&atilde;o aos estandes"),
         ("18:00", "Rodeio", ""),
         ("20:00", "Shows", "Xerife Bar&atilde;o &middot; Thiago Ara&uacute;jo &middot; DJ Remix nos intervalos"),
@@ -91,7 +91,8 @@ PALESTRAS = [
         ("08:00", "PISCICULTURA", "", "Eryca Maria de Jesus Vieira",
          "T&eacute;cnica em Aquicultura &middot; Secret&aacute;ria Municipal de Agricultura "
          "e Desenvolvimento Econ&ocirc;mico de M&atilde;e do Rio"),
-        ("09:00", "BOVINOCULTURA DE CORTE", "", "Wemelly Menezes", "Zootecnista"),
+        ("09:00", "BOVINO DE CORTE", "Efici&ecirc;ncia de pastagem",
+         "Wemelly Menezes de Oliveira", "Zootecnista"),
         ("10:00", "BOVINO DE LEITE", "", "Tomaz Pina Maia", "M&eacute;dico Veterin&aacute;rio"),
         ("11:00", "ADEPAR&Aacute;", "", "", ""),
     ]),
@@ -572,11 +573,11 @@ body {
 }
 
 .talks { padding-top: 0; }
-.talk-day { margin-bottom: 3mm; }
+.talk-day { margin-bottom: 2.4mm; }
 .talk {
   display: flex;
   gap: 3mm;
-  padding: 1.3mm 0;
+  padding: 1.1mm 0;
   border-bottom: 0.25mm solid #E2DCC4;
 }
 .talk:last-child { border-bottom: 0; }
