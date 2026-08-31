@@ -16,7 +16,13 @@ OUT = BASE / "assets_hi" / "elenco.png"
 LARGURA = 1560          # px da composicao; a lateral reserva 480 mm de largura
 ALTURA_FILEIRA = 1480   # px; igual em todas, para nao variar a escala dos rostos
 SOBREP_V = 0.22         # quanto cada fileira sobe sobre a anterior
+SOBREP_EXTRA = {2: 0.14}  # sobreposicao a mais em fileiras especificas
 FOLGA_H = 1.20          # largura extra da fileira, consumida na sobreposicao
+# Fotos largas (sanfona, dupla) nao cabem na faixa sem encolher. Nessas
+# fileiras a altura e fixada na das demais e as fotos sangram pelas laterais,
+# como na fileira de cima que ja avanca sobre elas.
+ALTURA_ROW = {3: 1450}   # altura alvo da foto, em px
+SANGRA_ROW = {3: 250}    # quanto a fileira avanca para fora da faixa, de cada lado
 ESVANECE = 260          # px de esvaecimento no pe da composicao
 ESVANECE_FILEIRA = 150  # idem no pe de cada fileira
 
@@ -26,7 +32,7 @@ ESVANECE_FILEIRA = 150  # idem no pe de cada fileira
 FILEIRAS = [
     [("b-chapeu-marrom-xadrez", 1.00), ("artista-chapeu-preto", 0.96)],
     [("c-chapeu-marrom-oculos", 0.92), ("b-chapeu-palha-preta", 0.96)],
-    [("sanfoneiro", 1.34, "frente"), ("b-chapeu-branco-palco", 0.84)],
+    [("sanfoneiro", 1.04, "frente"), ("b-chapeu-branco-palco", 0.96)],
     [("gleyk-e-gleyson", 0.82), ("b-jaqueta-bracos-cruzados", 1.00)],
     [("evandro-do-acordeon", 0.98), ("c-chapeu-branco-camisa-preta", 1.00)],
     [("b-camisa-branca-noturna", 0.94), ("deyse-bandeira", 0.92)],
@@ -35,6 +41,9 @@ FILEIRAS = [
 
 def limpa(nome, im):
     """Retoques nos originais antes da montagem."""
+    if nome == "sanfoneiro":
+        # unica foto de corpo inteiro: cortada na altura das demais
+        return im.crop((0, 0, im.width, round(im.height * 0.74)))
     if nome == "evandro-do-acordeon":
         # o proprio arquivo traz o logotipo do artista; os nomes vao na tarja
         return im.crop((0, 0, im.width, round(im.height * 0.70)))
@@ -62,42 +71,48 @@ def sombra(im):
     return s.filter(ImageFilter.GaussianBlur(15))
 
 
-def monta_fileira(itens, largura, altura):
+def monta_fileira(itens, largura, altura, alvo=None, sangra=0):
     """Escala as fotos a uma altura fixa, alinha pelos pes e fecha a largura."""
     ims = []
     for nome, escala, *resto in itens:
         im = limpa(nome, Image.open(REC / (nome + ".png")).convert("RGBA"))
-        h = max(1, round(altura * escala))
+        h = max(1, round((alvo or altura) * escala))
         ims.append(im.resize((max(1, round(im.width * h / im.height)), h), Image.LANCZOS))
 
     # as fotos sempre se sobrepoem: sem isso, as bordas do recorte de cada uma
     # ficam a mostra contra o fundo verde
     total = sum(i.width for i in ims)
-    f = largura * FOLGA_H / total
-    ims = [i.resize((max(1, round(i.width * f)), max(1, round(i.height * f))),
-                    Image.LANCZOS) for i in ims]
-    total = sum(i.width for i in ims)
-    passo = (total - largura) / (len(ims) - 1)
-    xs, x = [], 0.0
+    if alvo is None:                     # altura livre: a fileira fecha na faixa
+        f = largura * FOLGA_H / total
+        ims = [i.resize((max(1, round(i.width * f)), max(1, round(i.height * f))),
+                        Image.LANCZOS) for i in ims]
+        total = sum(i.width for i in ims)
+    vao = largura + 2 * sangra           # com sangra, a fileira passa da faixa
+    passo = (total - vao) / (len(ims) - 1)
+    xs, x = [], float(-sangra)
     for i in ims:
         xs.append(round(x)); x += i.width - passo
 
     alt = max(i.height for i in ims)
-    fileira = Image.new("RGBA", (max(total, largura), alt), (0, 0, 0, 0))
+    fileira = Image.new("RGBA", (max(total, largura) + 2 * sangra, alt), (0, 0, 0, 0))
     # desenha das pontas para o meio; quem esta marcado "frente" vai por ultimo
     frente = ["frente" in it[2:] for it in itens]
     for k in sorted(range(len(ims)),
                     key=lambda k: (frente[k], -abs(k - (len(ims) - 1) / 2))):
         y = alt - ims[k].height                  # todos apoiados na mesma linha
-        fileira.alpha_composite(sombra(ims[k]), (xs[k] - 20, y - 20))
-        fileira.alpha_composite(ims[k], (xs[k], y))
-    return dissolve_pe(fileira.crop((0, 0, largura, alt)), ESVANECE_FILEIRA)
+        fileira.alpha_composite(sombra(ims[k]), (xs[k] + sangra - 20, y - 20))
+        fileira.alpha_composite(ims[k], (xs[k] + sangra, y))
+    corte = fileira.crop((sangra, 0, sangra + largura, alt))
+    return dissolve_pe(corte, ESVANECE_FILEIRA)
 
 
-fileiras = [monta_fileira(f, LARGURA, ALTURA_FILEIRA) for f in FILEIRAS]
+fileiras = [monta_fileira(f, LARGURA, ALTURA_FILEIRA,
+                          ALTURA_ROW.get(i + 1), SANGRA_ROW.get(i + 1, 0))
+            for i, f in enumerate(FILEIRAS)]
 tops, y = [], 0.0
-for f in fileiras:
-    tops.append(round(y)); y += f.height * (1 - SOBREP_V)
+for i, f in enumerate(fileiras):
+    tops.append(round(y))
+    y += f.height * (1 - SOBREP_V - SOBREP_EXTRA.get(i + 1, 0))
 elenco = Image.new("RGBA", (LARGURA, round(tops[-1] + fileiras[-1].height)), (0, 0, 0, 0))
 for f, t in zip(fileiras, tops):
     elenco.alpha_composite(f, (0, t))

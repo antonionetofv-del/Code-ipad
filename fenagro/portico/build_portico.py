@@ -252,7 +252,7 @@ body {
 .t-nin { width: 165mm; height: 213mm; display: block; }
 
 /* ---------- laterais ---------- */
-.l-logo { width: 400mm; height: 389mm; display: block; }
+.l-logo { width: 400mm; height: 389mm; display: block; margin: 0 auto; }
 .l-word { font-size: 80mm; white-space: nowrap; margin-top: 22mm; }
 .l-tag { font-size: 27mm; margin-top: 12mm; letter-spacing: 0.04em; }
 
@@ -529,6 +529,8 @@ HTML = """<!DOCTYPE html>
   <div class="area">
     <div>
       <img class="l-logo" src="%(logo)s" width="247" height="247" alt="FENAGRO-MR">
+      <div class="wordmark l-word">II FENAGRO-MR</div>
+      <div class="tagline l-tag">FEIRA DE NEG&Oacute;CIOS DO AGRO<br>DE M&Atilde;E DO RIO</div>
         <div class="regua" style="margin:26mm auto 24mm"></div>
         <div class="datao l-datao">17 A 20</div>
         <div class="l-datasub">DE SETEMBRO</div>
