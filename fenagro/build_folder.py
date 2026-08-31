@@ -40,14 +40,15 @@ IMG = {
 # ---------------------------------------------------------------- conteudo ---
 
 PROGRAMACAO = [
-    ("17/09", "QUARTA-FEIRA", [
-        ("08:00", "Abertura da Feira", "Abertura oficial da II FENAGRO-MR"),
+    ("17/09", "QUINTA-FEIRA", [
+        ("08:00", "Abertura Oficial da Feira",
+         "Palavra do Presidente do Sindicato e das autoridades de M&atilde;e do Rio"),
         ("08:00", "Palestra", "Cacau: enxertia, poda e nutri&ccedil;&atilde;o"),
         ("14:00", "Neg&oacute;cios e Expositores", "Visita&ccedil;&atilde;o aos estandes"),
         ("18:00", "Abertura Oficial do Rodeio", ""),
         ("20:00", "Shows", "Isa&iacute;as Show &middot; DJ Remix nos intervalos"),
     ]),
-    ("18/09", "QUINTA-FEIRA", [
+    ("18/09", "SEXTA-FEIRA", [
         ("08:00", "Abertura da Feira", ""),
         ("08:00", "Palestra", "A&ccedil;a&iacute; irrigado: efici&ecirc;ncia e lucratividade"),
         ("09:00", "Palestra", "Desafios de produzir a&ccedil;a&iacute; em terra firme"),
@@ -55,7 +56,7 @@ PROGRAMACAO = [
         ("18:00", "Rodeio", ""),
         ("20:00", "Shows", "Leozinho Forrozeiro &middot; Jo&atilde;o Nunes &middot; DJ Remix nos intervalos"),
     ]),
-    ("19/09", "SEXTA-FEIRA", [
+    ("19/09", "S&Aacute;BADO", [
         ("08:00", "Abertura da Feira", ""),
         ("08:00", "Ciclo de Palestras",
          "Piscicultura, Bovinocultura de Corte, Bovino de Leite e Adepar&aacute;"),
@@ -63,30 +64,29 @@ PROGRAMACAO = [
         ("18:00", "Rodeio", ""),
         ("20:00", "Shows", "Xerife Bar&atilde;o &middot; Thiago Ara&uacute;jo &middot; DJ Remix nos intervalos"),
     ]),
-    ("20/09", "S&Aacute;BADO", [
+    ("20/09", "DOMINGO", [
         ("08:00", "XXIII Cavalgada dos Arrojados", "Concentra&ccedil;&atilde;o e sa&iacute;da"),
         ("12:00", "Almo&ccedil;o dos Cavaleiros", ""),
-        ("14:00", "Parque de Divers&atilde;o", "Divers&atilde;o para toda a fam&iacute;lia"),
-        ("16:00", "Final do Rodeio", "Premia&ccedil;&otilde;es"),
-        ("18:00", "Encerramento Oficial da Feira", ""),
+        ("14:00", "Entrega das Premia&ccedil;&otilde;es", ""),
+        ("16:00", "Encerramento do Rodeio", ""),
         ("20:00", "Shows", "Ant&ocirc;nio Marcos &middot; Gleyk &amp; Gleyson &middot; Evandro do Acordeon "
                            "&middot; Marquinhos Par&aacute; &middot; Deyse Bandeira &middot; DJ Remix nos intervalos"),
     ]),
 ]
 
 PALESTRAS = [
-    ("17/09", "QUARTA-FEIRA", [
+    ("17/09", "QUINTA-FEIRA", [
         ("08:00", "CACAU", "Enxertia, poda e nutri&ccedil;&atilde;o no cacau",
          "Adailton Mendes", "T&eacute;cnico em Agropecu&aacute;ria"),
     ]),
-    ("18/09", "QUINTA-FEIRA", [
+    ("18/09", "SEXTA-FEIRA", [
         ("08:00", "A&Ccedil;A&Iacute;",
          "A&ccedil;a&iacute; irrigado: como produzir com efici&ecirc;ncia e lucratividade",
          "Arcidio Ornela Filho", "Especialista na Cultura do A&ccedil;a&iacute;"),
         ("09:00", "A&Ccedil;A&Iacute;", "Desafios de produzir a&ccedil;a&iacute; em terra firme",
          "Emerson Silva de Menezes", "Presidente da COOPAGI"),
     ]),
-    ("19/09", "SEXTA-FEIRA", [
+    ("19/09", "S&Aacute;BADO", [
         ("08:00", "PISCICULTURA", "", "Eryca Maria de Jesus Vieira",
          "T&eacute;cnica em Aquicultura &middot; Secret&aacute;ria Municipal de Agricultura "
          "e Desenvolvimento Econ&ocirc;mico de M&atilde;e do Rio"),
@@ -97,10 +97,10 @@ PALESTRAS = [
 ]
 
 ATRACOES = [
-    ("17/09", "QUARTA", ["Isa&iacute;as Show"]),
-    ("18/09", "QUINTA", ["Leozinho Forrozeiro", "Jo&atilde;o Nunes"]),
-    ("19/09", "SEXTA", ["Xerife Bar&atilde;o", "Thiago Ara&uacute;jo"]),
-    ("20/09", "S&Aacute;BADO", ["Ant&ocirc;nio Marcos", "Gleyk &amp; Gleyson",
+    ("17/09", "QUINTA", ["Isa&iacute;as Show"]),
+    ("18/09", "SEXTA", ["Leozinho Forrozeiro", "Jo&atilde;o Nunes"]),
+    ("19/09", "S&Aacute;BADO", ["Xerife Bar&atilde;o", "Thiago Ara&uacute;jo"]),
+    ("20/09", "DOMINGO", ["Ant&ocirc;nio Marcos", "Gleyk &amp; Gleyson",
                                 "Evandro do Acordeon", "Marquinhos Par&aacute;",
                                 "Deyse Bandeira"]),
 ]
