@@ -69,10 +69,10 @@ PROGRAMACAO = [
         ("12:00", "Almo&ccedil;o dos Cavaleiros", ""),
         ("14:00", "Entrega das Premia&ccedil;&otilde;es", ""),
         ("19:00", "Encerramento do Rodeio", ""),
-        ("20:00", "Encerramento Oficial da Feira", ""),
-        ("20:30", "Shows", "Ant&ocirc;nio Marcos &middot; Gleyk &amp; Gleyson &middot; Evandro do Acordeon "
+        ("20:00", "Desfile da Garota FENAGRO", "Passagem da faixa"),
+        ("20:30", "Encerramento Oficial da Feira", ""),
+        ("21:00", "Shows", "Ant&ocirc;nio Marcos &middot; Gleyk &amp; Gleyson &middot; Evandro do Acordeon "
                            "&middot; Marquinhos Par&aacute; &middot; Deyse Bandeira &middot; DJ Remix nos intervalos"),
-        ("21:00", "Desfile da Garota FENAGRO", "Passagem da faixa"),
     ]),
 ]
 
