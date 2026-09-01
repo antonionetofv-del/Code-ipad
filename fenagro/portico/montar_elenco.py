@@ -22,7 +22,7 @@ FOLGA_H = 1.20          # largura extra da fileira, consumida na sobreposicao
 # fileiras a altura e fixada na das demais e as fotos sangram pelas laterais,
 # como na fileira de cima que ja avanca sobre elas.
 ALTURA_ROW = {3: 1450}   # altura alvo da foto, em px
-SANGRA_ROW = {3: 250}    # quanto a fileira avanca para fora da faixa, de cada lado
+SANGRA_ROW = {3: 250, 5: 120}  # quanto a fileira avanca para fora da faixa, de cada lado
 ESVANECE = 260          # px de esvaecimento no pe da composicao
 ESVANECE_FILEIRA = 150  # idem no pe de cada fileira
 
@@ -31,10 +31,10 @@ ESVANECE_FILEIRA = 150  # idem no pe de cada fileira
 # As fileiras vao do fundo para a frente.
 FILEIRAS = [
     [("b-chapeu-marrom-xadrez", 1.00), ("artista-chapeu-preto", 0.96)],
-    [("c-chapeu-marrom-oculos", 0.92), ("b-chapeu-palha-preta", 0.96)],
+    [("evandro-do-acordeon", 0.98), ("b-chapeu-palha-preta", 0.96)],
     [("sanfoneiro", 1.04, "frente"), ("b-chapeu-branco-palco", 0.96)],
     [("gleyk-e-gleyson", 0.82), ("b-jaqueta-bracos-cruzados", 1.00)],
-    [("evandro-do-acordeon", 0.98), ("c-chapeu-branco-camisa-preta", 1.00)],
+    [("miss-garota-fenagro", 1.00, "frente"), ("c-chapeu-branco-camisa-preta", 0.96)],
     [("b-camisa-branca-noturna", 0.94), ("deyse-bandeira", 0.92)],
 ]
 
@@ -46,7 +46,7 @@ def limpa(nome, im):
         return im.crop((0, 0, im.width, round(im.height * 0.74)))
     if nome == "evandro-do-acordeon":
         # o proprio arquivo traz o logotipo do artista; os nomes vao na tarja
-        return im.crop((0, 0, im.width, round(im.height * 0.70)))
+        return im.crop((0, 0, im.width, round(im.height * 0.62)))
     return im
 
 
