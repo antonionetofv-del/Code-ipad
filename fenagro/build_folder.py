@@ -62,7 +62,7 @@ PROGRAMACAO = [
          "Piscicultura, Bovino de Corte, Bovino de Leite e Adepar&aacute;"),
         ("14:00", "Neg&oacute;cios e Expositores", "Visita&ccedil;&atilde;o aos estandes"),
         ("18:00", "Rodeio", ""),
-        ("20:00", "Shows", "Xerife Bar&atilde;o &middot; Thiago Ara&uacute;jo &middot; DJ Remix nos intervalos"),
+        ("20:00", "Shows", "Xerife Bar&atilde;o &middot; Gleyk &amp; Gleyson &middot; DJ Remix nos intervalos"),
     ]),
     ("20/09", "DOMINGO", [
         ("08:00", "XXIII Cavalgada dos Arrojados", "Concentra&ccedil;&atilde;o e sa&iacute;da"),
@@ -72,6 +72,7 @@ PROGRAMACAO = [
         ("20:00", "Encerramento Oficial da Feira", ""),
         ("20:30", "Shows", "Ant&ocirc;nio Marcos &middot; Gleyk &amp; Gleyson &middot; Evandro do Acordeon "
                            "&middot; Marquinhos Par&aacute; &middot; Deyse Bandeira &middot; DJ Remix nos intervalos"),
+        ("21:00", "Desfile da Garota FENAGRO", "Passagem da faixa"),
     ]),
 ]
 
@@ -101,7 +102,7 @@ PALESTRAS = [
 ATRACOES = [
     ("17/09", "QUINTA", ["Isa&iacute;as Show"]),
     ("18/09", "SEXTA", ["Leozinho Forrozeiro", "Jo&atilde;o Nunes"]),
-    ("19/09", "S&Aacute;BADO", ["Xerife Bar&atilde;o", "Thiago Ara&uacute;jo"]),
+    ("19/09", "S&Aacute;BADO", ["Xerife Bar&atilde;o", "Gleyk &amp; Gleyson"]),
     ("20/09", "DOMINGO", ["Ant&ocirc;nio Marcos", "Gleyk &amp; Gleyson",
                                 "Evandro do Acordeon", "Marquinhos Par&aacute;",
                                 "Deyse Bandeira"]),

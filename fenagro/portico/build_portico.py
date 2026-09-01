@@ -55,7 +55,7 @@ def data_uri(p, lado_mm=None):
 SHOWS = [
     ("17/09", "", ["ISAIAS SHOW", "DJ REMIX"]),
     ("18/09", "", ["LEOZINHO FORROZEIRO", "JOAO NUNES", "DJ REMIX"]),
-    ("19/09", "", ["XERIFE BAR&Atilde;O", "THIAGO ARA&Uacute;JO", "DJ REMIX"]),
+    ("19/09", "", ["XERIFE BAR&Atilde;O", "GLEYK &amp; GLEYSON", "DJ REMIX"]),
     ("20/09", "CAVALGADA DOS ARROJADOS",
      ["ANT&Ocirc;NIO MARCOS", "EVANDRO DO ACORDEON", "MARQUINHOS PAR&Aacute;",
       "GLEYK &amp; GLEYSON", "DEYSE BANDEIRA", "LOCUTOR JUNIOR MIL", "DJ REMIX"]),
