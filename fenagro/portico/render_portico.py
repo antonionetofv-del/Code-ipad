@@ -23,9 +23,9 @@ MM = 96 / 25.4          # px CSS por mm
 MAX_FAIXA = 12000       # altura maxima de cada captura, em px
 
 PECAS = {                       # id: (largura_mm, altura_mm)
-    "testeira": (3200, 600),
-    "lateral-esq": (600, 5000),
-    "lateral-dir": (600, 5000),
+    "testeira": (4000, 1000),
+    "lateral-esq": (1000, 5300),
+    "lateral-dir": (1000, 5300),
 }
 
 

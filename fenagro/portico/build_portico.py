@@ -67,18 +67,18 @@ DESTAQUES = ["SHOWS", "RODEIO", "XXIII CAVALGADA", "PARQUE DE DIVERS&Atilde;O",
 PALESTRAS = [
     ("17/09", ["CACAU"]),
     ("18/09", ["A&Ccedil;A&Iacute;"]),
-    ("19/09", ["PISCICULTURA", "BOVINOCULTURA DE CORTE",
+    ("19/09", ["PISCICULTURA", "BOVINO DE CORTE",
                "BOVINO DE LEITE", "ADEPAR&Aacute;"]),
 ]
 
 # (chave, altura em mm) -- a largura sai da proporcao real do arquivo
-REALIZACAO = [("logo-fenagro-mr", 112), ("logo-siprumar", 112)]
+REALIZACAO = [("logo-fenagro-mr", 190), ("logo-siprumar", 190)]
 APOIO = [
-    [("logo-faepa", 62), ("logo-sebrae", 46), ("logo-banpara", 33)],
-    [("logo-prefeitura-mae-do-rio", 31), ("logo-governo-para", 86),
-     ("logo-amazon-center-park", 70)],
+    [("logo-faepa", 105), ("logo-sebrae", 78), ("logo-banpara", 56)],
+    [("logo-prefeitura-mae-do-rio", 53), ("logo-governo-para", 146),
+     ("logo-amazon-center-park", 119)],
 ]
-PARCEIROS = [("coopagi", 88), ("acaitech", 78)]
+PARCEIROS = [("coopagi", 150), ("acaitech", 133)]
 
 def proporcao(chave):
     """Razao largura/altura do arquivo, para dimensionar as logos pela altura."""
@@ -172,8 +172,8 @@ body {
 
 /* ---------- pecas ---------- */
 .peca { position: relative; overflow: hidden; background: #01270E; }
-.lateral { width: 600mm;  height: 5000mm; }
-.testeira { width: 3200mm; height: 600mm; }
+.lateral { width: 1000mm; height: 5300mm; }
+.testeira { width: 4000mm; height: 1000mm; }
 
 .luz { position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
 .lateral .luz { background-image: %(luzes_lat)s; }
@@ -187,20 +187,20 @@ body {
               rgba(1,39,14,0.14) 0%%, rgba(1,39,14,0.74) 100%%);
 }
 
-.moldura { position: absolute; border: 4mm solid #E3B45A; }
-.lateral .moldura { left: 26mm; top: 26mm; right: 26mm; bottom: 26mm; }
-.testeira .moldura { left: 22mm; top: 22mm; right: 22mm; bottom: 22mm; }
+.moldura { position: absolute; border: 6mm solid #E3B45A; }
+.lateral .moldura { left: 40mm; top: 40mm; right: 40mm; bottom: 40mm; }
+.testeira .moldura { left: 36mm; top: 36mm; right: 36mm; bottom: 36mm; }
 
 .area { position: absolute; display: flex; }
 .lateral .area {
-  left: 60mm; top: 60mm; right: 60mm; bottom: 60mm;
+  left: 90mm; top: 90mm; right: 90mm; bottom: 90mm;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   text-align: center;
 }
 .testeira .area {
-  left: 56mm; top: 46mm; right: 56mm; bottom: 46mm;
+  left: 80mm; top: 80mm; right: 80mm; bottom: 80mm;
   align-items: center;
   justify-content: space-between;
 }
@@ -230,37 +230,37 @@ body {
 .local { font-family: "montserrat", sans-serif; font-weight: 700; color: #FBF7EB; line-height: 1.35; }
 
 /* ---------- testeira ---------- */
-.t-logo { width: 450mm; height: 450mm; display: block; }
+.t-logo { width: 760mm; height: 739mm; display: block; }
 .t-centro { text-align: center; }
-.t-centro .eyebrow { font-size: 24mm; letter-spacing: 0.42em; text-indent: 0.42em; }
-.t-centro .wordmark { font-size: 176mm; margin-top: 12mm; }
-.t-centro .tagline { font-size: 40mm; margin-top: 12mm; letter-spacing: 0.03em; }
+.t-centro .eyebrow { font-size: 31mm; letter-spacing: 0.42em; text-indent: 0.42em; }
+.t-centro .wordmark { font-size: 236mm; margin-top: 12mm; }
+.t-centro .tagline { font-size: 54mm; margin-top: 12mm; letter-spacing: 0.03em; }
 .t-dir { text-align: center; }
-.t-dir .datao { font-size: 116mm; }
+.t-dir .datao { font-size: 164mm; }
 .t-dir .sub {
   font-family: "montserrat", sans-serif;
   font-weight: 700;
-  font-size: 27mm;
+  font-size: 38mm;
   letter-spacing: 0.2em;
   text-indent: 0.2em;
   color: #FBF7EB;
   margin-top: 8mm;
 }
-.t-dir .local { font-size: 25mm; margin-top: 12mm; }
-.t-selos { display: flex; align-items: center; gap: 26mm; }
-.t-cav { width: 330mm; height: 201mm; display: block; }
-.t-nin { width: 165mm; height: 213mm; display: block; }
+.t-dir .local { font-size: 35mm; margin-top: 18mm; }
+.t-selos { display: flex; align-items: center; gap: 34mm; }
+.t-cav { width: 465mm; height: 283mm; display: block; }
+.t-nin { width: 232mm; height: 300mm; display: block; }
 
 /* ---------- laterais ---------- */
-.l-logo { width: 400mm; height: 389mm; display: block; margin: 0 auto; }
-.l-word { font-size: 80mm; white-space: nowrap; margin-top: 22mm; }
-.l-tag { font-size: 27mm; margin-top: 12mm; letter-spacing: 0.04em; }
+.l-logo { width: 560mm; height: 545mm; display: block; margin: 0 auto; }
+.l-word { font-size: 118mm; white-space: nowrap; margin-top: 26mm; }
+.l-tag { font-size: 38mm; margin-top: 14mm; letter-spacing: 0.04em; }
 
-.regua { width: 340mm; height: 3.2mm; background: #E3B45A; margin: 30mm auto; }
+.regua { width: 560mm; height: 4.4mm; background: #E3B45A; margin: 34mm auto; }
 
 .sec {
   font-family: "anton", sans-serif;
-  font-size: 92mm;
+  font-size: 132mm;
   line-height: 1.06;
   color: #FBF7EB;
   letter-spacing: 0.02em;
@@ -269,7 +269,7 @@ body {
 .sec-sub {
   font-family: "montserrat", sans-serif;
   font-weight: 700;
-  font-size: 26mm;
+  font-size: 36mm;
   letter-spacing: 0.28em;
   text-indent: 0.28em;
   color: #E3B45A;
@@ -277,7 +277,7 @@ body {
 }
 
 /* composicao de grupo das atracoes, no padrao da arte oficial */
-.elenco { width: 480mm; display: block; margin: 26mm auto 22mm; }
+.elenco { width: 820mm; display: block; margin: 30mm auto 26mm; }
 
 /* tarja com os nomes agrupados por data */
 .tarja {
@@ -297,16 +297,16 @@ body {
 .tj + .tj { border-top: 0.9mm solid rgba(227,180,90,0.42); }
 .tj-dia {
   font-family: "anton", sans-serif;
-  font-size: 62mm;
+  font-size: 86mm;
   line-height: 1;
   color: #E3B45A;
-  width: 132mm;
+  width: 200mm;
   flex: none;
 }
 .tj-nota {
   font-family: "montserrat", sans-serif;
   font-weight: 800;
-  font-size: 13mm;
+  font-size: 18mm;
   line-height: 1.2;
   letter-spacing: 0.06em;
   color: #FBF7EB;
@@ -315,7 +315,7 @@ body {
 .tj-nomes { flex: 1; }
 .tj-nome {
   font-family: "anton", sans-serif;
-  font-size: 33mm;
+  font-size: 46mm;
   line-height: 1.24;
   color: #FBF7EB;
   letter-spacing: 0.01em;
@@ -348,7 +348,7 @@ body {
   display: inline-block;
   font-family: "montserrat", sans-serif;
   font-weight: 800;
-  font-size: 24mm;
+  font-size: 33mm;
   letter-spacing: 0.1em;
   color: #01270E;
   background: #E3B45A;
@@ -358,7 +358,7 @@ body {
 .pa-tema {
   font-family: "montserrat", sans-serif;
   font-weight: 800;
-  font-size: 28mm;
+  font-size: 38mm;
   line-height: 1.24;
   color: #FBF7EB;
   margin-top: 9mm;
@@ -368,7 +368,7 @@ body {
 .dest {
   font-family: "montserrat", sans-serif;
   font-weight: 800;
-  font-size: 27mm;
+  font-size: 37mm;
   letter-spacing: 0.12em;
   text-indent: 0.12em;
   color: #FBF7EB;
@@ -380,25 +380,25 @@ body {
 
 .frase {
   font-family: "anton", sans-serif;
-  font-size: 98mm;
+  font-size: 138mm;
   line-height: 1.1;
   color: #E3B45A;
   letter-spacing: 0.01em;
   text-shadow: 0 3mm 8mm rgba(0,0,0,0.45);
 }
 
-.l-datao { font-size: 112mm; white-space: nowrap; }
+.l-datao { font-size: 158mm; white-space: nowrap; }
 .l-datasub {
   font-family: "montserrat", sans-serif;
   font-weight: 700;
-  font-size: 32mm;
+  font-size: 44mm;
   letter-spacing: 0.24em;
   text-indent: 0.24em;
   color: #FBF7EB;
   margin-top: 10mm;
 }
-.l-local { font-size: 36mm; margin-top: 22mm; }
-.l-local span { display: block; font-weight: 500; font-size: 29mm; color: #CFE0D2; }
+.l-local { font-size: 50mm; margin-top: 26mm; }
+.l-local span { display: block; font-weight: 500; font-size: 40mm; color: #CFE0D2; }
 
 .l-meio {
   flex: 1;
@@ -410,8 +410,8 @@ body {
 }
 
 .l-selos { display: flex; align-items: flex-end; justify-content: center; gap: 30mm; }
-.l-cav { width: 320mm; height: 195mm; display: block; }
-.l-nin { width: 160mm; height: 207mm; display: block; }
+.l-cav { width: 440mm; height: 268mm; display: block; }
+.l-nin { width: 220mm; height: 284mm; display: block; }
 
 .l-rodape { width: 100%%; }
 .patroc {
@@ -427,7 +427,7 @@ body {
 .patroc .lbl {
   font-family: "montserrat", sans-serif;
   font-weight: 700;
-  font-size: 21mm;
+  font-size: 28mm;
   letter-spacing: 0.28em;
   text-indent: 0.28em;
   color: #4A5A4C;
@@ -448,13 +448,13 @@ body {
   display: flex;
   align-items: center;
 }
-.divisor { width: 300mm; height: 0.9mm; background: #D6DCD6; margin: 4mm auto; }
+.divisor { width: 520mm; height: 1.2mm; background: #D6DCD6; margin: 4mm auto; }
 
 .ig {
   margin-bottom: 40mm;
   font-family: "montserrat", sans-serif;
   font-weight: 800;
-  font-size: 46mm;
+  font-size: 62mm;
   color: #E3B45A;
   letter-spacing: 0.04em;
 }
@@ -600,10 +600,10 @@ if EXPRESS:
     html = html.replace("<title>",
         '<meta name="hz:slide-selector" content=".peca">\n'
         '<meta name="hz:canvas-width" content="%d">\n'
-        '<meta name="hz:canvas-height" content="%d">\n' % (px(600), px(5000))
+        '<meta name="hz:canvas-height" content="%d">\n' % (px(1000), px(5300))
         + "<title>", 1)
-    for pid, (w, h) in (("testeira", (3200, 600)), ("lateral-esq", (600, 5000)),
-                        ("lateral-dir", (600, 5000))):
+    for pid, (w, h) in (("testeira", (4000, 1000)), ("lateral-esq", (1000, 5300)),
+                        ("lateral-dir", (1000, 5300))):
         html = html.replace('id="%s">' % pid,
                             'id="%s" data-canvas-width="%d" data-canvas-height="%d">'
                             % (pid, px(w), px(h)), 1)

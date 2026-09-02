@@ -13,16 +13,16 @@ BASE = pathlib.Path(__file__).parent
 REC = BASE / "recebidos"
 OUT = BASE / "assets_hi" / "elenco.png"
 
-LARGURA = 1560          # px da composicao; a lateral reserva 480 mm de largura
-ALTURA_FILEIRA = 1480   # px; igual em todas, para nao variar a escala dos rostos
-SOBREP_V = 0.22         # quanto cada fileira sobe sobre a anterior
-SOBREP_EXTRA = {2: 0.14}  # sobreposicao a mais em fileiras especificas
-FOLGA_H = 1.20          # largura extra da fileira, consumida na sobreposicao
+LARGURA = 2600          # px da composicao; a lateral reserva 820 mm de largura
+ALTURA_FILEIRA = 1480   # px; ponto de partida, a largura da fileira decide o resto
+SOBREP_V = 0.18         # quanto cada fileira sobe sobre a anterior
+SOBREP_EXTRA = {}        # sobreposicao a mais em fileiras especificas
+FOLGA_H = 1.28          # largura extra da fileira, consumida na sobreposicao
 # Fotos largas (sanfona, dupla) nao cabem na faixa sem encolher. Nessas
 # fileiras a altura e fixada na das demais e as fotos sangram pelas laterais,
 # como na fileira de cima que ja avanca sobre elas.
-ALTURA_ROW = {3: 1450}   # altura alvo da foto, em px
-SANGRA_ROW = {3: 250, 5: 120}  # quanto a fileira avanca para fora da faixa, de cada lado
+ALTURA_ROW = {}          # altura alvo da foto, em px, por fileira
+SANGRA_ROW = {}          # quanto a fileira avanca para fora da faixa, de cada lado
 ESVANECE = 260          # px de esvaecimento no pe da composicao
 ESVANECE_FILEIRA = 150  # idem no pe de cada fileira
 
@@ -30,12 +30,13 @@ ESVANECE_FILEIRA = 150  # idem no pe de cada fileira
 # chegaram com enquadramentos diferentes (de meio corpo a corpo inteiro).
 # As fileiras vao do fundo para a frente.
 FILEIRAS = [
-    [("b-chapeu-marrom-xadrez", 1.00), ("artista-chapeu-preto", 0.96)],
-    [("evandro-do-acordeon", 0.98), ("b-chapeu-palha-preta", 0.96)],
-    [("sanfoneiro", 1.04, "frente"), ("b-chapeu-branco-palco", 0.96)],
-    [("gleyk-e-gleyson", 0.82), ("b-jaqueta-bracos-cruzados", 1.00)],
-    [("miss-garota-fenagro", 1.00, "frente"), ("c-chapeu-branco-camisa-preta", 0.96)],
-    [("b-camisa-branca-noturna", 0.94), ("deyse-bandeira", 0.92)],
+    [("b-chapeu-marrom-xadrez", 1.00), ("artista-chapeu-preto", 0.96),
+     ("evandro-do-acordeon", 0.98)],
+    [("b-chapeu-palha-preta", 0.96), ("sanfoneiro", 1.10), ("b-chapeu-branco-palco", 0.90)],
+    [("gleyk-e-gleyson", 0.86), ("b-jaqueta-bracos-cruzados", 1.00),
+     ("c-chapeu-branco-camisa-preta", 0.98)],
+    [("b-camisa-branca-noturna", 0.94), ("miss-garota-fenagro", 1.02),
+     ("deyse-bandeira", 0.92)],
 ]
 
 
@@ -121,5 +122,7 @@ for f, t in zip(fileiras, tops):
 elenco = dissolve_pe(elenco, ESVANECE)
 
 elenco.save(OUT)
+LARGURA_MM = 820        # largura util da lateral
 print("%s  %s px  (%.0f x %.0f mm na peca)"
-      % (OUT.name, elenco.size, 480, 480 * elenco.height / elenco.width))
+      % (OUT.name, elenco.size, LARGURA_MM,
+         LARGURA_MM * elenco.height / elenco.width))
